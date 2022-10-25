@@ -8,3 +8,6 @@
 4. Add routing
    1. Route for home view
    2. Route for each product
+5. Create Node.js Server
+6. Fetch products from backend
+7. Manage State from useReducer
