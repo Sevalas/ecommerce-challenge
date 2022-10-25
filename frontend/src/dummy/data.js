@@ -46,7 +46,7 @@ const data = {
         },
         {
             name: 'Anime Shirt Siyah',
-            slug: 'anime-shirt-siyah',
+            slug: 'anime-shirt-siyah2',
             category: 'shirts',
             image: '/dummy/images/animeShirt.jpg', // 680 x 830
             price: 80,
@@ -57,7 +57,7 @@ const data = {
         },
         {
             name: 'Anime Bucket Hat Akatsuki',
-            slug: 'Anime-bucket-hat-akatsuki',
+            slug: 'Anime-bucket-hat-akatsuki2',
             category: 'Hats',
             image: '/dummy/images/animeBucketHat.jpg', // 680 x 830
             price: 50,
@@ -68,7 +68,7 @@ const data = {
         },
         {
             name: 'Black Slim Jeans Levis',
-            slug: 'Black-slim-jeans-levis',
+            slug: 'Black-slim-jeans-levis2',
             category: 'Jeans',
             image: '/dummy/images/blackJeansLevis.jpg', // 680 x 830
             price: 250,
