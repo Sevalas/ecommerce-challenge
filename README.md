@@ -11,3 +11,4 @@
 5. Create Node.js Server
 6. Fetch products from backend
 7. Manage State from useReducer
+8. Add Bootstrap
