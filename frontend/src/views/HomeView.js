@@ -1,18 +1,18 @@
 import { useEffect, useReducer } from "react";
 import axios from "axios";
-import logger from "use-reducer-logger";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Product from "../components/Product";
 import * as Constants from "../constants/Constants";
+import { Helmet } from "react-helmet-async";
 
 function HomeView() {
   const reducer = Constants.reducer;
 
-  const [{ loading, error, products }, dispatch] = useReducer(logger(reducer), {
+  const [{ loading, error, object }, dispatch] = useReducer(reducer, {
     loading: true,
     error: "",
-    products: [],
+    object: [],
   });
 
   useEffect(() => {
@@ -28,8 +28,13 @@ function HomeView() {
     fetchData();
   }, []);
 
+  const products = object;
+
   return (
     <div>
+      <Helmet>
+        <title>Ecommerce</title>
+      </Helmet>
       <h1>Featured Products</h1>
       <div className="products">
         {loading ? (

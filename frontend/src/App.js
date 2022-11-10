@@ -13,7 +13,7 @@ function App() {
 
       <div className="d-flex flex-column site-container">
         <main>
-          <Container>
+          <Container className="mt-3">
             <Routes>
               <Route path="/" element={<HomeView />} />
               <Route path="/product/:slug" element={<ProductView />} />

@@ -3,7 +3,7 @@ export const reducer = (state, action) => {
     case "FETCH_REQUEST":
       return { ...state, loading: true };
     case "FETCH_SUCCESS":
-      return { ...state, products: action.payload, loading: false };
+      return { ...state, object: action.payload, loading: false };
     case "FETCH_FAIL":
       return { ...state, loading: false, error: action.error };
     default:

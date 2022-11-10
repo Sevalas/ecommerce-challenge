@@ -13,3 +13,4 @@
 7. Manage State from useReducer
 8. Add Bootstrap
 9. Create product and rating component
+10. Create product detail view

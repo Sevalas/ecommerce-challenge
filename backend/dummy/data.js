@@ -9,7 +9,8 @@ const data = {
             brand: 'Nike',
             rating: 4.5,
             numReviews: 10,
-            description: 'Shoes for Swag'
+            description: 'Shoes for Swag',
+            countInStock: 0
         },
         {
             name: 'Anime Shirt Siyah',
@@ -20,7 +21,8 @@ const data = {
             brand: 'Siyah',
             rating: 5,
             numReviews: 14,
-            description: 'UwU'
+            description: 'UwU',
+            countInStock: 4
         },
         {
             name: 'Anime Bucket Hat Akatsuki',
@@ -31,7 +33,8 @@ const data = {
             brand: 'Anime',
             rating: 4,
             numReviews: 8,
-            description: 'Naruto hat'
+            description: 'Naruto hat',
+            countInStock: 1
         },
         {
             name: 'Black Slim Jeans Levis',
@@ -42,7 +45,8 @@ const data = {
             brand: 'Levis',
             rating: 5,
             numReviews: 15,
-            description: 'Black soul'
+            description: 'Black soul',
+            countInStock: 4
         },
         {
             name: 'Anime Shirt Siyah',
@@ -53,7 +57,8 @@ const data = {
             brand: 'Siyah',
             rating: 5,
             numReviews: 14,
-            description: 'UwU'
+            description: 'UwU',
+            countInStock: 5
         },
         {
             name: 'Anime Bucket Hat Akatsuki',
@@ -64,7 +69,8 @@ const data = {
             brand: 'Anime',
             rating: 4,
             numReviews: 8,
-            description: 'Naruto hat'
+            description: 'Naruto hat',
+            countInStock: 4
         },
         {
             name: 'Black Slim Jeans Levis',
@@ -75,7 +81,8 @@ const data = {
             brand: 'Levis',
             rating: 5,
             numReviews: 15,
-            description: 'Black soul'
+            description: 'Black soul',
+            countInStock: 0
         },
     ]
 };
