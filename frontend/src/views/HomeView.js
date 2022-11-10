@@ -1,22 +1,14 @@
 import { useEffect, useReducer } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import logger from "use-reducer-logger";
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "FETCH_REQUEST":
-      return { ...state, loading: true };
-    case "FETCH_SUCCESS":
-      return { ...state, products: action.payload, loading: false };
-    case "FETCH_FAIL":
-      return { ...state, loading: false, error: action.error };
-    default:
-      return state;
-  }
-};
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Product from "../components/Product";
+import * as Constants from "../constants/Constants";
 
 function HomeView() {
+  const reducer = Constants.reducer;
+
   const [{ loading, error, products }, dispatch] = useReducer(logger(reducer), {
     loading: true,
     error: "",
@@ -45,25 +37,13 @@ function HomeView() {
         ) : error ? (
           <div>{error}</div>
         ) : (
-          products.map((product) => (
-            <div className="product" key={product.slug}>
-              <Link to={`product/${product.slug}`}>
-                <div className="image-frame">
-                  <img src={product.image} alt={product.name} />
-                </div>
-              </Link>
-
-              <div className="product-info">
-                <Link to={`product/${product.slug}`}>
-                  <p>{product.name}</p>
-                </Link>
-                <p>
-                  <strong>${product.price}</strong>
-                </p>
-                <button>Add to cart</button>
-              </div>
-            </div>
-          ))
+          <Row>
+            {products.map((product) => (
+              <Col sm={6} md={4} lg={3} className="mb-3" key={product.slug}>
+                <Product product={product}></Product>
+              </Col>
+            ))}
+          </Row>
         )}
       </div>
     </div>

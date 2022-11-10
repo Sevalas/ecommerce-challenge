@@ -12,3 +12,4 @@
 6. Fetch products from backend
 7. Manage State from useReducer
 8. Add Bootstrap
+9. Create product and rating component
