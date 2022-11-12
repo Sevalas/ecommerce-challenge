@@ -5,6 +5,9 @@ import Col from "react-bootstrap/Col";
 import Product from "../components/Product";
 import * as Constants from "../constants/Constants";
 import { Helmet } from "react-helmet-async";
+import LoadingBox from "../components/LoadingBox";
+import MessageBox from "../components/MessageBox";
+import { getError } from "../utils/utils"
 
 function HomeView() {
   const reducer = Constants.reducer;
@@ -22,7 +25,7 @@ function HomeView() {
         const result = await axios.get("/api/products");
         dispatch({ type: "FETCH_SUCCESS", payload: result.data });
       } catch (error) {
-        dispatch({ type: "FETCH_FAIL", error: error.message });
+        dispatch({ type: "FETCH_FAIL", error:(getError(error)) });
       }
     };
     fetchData();
@@ -38,9 +41,9 @@ function HomeView() {
       <h1>Featured Products</h1>
       <div className="products">
         {loading ? (
-          <div>Loading...</div>
+          <LoadingBox />
         ) : error ? (
-          <div>{error}</div>
+          <MessageBox variant="danger">{error}</MessageBox>
         ) : (
           <Row>
             {products.map((product) => (
