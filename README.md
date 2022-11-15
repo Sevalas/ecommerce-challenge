@@ -15,3 +15,4 @@
 9. Create product and rating component
 10. Create product detail view
 11. Create loader and error message
+12. Implement add to cart and cart view

@@ -5,6 +5,7 @@ import ProductView from "./views/ProductView";
 import Container from "react-bootstrap/Container";
 import NavbarView from "./views/NavbarView";
 import FooterView from "./views/FooterView";
+import CartView from "./views/CartView";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
             <Routes>
               <Route path="/" element={<HomeView />} />
               <Route path="/product/:slug" element={<ProductView />} />
+              <Route path="/cart" element={<CartView />} />
             </Routes>
           </Container>
         </main>

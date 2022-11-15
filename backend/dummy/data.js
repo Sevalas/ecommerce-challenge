@@ -1,6 +1,7 @@
 const data = {
     products: [
         {
+            _id: "1",
             name: 'Nike air force one',
             slug: 'nike-air-force-one-shoes',
             category: 'Shoes',
@@ -13,6 +14,7 @@ const data = {
             countInStock: 0
         },
         {
+            _id: "2",
             name: 'Anime Shirt Siyah',
             slug: 'anime-shirt-siyah',
             category: 'shirts',
@@ -25,6 +27,7 @@ const data = {
             countInStock: 4
         },
         {
+            _id: "3",
             name: 'Anime Bucket Hat Akatsuki',
             slug: 'Anime-bucket-hat-akatsuki',
             category: 'Hats',
@@ -37,6 +40,7 @@ const data = {
             countInStock: 1
         },
         {
+            _id: "4",
             name: 'Black Slim Jeans Levis',
             slug: 'Black-slim-jeans-levis',
             category: 'Jeans',
@@ -49,6 +53,7 @@ const data = {
             countInStock: 4
         },
         {
+            _id: "5",
             name: 'Anime Shirt Siyah',
             slug: 'anime-shirt-siyah2',
             category: 'shirts',
@@ -61,6 +66,7 @@ const data = {
             countInStock: 5
         },
         {
+            _id: "6",
             name: 'Anime Bucket Hat Akatsuki',
             slug: 'Anime-bucket-hat-akatsuki2',
             category: 'Hats',
@@ -73,6 +79,7 @@ const data = {
             countInStock: 4
         },
         {
+            _id: "7",
             name: 'Black Slim Jeans Levis',
             slug: 'Black-slim-jeans-levis2',
             category: 'Jeans',
