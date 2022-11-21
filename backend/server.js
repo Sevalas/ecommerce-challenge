@@ -1,33 +1,45 @@
 import express from "express";
-import data from "./dummy/data.js";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+import seedRouter from "./routes/seedRoutes.js";
+import productRouter from "./routes/productRoutes.js";
+import userRouter from "./routes/userRoutes.js";
+
+const mongoConnection = () => {
+  dotenv.config();
+  let uri = process.env.MONGODB_URI;
+  uri = uri
+    .replace("<user>", process.env.MONGODB_USER)
+    .replace("<password>", process.env.MONGODB_PASSWORD);
+
+  mongoose
+    .connect(uri)
+    .then(() => {
+      console.log("Connected to db");
+    })
+    .catch((error) => {
+      console.log(error.message);
+    });
+};
+
+mongoConnection();
 
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.get('/api/products', (req, res) => {
-    res.send(data.products);
-});
+app.use("/api/seed", seedRouter);
+app.use("/api/products", productRouter);
+app.use("/api/users", userRouter);
 
-app.get('/api/products/slug/:slug', (req, res) => {
-    const product = data.products.find(x => x.slug === req.params.slug);
-    if(product) {
-        res.send(product)
-    } else {
-        res.status(404).send({ message: `Product with the slug ${req.params.slug} not found`})
-    }
-    res.send(data.products);
-});
-
-app.get('/api/products/id/:id', (req, res) => {
-    const product = data.products.find(x => x._id === req.params.id);
-    if(product) {
-        res.send(product)
-    } else {
-        res.status(404).send({ message: `Product with the id ${req.params.id} not found`})
-    }
-    res.send(data.products);
+app.use((error, request, response, next) => {
+  if (error) {
+    console.log(error);
+  }
+  response.status(500).send({ message: error.message });
 });
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
-    console.log(`serve at http:localhost:${port}`)
+  console.log(`serve at http:localhost:${port}`);
 });

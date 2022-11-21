@@ -6,6 +6,7 @@ import Container from "react-bootstrap/Container";
 import NavbarView from "./views/NavbarView";
 import FooterView from "./views/FooterView";
 import CartView from "./views/CartView";
+import SigninView from "./views/SigninView";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
               <Route path="/" element={<HomeView />} />
               <Route path="/product/:slug" element={<ProductView />} />
               <Route path="/cart" element={<CartView />} />
+              <Route path="/signin" element={<SigninView />} />
             </Routes>
           </Container>
         </main>

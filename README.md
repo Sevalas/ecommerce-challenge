@@ -16,3 +16,8 @@
 10. Create product detail view
 11. Create loader and error message
 12. Implement add to cart and cart view
+13. Create signin view
+14. Connect to mongoDB
+15. Generate product model
+16. Generate user Model
+17. Implement Signin API
