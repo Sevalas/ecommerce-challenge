@@ -14,6 +14,7 @@ import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 import { getError } from "../utils/utils";
 import { Store } from "../context/Store";
+import { toast } from "react-toastify";
 
 function ProductView() {
   const { slug } = useParams();
@@ -50,7 +51,9 @@ function ProductView() {
     const { data } = await axios.get(`/api/products/id/${product._id}`);
 
     if (data.countInStock < quantity) {
-      window.alert("sorry, product out of stock");
+      toast.error("sorry, this product is out of stock", {
+        toastId: product._id,
+      });
     } else {
       contextDispatch({
         type: "CART_ADD_ITEM",

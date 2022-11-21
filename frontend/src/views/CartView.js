@@ -1,4 +1,4 @@
-import { useReducer, useContext } from "react";
+import { useContext } from "react";
 import { Helmet } from "react-helmet-async";
 import { Store } from "../context/Store";
 import Row from "react-bootstrap/Row";
@@ -16,7 +16,7 @@ function CartView() {
     cart: { cartItems },
   } = state;
   const navigateTo = useNavigate();
-  
+
   const updateCartHandler = async (item, quantity) => {
     const { data } = await axios.get(`/api/products/id/${item._id}`);
     if (data.countInStock >= quantity) {
@@ -29,14 +29,14 @@ function CartView() {
 
   const removeCartHandler = (item) => {
     contextDispatch({
-        type: "CART_REMOVE_ITEM",
-        payload: { ...item },
-      });
-  }
+      type: "CART_REMOVE_ITEM",
+      payload: { ...item },
+    });
+  };
 
   const checkoutHandler = () => {
     navigateTo("/signin?redirect/shipping");
-  }
+  };
 
   return (
     <div>
@@ -91,9 +91,7 @@ function CartView() {
                     <Col md={2}>
                       <Button
                         variant="light"
-                        onClick={() =>
-                          removeCartHandler(item)
-                        }
+                        onClick={() => removeCartHandler(item)}
                       >
                         <i className="fas fa-trash"></i>
                       </Button>
@@ -122,9 +120,7 @@ function CartView() {
                     type="button"
                     variant="primary"
                     disabled={cartItems.length === 0}
-                    onClick={() =>
-                        checkoutHandler()
-                      }
+                    onClick={() => checkoutHandler()}
                   >
                     Proceed to Checkout
                   </Button>

@@ -7,13 +7,15 @@ import NavbarView from "./views/NavbarView";
 import FooterView from "./views/FooterView";
 import CartView from "./views/CartView";
 import SigninView from "./views/SigninView";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"
 
 function App() {
   return (
     <BrowserRouter>
-      <NavbarView></NavbarView>
-
       <div className="d-flex flex-column site-container">
+      <ToastContainer position="bottom-center" limit={1}/>
+      <NavbarView />
         <main>
           <Container className="mt-3">
             <Routes>
@@ -25,7 +27,7 @@ function App() {
           </Container>
         </main>
 
-        <FooterView></FooterView>
+        <FooterView />
       </div>
     </BrowserRouter>
   );
