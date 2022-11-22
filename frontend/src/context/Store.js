@@ -4,6 +4,9 @@ export const Store = createContext();
 
 const initialState = {
   cart: {
+    shippingAddress: localStorage.getItem("shippingAddress")
+      ? JSON.parse(localStorage.getItem("shippingAddress"))
+      : {},
     cartItems: localStorage.getItem("cartItems")
       ? JSON.parse(localStorage.getItem("cartItems"))
       : [],
@@ -45,7 +48,19 @@ export const reducerCart = (state, action) => {
 
     case "USER_SIGNOUT": {
       localStorage.removeItem("userInfo");
-      return { ...state, userInfo: null };
+      return {
+        ...state,
+        userInfo: null,
+        cart: { cartItems: [], shippingAddress: {} },
+      };
+    }
+
+    case "SAVE_SHIPPING_ADDRESS": {
+      localStorage.setItem("shippingAddress", JSON.stringify(action.payload));
+      return {
+        ...state,
+        cart: { ...state.cart, shippingAddress: action.payload },
+      };
     }
 
     default:

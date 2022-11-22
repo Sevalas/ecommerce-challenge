@@ -71,8 +71,8 @@ function ProductView() {
   ) : (
     <div>
       <Row>
-        <Col md={6}>
-          <img className="img-large" src={product.image} alt={product.name} />
+        <Col md={6} className="text-center">
+          <img className="img-product-view" src={product.image} alt={product.name} />
         </Col>
         <Col md={3}>
           <ListGroup variant="flush">

@@ -9,6 +9,7 @@ import CartView from "./views/CartView";
 import SigninView from "./views/SigninView";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css"
+import ShippingAddressView from "./views/ShippingAddressView";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
               <Route path="/product/:slug" element={<ProductView />} />
               <Route path="/cart" element={<CartView />} />
               <Route path="/signin" element={<SigninView />} />
+              <Route path="/shipping" element={<ShippingAddressView />} />
             </Routes>
           </Container>
         </main>

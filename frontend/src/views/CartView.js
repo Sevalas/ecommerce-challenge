@@ -13,6 +13,7 @@ import axios from "axios";
 function CartView() {
   const { state, dispatch: contextDispatch } = useContext(Store);
   const {
+    userInfo,
     cart: { cartItems },
   } = state;
   const navigateTo = useNavigate();
@@ -35,7 +36,11 @@ function CartView() {
   };
 
   const checkoutHandler = () => {
-    navigateTo("/signin?redirect/shipping");
+    if (userInfo) {
+      navigateTo("/shipping");
+    } else {
+      navigateTo("/signin?redirect=/shipping");
+    }
   };
 
   return (
@@ -55,16 +60,19 @@ function CartView() {
               {cartItems.map((item) => (
                 <ListGroup.Item key={item._id}>
                   <Row className="align-items-center">
-                    <Col md={4}>
+                    <Col md="4" className="text-center">
                       <img
                         src={item.image}
                         alt="item.name"
-                        className="img-fluid rounded img-thumbnail"
+                        className="rounded img-thumbnail-cart-view"
                       />
                       {"  "}
-                      <Link to={`/product/${item.slug}`}>{item.name}</Link>
+                      <div><Link to={`/product/${item.slug}`}>{item.name}</Link></div>
                     </Col>
-                    <Col md={3}>
+                    <Col className="text-center">
+                      <h5 className="my-2">${item.price}</h5>
+                    </Col>
+                    <Col md="4" className="text-center">
                       <Button
                         variant="light"
                         disabled={item.quantity === 1}
@@ -86,9 +94,6 @@ function CartView() {
                       >
                         <i className="fas fa-plus-circle"></i>
                       </Button>
-                    </Col>
-                    <Col md={3}>${item.price}</Col>
-                    <Col md={2}>
                       <Button
                         variant="light"
                         onClick={() => removeCartHandler(item)}
@@ -111,8 +116,10 @@ function CartView() {
                   <h3>
                     Subtotal ({cartItems.reduce((a, c) => a + c.quantity, 0)})
                     {"  "}
-                    items : $
-                    {cartItems.reduce((a, c) => a + c.price * c.quantity, 0)}
+                    items
+                  </h3>
+                  <h3>
+                    : ${cartItems.reduce((a, c) => a + c.price * c.quantity, 0)}
                   </h3>
                 </ListGroup.Item>
                 <ListGroup.Item>

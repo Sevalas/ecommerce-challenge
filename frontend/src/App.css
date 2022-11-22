@@ -1,4 +1,4 @@
-.site-container{
+.site-container {
   min-height: 100vh;
 }
 
@@ -22,14 +22,29 @@ main {
   color: #ffc000;
 }
 
-.image-large {
+.img-product-view {
+  justify-content: center;
   max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
 }
 
-.img-thumbnail {
+.img-thumbnail-cart-view {
   height: 80px;
+  width: 100px;
+  object-fit: contain;
 }
 
 .small-container {
   max-width: 600px;
+}
+
+.checkout-steps > div {
+  border-bottom: 0.2rem solid #a0a0a0;
+  color: #a0a0a0;
+}
+
+.checkout-steps > div.active {
+  border-bottom: 0.2rem solid #f08000;
+  color: #f08000;
 }

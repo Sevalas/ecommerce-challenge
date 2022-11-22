@@ -22,3 +22,4 @@
 16. Generate user Model
 17. Implement Signin API
 18. Complete signin view
+19. Create a shipping view

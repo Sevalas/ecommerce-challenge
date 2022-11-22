@@ -28,8 +28,8 @@ function SigninView() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const submitHandler = async (state) => {
-    state.preventDefault();
+  const submitHandler = async (event) => {
+    event.preventDefault();
     try {
       const { data } = await axios.post("/api/users/signin", {
         email: email,
@@ -41,7 +41,6 @@ function SigninView() {
       toast.error(getError(error), {
         toastId: getError(error),
       });
-      console.log(error);
     }
   };
 
@@ -56,7 +55,7 @@ function SigninView() {
           <Form.Label>Email</Form.Label>
           <Form.Control
             type="email"
-            onChange={(state) => setEmail(state.target.value)}
+            onChange={(event) => setEmail(event.target.value)}
             required
           />
         </Form.Group>
@@ -64,7 +63,7 @@ function SigninView() {
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
-            onChange={(state) => setPassword(state.target.value)}
+            onChange={(event) => setPassword(event.target.value)}
             required
           />
         </Form.Group>
