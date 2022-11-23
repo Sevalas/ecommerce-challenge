@@ -39,14 +39,30 @@ main {
   max-width: 600px;
 }
 
-.checkout-steps > div {
+.checkout-steps > a {
+  transition: box-shadow 0.3s;
+  text-align: center;
+  text-decoration: none;
+  pointer-events: none;
+  flex: 1 0;
   border-bottom: 0.2rem solid #a0a0a0;
   color: #a0a0a0;
 }
 
-.checkout-steps > div.active {
+.checkout-steps .signin-step-active {
+  pointer-events: none;
   border-bottom: 0.2rem solid #f08000;
   color: #f08000;
+}
+
+.checkout-steps > a.active {
+  pointer-events: auto;
+  border-bottom: 0.2rem solid #f08000;
+  color: #f08000;
+}
+
+.checkout-steps > a.active:hover {
+  box-shadow: 0 0 11px rgba(33, 33, 33, 0.2);
 }
 
 .full-page-spinner {
@@ -62,8 +78,9 @@ main {
   justify-content: center;
 }
 
-.full-page-spinner .spinner-border{
-  width: 150px; height: 150px;
+.full-page-spinner .spinner-border {
+  width: 150px;
+  height: 150px;
   border: 0.75rem solid #212529;
   border-right-color: transparent;
 }

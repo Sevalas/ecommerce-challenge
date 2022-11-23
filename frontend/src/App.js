@@ -2,7 +2,7 @@ import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomeView from "./views/HomeView";
 import ProductView from "./views/ProductView";
-import Container from "react-bootstrap/Container";
+import { Container } from "react-bootstrap";
 import NavbarView from "./views/NavbarView";
 import FooterView from "./views/FooterView";
 import CartView from "./views/CartView";
@@ -11,6 +11,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ShippingAddressView from "./views/ShippingAddressView";
 import SignupView from "./views/SignupView";
+import PaymentMethodView from "./views/PaymentMethodView";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
               <Route path="/signin" element={<SigninView />} />
               <Route path="/signup" element={<SignupView />} />
               <Route path="/shipping" element={<ShippingAddressView />} />
+              <Route path="/payment" element={<PaymentMethodView />} />
             </Routes>
           </Container>
         </main>
