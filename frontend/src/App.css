@@ -54,6 +54,7 @@ main {
 }
 
 .checkout-steps > a {
+  font-size: calc(0.5em + 1vw);
   transition: box-shadow 0.3s;
   text-align: center;
   text-decoration: none;
@@ -72,6 +73,7 @@ main {
 .checkout-steps > a.active {
   pointer-events: auto;
   border-bottom: 0.2rem solid #f08000;
+  box-shadow: 0 0 2px rgba(33, 33, 33, 0.2);
   color: #f08000;
 }
 

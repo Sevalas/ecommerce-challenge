@@ -19,7 +19,9 @@ function PlaceOrderView() {
   cart.taxPrice = round2(0.15 * cart.itemsPrice);
   cart.totalPrice = cart.itemsPrice + cart.shippingPrice + cart.taxPrice;
 
-  const placeOrderHandler = async () => {};
+  const placeOrderHandler = async () => {
+    window.alert("To be continued...");
+  };
 
   useEffect(() => {
     if (!cart.paymentMethod) {
