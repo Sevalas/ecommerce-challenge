@@ -4,7 +4,7 @@ import Button from "react-bootstrap/Button";
 import Rating from "./Rating";
 import { Store } from "../context/Store";
 import { useContext } from "react";
-import axios from "axios";
+import apiClient from "../components/ApiClient";
 import { toast } from "react-toastify";
 
 function Product(props) {
@@ -16,7 +16,7 @@ function Product(props) {
     const { cart } = state;
     const existItem = cart.cartItems.find((item) => item._id === product._id);
     const quantity = existItem ? existItem.quantity + 1 : 1;
-    const { data } = await axios.get(`/api/products/id/${product._id}`);
+    const { data } = await apiClient.get(`/api/products/id/${product._id}`);
 
     if (data.countInStock < quantity) {
       toast.error("sorry, this product is out of stock", {

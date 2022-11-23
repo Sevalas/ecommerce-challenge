@@ -1,7 +1,7 @@
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import axios from "axios";
+import apiClient from "../components/ApiClient";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useLocation } from "react-router-dom";
@@ -31,7 +31,7 @@ function SigninView() {
   const submitHandler = async (event) => {
     event.preventDefault();
     try {
-      const { data } = await axios.post("/api/users/signin", {
+      const { data } = await apiClient.post("/api/users/signin", {
         email: email,
         passwordHash: password,
       });

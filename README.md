@@ -23,3 +23,4 @@
 17. Implement Signin API
 18. Complete signin view
 19. Create a shipping view
+20. Create signup view

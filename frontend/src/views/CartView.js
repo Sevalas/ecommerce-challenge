@@ -8,7 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import ListGroup from "react-bootstrap/ListGroup";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
-import axios from "axios";
+import apiClient from "../components/ApiClient";
 
 function CartView() {
   const { state, dispatch: contextDispatch } = useContext(Store);
@@ -19,7 +19,7 @@ function CartView() {
   const navigateTo = useNavigate();
 
   const updateCartHandler = async (item, quantity) => {
-    const { data } = await axios.get(`/api/products/id/${item._id}`);
+    const { data } = await apiClient.get(`/api/products/id/${item._id}`);
     if (data.countInStock >= quantity) {
       contextDispatch({
         type: "CART_ADD_ITEM",
@@ -106,7 +106,6 @@ function CartView() {
               ))}
             </ListGroup>
           )}
-          ;
         </Col>
         <Col md={4}>
           <Card>

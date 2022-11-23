@@ -7,6 +7,7 @@ import { LinkContainer } from "react-router-bootstrap";
 import { useContext } from "react";
 import { Store } from "../context/Store";
 import { Link } from "react-router-dom";
+import TopBar from "../components/TopBar";
 
 function NavbarView() {
   const { state, dispatch: contextDispatch } = useContext(Store);
@@ -17,45 +18,44 @@ function NavbarView() {
   };
 
   return (
-    <Navbar bg="dark" variant="dark" className="sticky-top">
-      <Container>
-        <LinkContainer to="/">
-          <Navbar.Brand>Ecommers</Navbar.Brand>
-        </LinkContainer>
-        <Nav className="me-auto">
-          <Link to="/cart" className="nav-link">
-            Cart
-            {cart.cartItems.length > 0 && (
-              <Badge pill bg="danger" className="ms-1">
-                {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
-              </Badge>
-            )}
-          </Link>
-          {userInfo ? (
-            <NavDropdown title={userInfo.name} id="basic-nav-dropdown">
-              <LinkContainer to="/profile">
-                <NavDropdown.Item>User Profile</NavDropdown.Item>
-              </LinkContainer>
-              <LinkContainer to="/orderhistory">
-                <NavDropdown.Item>Order History</NavDropdown.Item>
-              </LinkContainer>
-              <NavDropdown.Divider />
-              <Link
-                className="dropdown-item"
-                to="/"
-                onClick={signOutHandler}
-              >
-                Sign Out
-              </Link>
-            </NavDropdown>
-          ) : (
-            <Link className="nav-link" to="/signin">
-              Sign In
+    <>
+      <Navbar bg="dark" variant="dark" className="sticky-top">
+        <Container>
+          <LinkContainer to="/">
+            <Navbar.Brand>Ecommers</Navbar.Brand>
+          </LinkContainer>
+          <Nav className="me-auto">
+            <Link to="/cart" className="nav-link">
+              Cart
+              {cart.cartItems.length > 0 && (
+                <Badge pill bg="danger" className="ms-1">
+                  {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+                </Badge>
+              )}
             </Link>
-          )}
-        </Nav>
-      </Container>
-    </Navbar>
+            {userInfo ? (
+              <NavDropdown title={userInfo.name} id="basic-nav-dropdown">
+                <LinkContainer to="/profile">
+                  <NavDropdown.Item>User Profile</NavDropdown.Item>
+                </LinkContainer>
+                <LinkContainer to="/orderhistory">
+                  <NavDropdown.Item>Order History</NavDropdown.Item>
+                </LinkContainer>
+                <NavDropdown.Divider />
+                <Link className="dropdown-item" to="/" onClick={signOutHandler}>
+                  Sign Out
+                </Link>
+              </NavDropdown>
+            ) : (
+              <Link className="nav-link" to="/signin">
+                Sign In
+              </Link>
+            )}
+          </Nav>
+        </Container>
+      </Navbar>
+      <TopBar />
+    </>
   );
 }
 

@@ -7,7 +7,7 @@ import ListGroup from "react-bootstrap/ListGroup";
 import Card from "react-bootstrap/Card";
 import Badge from "react-bootstrap/Badge";
 import Button from "react-bootstrap/Button";
-import axios from "axios";
+import apiClient from "../components/ApiClient";
 import Rating from "../components/Rating";
 import { Helmet } from "react-helmet-async";
 import LoadingBox from "../components/LoadingBox";
@@ -31,7 +31,7 @@ function ProductView() {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const result = await axios.get(`/api/products/slug/${slug}`);
+        const result = await apiClient.get(`/api/products/slug/${slug}`);
         dispatch({ type: "FETCH_SUCCESS", payload: result.data });
       } catch (error) {
         dispatch({ type: "FETCH_FAIL", error: getError(error) });
@@ -48,7 +48,7 @@ function ProductView() {
     const { cart } = state;
     const existItem = cart.cartItems.find((item) => item._id === product._id);
     const quantity = existItem ? existItem.quantity + 1 : 1;
-    const { data } = await axios.get(`/api/products/id/${product._id}`);
+    const { data } = await apiClient.get(`/api/products/id/${product._id}`);
 
     if (data.countInStock < quantity) {
       toast.error("sorry, this product is out of stock", {

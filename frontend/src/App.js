@@ -8,15 +8,16 @@ import FooterView from "./views/FooterView";
 import CartView from "./views/CartView";
 import SigninView from "./views/SigninView";
 import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css"
+import "react-toastify/dist/ReactToastify.css";
 import ShippingAddressView from "./views/ShippingAddressView";
+import SignupView from "./views/SignupView";
 
 function App() {
   return (
     <BrowserRouter>
       <div className="d-flex flex-column site-container">
-      <ToastContainer position="bottom-center" limit={1}/>
-      <NavbarView />
+        <ToastContainer position="bottom-center" limit={1} />
+        <NavbarView />
         <main>
           <Container className="mt-3">
             <Routes>
@@ -24,6 +25,7 @@ function App() {
               <Route path="/product/:slug" element={<ProductView />} />
               <Route path="/cart" element={<CartView />} />
               <Route path="/signin" element={<SigninView />} />
+              <Route path="/signup" element={<SignupView />} />
               <Route path="/shipping" element={<ShippingAddressView />} />
             </Routes>
           </Container>

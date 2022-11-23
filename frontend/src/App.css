@@ -48,3 +48,22 @@ main {
   border-bottom: 0.2rem solid #f08000;
   color: #f08000;
 }
+
+.full-page-spinner {
+  position: fixed;
+  width: 100%;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: #2125291b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.full-page-spinner .spinner-border{
+  width: 150px; height: 150px;
+  border: 0.75rem solid #212529;
+  border-right-color: transparent;
+}

@@ -1,5 +1,4 @@
 import { useEffect, useReducer } from "react";
-import axios from "axios";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Product from "../components/Product";
@@ -8,6 +7,7 @@ import { Helmet } from "react-helmet-async";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 import { getError } from "../utils/utils"
+import apiClient from "../components/ApiClient"
 
 function HomeView() {
   const reducer = Constants.reducer;
@@ -22,7 +22,7 @@ function HomeView() {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const result = await axios.get("/api/products");
+        const result = await apiClient.get("/api/products");
         dispatch({ type: "FETCH_SUCCESS", payload: result.data });
       } catch (error) {
         dispatch({ type: "FETCH_FAIL", error:(getError(error)) });
