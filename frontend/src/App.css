@@ -30,6 +30,20 @@ main {
 }
 
 .img-thumbnail-cart-view {
+  padding: 0.25rem;
+  background-color: #fff;
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.375rem;
+  height: 80px;
+  width: 100px;
+  object-fit: contain;
+}
+
+.img-thumbnail-place-order-view {
+  padding: 0.25rem;
+  background-color: #fff;
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.375rem;
   height: 80px;
   width: 100px;
   object-fit: contain;

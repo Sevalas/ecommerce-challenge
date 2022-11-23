@@ -12,6 +12,7 @@ import "react-toastify/dist/ReactToastify.css";
 import ShippingAddressView from "./views/ShippingAddressView";
 import SignupView from "./views/SignupView";
 import PaymentMethodView from "./views/PaymentMethodView";
+import PlaceOrderView from "./views/PlaceOrderView";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
               <Route path="/signup" element={<SignupView />} />
               <Route path="/shipping" element={<ShippingAddressView />} />
               <Route path="/payment" element={<PaymentMethodView />} />
+              <Route path="/placeorder" element={<PlaceOrderView />} />
             </Routes>
           </Container>
         </main>

@@ -24,4 +24,5 @@
 18. Complete signin view
 19. Create a shipping view
 20. Create signup view
-21. Implement select payment method view
+21. Create select payment method view
+22. Create place order view
