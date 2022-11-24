@@ -83,6 +83,7 @@ main {
 
 .full-page-spinner {
   position: fixed;
+  z-index: 1;
   width: 100%;
   left: 0;
   right: 0;

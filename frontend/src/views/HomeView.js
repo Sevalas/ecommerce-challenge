@@ -6,8 +6,8 @@ import * as Constants from "../constants/Constants";
 import { Helmet } from "react-helmet-async";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
-import { getError } from "../utils/utils"
-import apiClient from "../components/ApiClient"
+import { getError } from "../utils/utils";
+import apiClient from "../components/ApiClient";
 
 function HomeView() {
   const reducer = Constants.reducer;
@@ -25,7 +25,7 @@ function HomeView() {
         const result = await apiClient.get("/api/products");
         dispatch({ type: "FETCH_SUCCESS", payload: result.data });
       } catch (error) {
-        dispatch({ type: "FETCH_FAIL", error:(getError(error)) });
+        dispatch({ type: "FETCH_FAIL", error: getError(error) });
       }
     };
     fetchData();
@@ -38,22 +38,24 @@ function HomeView() {
       <Helmet>
         <title>Ecommerce</title>
       </Helmet>
-      <h1>Featured Products</h1>
-      <div className="products">
-        {loading ? (
-          <LoadingBox />
-        ) : error ? (
-          <MessageBox variant="danger">{error}</MessageBox>
-        ) : (
-          <Row>
-            {products.map((product) => (
-              <Col sm={6} md={4} lg={3} className="mb-3" key={product.slug}>
-                <Product product={product}></Product>
-              </Col>
-            ))}
-          </Row>
-        )}
-      </div>
+      {loading ? (
+        <LoadingBox />
+      ) : error ? (
+        <MessageBox variant="danger">{error}</MessageBox>
+      ) : (
+        <>
+          <h1>Featured Products</h1>
+          <div className="products">
+            <Row>
+              {products.map((product) => (
+                <Col sm={6} md={4} lg={3} className="mb-3" key={product.slug}>
+                  <Product product={product}></Product>
+                </Col>
+              ))}
+            </Row>
+          </div>
+        </>
+      )}
     </div>
   );
 }

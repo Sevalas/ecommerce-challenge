@@ -1,15 +1,36 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useReducer } from "react";
 import { Button, Row, Col, Card, ListGroup } from "react-bootstrap";
 import { Helmet } from "react-helmet-async";
 import { Store } from "../context/Store";
 import CheckoutSteps from "../components/CheckoutSteps.js";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { getError } from "../utils/utils";
+import apiClient from "../components/ApiClient";
+import LoadingBox from "../components/LoadingBox";
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "CREATE_REQUEST":
+      return { ...state, loading: true };
+    case "CREATE_SUCCESS":
+      return { ...state, loading: false };
+    case "CREATE_FAIL":
+      return { ...state, loading: false };
+    default:
+      return state;
+  }
+};
 
 function PlaceOrderView() {
   const navigateTo = useNavigate();
-  const { state } = useContext(Store);
-  const { cart } = state;
+
+  const [{ loading }, dispatch] = useReducer(reducer, {
+    loading: false,
+  });
+  const { state, dispatch: contextDispatch } = useContext(Store);
+  const { cart, userInfo } = state;
 
   const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100; // 123.2345 => 123.23
   cart.itemsPrice = round2(
@@ -20,7 +41,34 @@ function PlaceOrderView() {
   cart.totalPrice = cart.itemsPrice + cart.shippingPrice + cart.taxPrice;
 
   const placeOrderHandler = async () => {
-    window.alert("To be continued...");
+    try {
+      dispatch({ type: "CREATE_REQUEST" });
+      const { data } = await apiClient.post(
+        "/api/orders",
+        {
+          orderItems: cart.cartItems,
+          shippingAddress: cart.shippingAddress,
+          paymentMethod: cart.paymentMethod,
+          itemsPrice: cart.itemsPrice,
+          shippingPrice: cart.shippingPrice,
+          taxPrice: cart.taxPrice,
+          totalPrice: cart.totalPrice,
+        },
+        {
+          headers: {
+            authorization: `Bearer ${userInfo.token}`,
+          },
+        }
+      );
+      contextDispatch({ type: "CART_CLEAR" });
+      dispatch({ type: "CREATE_SUCCESS" });
+      navigateTo(`/order/${data.order._id}`)
+    } catch (error) {
+      dispatch({ type: "CREATE_FAIL" });
+      toast.error(getError(error), {
+        toastId: getError(error),
+      });
+    }
   };
 
   useEffect(() => {
@@ -34,6 +82,7 @@ function PlaceOrderView() {
       <Helmet>
         <title>Preview Order</title>
       </Helmet>
+      {loading && <LoadingBox />}
       <CheckoutSteps step1 step2 step3 step4 />
       <h1 className="my-3">Preview Order</h1>
       <Row>
