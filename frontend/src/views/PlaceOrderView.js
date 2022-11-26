@@ -43,7 +43,6 @@ function PlaceOrderView() {
   const placeOrderHandler = async () => {
     try {
       dispatch({ type: "CREATE_REQUEST" });
-      debugger;
       const { data } = await apiClient.post(
         "/api/orders",
         {

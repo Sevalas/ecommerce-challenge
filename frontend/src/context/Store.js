@@ -56,6 +56,7 @@ export const reducerCart = (state, action) => {
 
     case "USER_SIGNOUT": {
       localStorage.removeItem("userInfo");
+      localStorage.removeItem("cartItems");
       localStorage.removeItem("shippingAddress");
       localStorage.removeItem("paymentMethod");
       return {
