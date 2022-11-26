@@ -43,6 +43,7 @@ function PlaceOrderView() {
   const placeOrderHandler = async () => {
     try {
       dispatch({ type: "CREATE_REQUEST" });
+      debugger;
       const { data } = await apiClient.post(
         "/api/orders",
         {
@@ -62,7 +63,7 @@ function PlaceOrderView() {
       );
       contextDispatch({ type: "CART_CLEAR" });
       dispatch({ type: "CREATE_SUCCESS" });
-      navigateTo(`/order/${data.order._id}`)
+      navigateTo(`/order/${data.order._id}`);
     } catch (error) {
       dispatch({ type: "CREATE_FAIL" });
       toast.error(getError(error), {
@@ -92,8 +93,9 @@ function PlaceOrderView() {
               <Card.Title>Shipping</Card.Title>
               <Card.Text>
                 <strong>Name:</strong> {cart.shippingAddress.fullName} <br />
-                <strong>Address: </strong> {cart.shippingAddress.address},
-                {cart.shippingAddress.city}, {cart.shippingAddress.postalCode},
+                <strong>Address: </strong>
+                {cart.shippingAddress.address}, {cart.shippingAddress.city},{" "}
+                {cart.shippingAddress.postalCode},{" "}
                 {cart.shippingAddress.country}
               </Card.Text>
               <Link to="/shipping">Edit</Link>
@@ -104,7 +106,8 @@ function PlaceOrderView() {
             <Card.Body>
               <Card.Title>Payment</Card.Title>
               <Card.Text>
-                <strong>Method:</strong> {cart.paymentMethod}
+                <strong>Method:</strong>{" "}
+                <span className="text-capitalize">{cart.paymentMethod}</span>
               </Card.Text>
               <Link to="/payment">Edit</Link>
             </Card.Body>
@@ -123,7 +126,6 @@ function PlaceOrderView() {
                           alt="item.name"
                           className="rounded img-thumbnail-cart-view"
                         />
-                        {"  "}
                         <div>
                           <Link to={`/product/${item.slug}`}>{item.name}</Link>
                         </div>

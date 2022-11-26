@@ -14,7 +14,7 @@ productRouter.get("/slug/:slug", async (request, response) => {
     response.send(product);
   } else {
     response.status(404).send({
-      message: `Product with the slug ${request.params.slug} not found`,
+      errorMessage: `Product with the slug ${request.params.slug} not found`,
     });
   }
 });
@@ -26,7 +26,7 @@ productRouter.get("/id/:id", async (request, response) => {
   } else {
     response
       .status(404)
-      .send({ message: `Product with the id ${request.params.id} not found` });
+      .send({ errorMessage: `Product with the id ${request.params.id} not found` });
   }
 });
 

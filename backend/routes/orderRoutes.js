@@ -10,8 +10,6 @@ orderRouter.post(
   isAuth,
   expressAsyncHandler(async (request, response) => {
     try {
-  console.log("test2")
-
       const newOrder = new OrderModel({
         orderItems: request.body.orderItems.map((item) => ({
           ...item,
@@ -32,5 +30,19 @@ orderRouter.post(
     }
   })
 );
+
+orderRouter.get(
+  '/:id',
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    const order = await OrderModel.findById(req.params.id);
+    if (order) {
+      res.send(order);
+    } else {
+      res.status(404).send({ errorMessage: 'Order Not Found' });
+    }
+  })
+);
+
 
 export default orderRouter;

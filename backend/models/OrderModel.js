@@ -4,7 +4,7 @@ const OrderModel = new mongoose.model(
   "Order",
   new mongoose.Schema(
     {
-      OrderItems: [
+      orderItems: [
         {
           slug: { type: String, required: true },
           name: { type: String, required: true },

@@ -13,6 +13,7 @@ import ShippingAddressView from "./views/ShippingAddressView";
 import SignupView from "./views/SignupView";
 import PaymentMethodView from "./views/PaymentMethodView";
 import PlaceOrderView from "./views/PlaceOrderView";
+import OrderView from "./views/OrderView";
 
 function App() {
   return (
@@ -31,6 +32,8 @@ function App() {
               <Route path="/shipping" element={<ShippingAddressView />} />
               <Route path="/payment" element={<PaymentMethodView />} />
               <Route path="/placeorder" element={<PlaceOrderView />} />
+              <Route path="/order/:id" element={<OrderView />} />
+              <Route path="*" element={<HomeView />} />
             </Routes>
           </Container>
         </main>

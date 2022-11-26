@@ -27,3 +27,4 @@
 21. Create select payment method view
 22. Create place order view
 23. Implement place order action
+24. Create order view
