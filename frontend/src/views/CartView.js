@@ -1,16 +1,12 @@
 import { useContext } from "react";
 import { Helmet } from "react-helmet-async";
 import { Store } from "../context/Store";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import { Row, Col, ListGroup, Button, Card}  from "react-bootstrap";
 import MessageBox from "../components/MessageBox";
 import { Link, useNavigate } from "react-router-dom";
-import ListGroup from "react-bootstrap/ListGroup";
-import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
 import apiClient from "../components/ApiClient";
 
-function CartView() {
+export default function CartView() {
   const { state, dispatch: contextDispatch } = useContext(Store);
   const {
     userInfo,
@@ -67,7 +63,9 @@ function CartView() {
                         className="rounded img-thumbnail-cart-view"
                       />
                       {"  "}
-                      <div><Link to={`/product/${item.slug}`}>{item.name}</Link></div>
+                      <div>
+                        <Link to={`/product/${item.slug}`}>{item.name}</Link>
+                      </div>
                     </Col>
                     <Col className="text-center">
                       <h5 className="my-2">${item.price}</h5>
@@ -83,7 +81,7 @@ function CartView() {
                         <i className="fas fa-minus-circle"></i>
                       </Button>
                       {"  "}
-                      <span>{item.quantity}</span>
+                      <span>x{item.quantity}</span>
                       {"  "}
                       <Button
                         variant="light"
@@ -139,5 +137,3 @@ function CartView() {
     </div>
   );
 }
-
-export default CartView;

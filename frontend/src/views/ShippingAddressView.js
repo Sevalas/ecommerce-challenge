@@ -5,7 +5,7 @@ import { Helmet } from "react-helmet-async";
 import { Store } from "../context/Store";
 import CheckoutSteps from "../components/CheckoutSteps.js";
 
-function ShippingAddressView() {
+export default function ShippingAddressView() {
   const navigateTo = useNavigate();
   const { state, dispatch: contextDispatch } = useContext(Store);
   const {
@@ -101,5 +101,3 @@ function ShippingAddressView() {
     </div>
   );
 }
-
-export default ShippingAddressView;

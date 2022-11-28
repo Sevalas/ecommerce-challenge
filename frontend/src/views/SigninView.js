@@ -1,6 +1,4 @@
-import Container from "react-bootstrap/Container";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
+import { Container, Form, Button } from "react-bootstrap";
 import apiClient from "../components/ApiClient";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
@@ -11,7 +9,7 @@ import { Store } from "../context/Store";
 import { toast } from "react-toastify";
 import { getError } from "../utils/utils";
 
-function SigninView() {
+export default function SigninView() {
   const navigateTo = useNavigate();
   const { search } = useLocation();
   const redirectInUrl = new URLSearchParams(search).get("redirect");
@@ -78,5 +76,3 @@ function SigninView() {
     </Container>
   );
 }
-
-export default SigninView;

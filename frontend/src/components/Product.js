@@ -1,16 +1,16 @@
 import { Link } from "react-router-dom";
-import Card from "react-bootstrap/Card";
-import Button from "react-bootstrap/Button";
+import { Card, Button } from "react-bootstrap";
 import Rating from "./Rating";
 import { Store } from "../context/Store";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import apiClient from "../components/ApiClient";
 import { toast } from "react-toastify";
 
-function Product(props) {
+export default function Product(props) {
   const { product } = props;
 
   const { state, dispatch: contextDispatch } = useContext(Store);
+  const [productOutSotckWithCart, setProductOutSotckWithCart] = useState(false);
 
   const AddToCartHandler = async (item) => {
     const { cart } = state;
@@ -19,10 +19,12 @@ function Product(props) {
     const { data } = await apiClient.get(`/api/products/id/${product._id}`);
 
     if (data.countInStock < quantity) {
+      setProductOutSotckWithCart(true);
       toast.error("sorry, this product is out of stock", {
         toastId: product._id,
       });
     } else {
+      setProductOutSotckWithCart(false);
       contextDispatch({
         type: "CART_ADD_ITEM",
         payload: { ...item, quantity },
@@ -44,7 +46,7 @@ function Product(props) {
           numReviews={product.numReviews}
         ></Rating>
         <Card.Text>${product.price}</Card.Text>
-        {product.countInStock === 0 ? (
+        {product.countInStock === 0 || productOutSotckWithCart ? (
           <Button variant="light" disabled>
             Out of Stock
           </Button>
@@ -55,5 +57,3 @@ function Product(props) {
     </Card>
   );
 }
-
-export default Product;

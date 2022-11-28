@@ -1,6 +1,5 @@
 import { useEffect, useReducer } from "react";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import { Row, Col } from "react-bootstrap";
 import Product from "../components/Product";
 import * as Constants from "../constants/Constants";
 import { Helmet } from "react-helmet-async";
@@ -9,7 +8,7 @@ import MessageBox from "../components/MessageBox";
 import { getError } from "../utils/utils";
 import apiClient from "../components/ApiClient";
 
-function HomeView() {
+export default function HomeView() {
   const reducer = Constants.reducer;
 
   const [{ loading, error, object }, dispatch] = useReducer(reducer, {
@@ -59,5 +58,3 @@ function HomeView() {
     </div>
   );
 }
-
-export default HomeView;

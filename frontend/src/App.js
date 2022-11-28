@@ -14,8 +14,9 @@ import SignupView from "./views/SignupView";
 import PaymentMethodView from "./views/PaymentMethodView";
 import PlaceOrderView from "./views/PlaceOrderView";
 import OrderView from "./views/OrderView";
+import OrderHistoryView from "./views/OrderHistoryView";
 
-function App() {
+export default function App() {
   return (
     <BrowserRouter>
       <div className="d-flex flex-column site-container">
@@ -33,6 +34,7 @@ function App() {
               <Route path="/payment" element={<PaymentMethodView />} />
               <Route path="/placeorder" element={<PlaceOrderView />} />
               <Route path="/order/:id" element={<OrderView />} />
+              <Route path="/orderhistory" element={<OrderHistoryView />} />
               <Route path="*" element={<HomeView />} />
             </Routes>
           </Container>
@@ -43,5 +45,3 @@ function App() {
     </BrowserRouter>
   );
 }
-
-export default App;

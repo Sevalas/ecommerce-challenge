@@ -1,12 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import * as Constants from "../constants/Constants";
 import { useEffect, useReducer, useContext } from "react";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import ListGroup from "react-bootstrap/ListGroup";
-import Card from "react-bootstrap/Card";
-import Badge from "react-bootstrap/Badge";
-import Button from "react-bootstrap/Button";
+import { Row, Col, ListGroup, Card, Badge, Button } from "react-bootstrap";
 import apiClient from "../components/ApiClient";
 import Rating from "../components/Rating";
 import { Helmet } from "react-helmet-async";
@@ -16,7 +11,7 @@ import { getError } from "../utils/utils";
 import { Store } from "../context/Store";
 import { toast } from "react-toastify";
 
-function ProductView() {
+export default function ProductView() {
   const { slug } = useParams();
   const reducer = Constants.reducer;
   const navigateTo = useNavigate();
@@ -72,7 +67,11 @@ function ProductView() {
     <div>
       <Row>
         <Col md={6} className="text-center">
-          <img className="img-product-view" src={product.image} alt={product.name} />
+          <img
+            className="img-product-view"
+            src={product.image}
+            alt={product.name}
+          />
         </Col>
         <Col md={3}>
           <ListGroup variant="flush">
@@ -134,5 +133,3 @@ function ProductView() {
     </div>
   );
 }
-
-export default ProductView;

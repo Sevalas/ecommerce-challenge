@@ -2,7 +2,7 @@ import React from "react";
 import LoadingBar from "react-top-loading-bar";
 import apiClient from "../components/ApiClient";
 
-function TopBar() {
+export default function TopBar() {
   const ref = React.useRef(null);
 
   React.useEffect(() => {
@@ -44,5 +44,3 @@ function TopBar() {
     />
   );
 }
-
-export default TopBar;

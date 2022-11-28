@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { getError } from "../utils/utils";
 import CheckoutSteps from "../components/CheckoutSteps.js";
 
-function PaymentMethodView() {
+export default function PaymentMethodView() {
   const navigateTo = useNavigate();
   const { state, dispatch: contextDispatch } = useContext(Store);
   const {
@@ -74,5 +74,3 @@ function PaymentMethodView() {
     </div>
   );
 }
-
-export default PaymentMethodView;

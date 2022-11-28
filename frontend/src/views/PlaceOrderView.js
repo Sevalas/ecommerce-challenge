@@ -23,7 +23,7 @@ const reducer = (state, action) => {
   }
 };
 
-function PlaceOrderView() {
+export default function PlaceOrderView() {
   const navigateTo = useNavigate();
 
   const [{ loading }, dispatch] = useReducer(reducer, {
@@ -195,5 +195,3 @@ function PlaceOrderView() {
     </div>
   );
 }
-
-export default PlaceOrderView;
