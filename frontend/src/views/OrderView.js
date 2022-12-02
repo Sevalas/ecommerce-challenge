@@ -1,5 +1,5 @@
 import apiClient from "../components/ApiClient";
-import React, { useContext, useEffect, useReducer } from "react";
+import { useContext, useEffect, useReducer } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate, useParams } from "react-router-dom";
 import { Row, Col, ListGroup, Card } from "react-bootstrap";
@@ -9,7 +9,7 @@ import MessageBox from "../components/MessageBox";
 import { Store } from "../context/Store";
 import { getError } from "../utils/utils";
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
-import { toast } from "react-toastify";
+import toast from 'react-hot-toast';
 
 function reducer(state, action) {
   switch (action.type) {

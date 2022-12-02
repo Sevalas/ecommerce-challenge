@@ -9,7 +9,7 @@ import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 import { getError } from "../utils/utils";
 import { Store } from "../context/Store";
-import { toast } from "react-toastify";
+import toast from 'react-hot-toast';
 
 export default function ProductView() {
   const { slug } = useParams();

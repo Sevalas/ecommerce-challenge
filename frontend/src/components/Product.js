@@ -4,7 +4,7 @@ import Rating from "./Rating";
 import { Store } from "../context/Store";
 import { useContext, useState } from "react";
 import apiClient from "../components/ApiClient";
-import { toast } from "react-toastify";
+import toast from 'react-hot-toast';
 
 export default function Product(props) {
   const { product } = props;

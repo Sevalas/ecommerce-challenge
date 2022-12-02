@@ -6,7 +6,7 @@ import { useLocation } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Store } from "../context/Store";
-import { toast } from "react-toastify";
+import toast from 'react-hot-toast';
 import { getError } from "../utils/utils";
 
 export default function SigninView() {
@@ -31,7 +31,7 @@ export default function SigninView() {
     try {
       const { data } = await apiClient.post("/api/users/signin", {
         email: email,
-        passwordHash: password,
+        password: password,
       });
       contextDispatch({ type: "USER_SIGNIN", payload: data });
       navigateTo(redirect || "/");

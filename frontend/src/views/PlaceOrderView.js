@@ -5,7 +5,7 @@ import { Helmet } from "react-helmet-async";
 import { Store } from "../context/Store";
 import CheckoutSteps from "../components/CheckoutSteps.js";
 import { Link } from "react-router-dom";
-import { toast } from "react-toastify";
+import toast from 'react-hot-toast';
 import { getError } from "../utils/utils";
 import apiClient from "../components/ApiClient";
 import LoadingBox from "../components/LoadingBox";

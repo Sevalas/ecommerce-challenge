@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useState, useContext, useEffect } from "react";
 import { Store } from "../context/Store";
-import { toast } from "react-toastify";
+import toast from 'react-hot-toast';
 import { getError } from "../utils/utils";
 import CheckoutSteps from "../components/CheckoutSteps.js";
 

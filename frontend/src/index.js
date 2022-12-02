@@ -8,6 +8,7 @@ import reportWebVitals from "./reportWebVitals";
 import { HelmetProvider } from "react-helmet-async";
 import { StoreProvider } from "./context/Store";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+import { BrowserRouter } from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -15,7 +16,9 @@ root.render(
     <StoreProvider>
       <HelmetProvider>
         <PayPalScriptProvider deferLoading={true}>
-          <App />
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
         </PayPalScriptProvider>
       </HelmetProvider>
     </StoreProvider>

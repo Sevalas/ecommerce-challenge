@@ -14,25 +14,37 @@ export default function NavbarView() {
   };
 
   return (
-    <>
-      <Navbar bg="dark" variant="dark" expand="md" className="sticky-top">
+    <div className="sticky-top">
+      <Navbar bg="dark" variant="dark" expand="md" collapseOnSelect>
         <Container>
-          <LinkContainer to="/">
-            <Navbar.Brand>Ecommers</Navbar.Brand>
-          </LinkContainer>
-          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-          <Navbar.Collapse id="responsive-navbar-nav">
-            <Nav className="me-auto w-100 justify-content-end">
-              <Link to="/cart" className="nav-link text-end" >
-                Cart
-                {cart.cartItems.length > 0 && (
-                  <Badge pill bg="danger" className="ms-1">
-                    {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
-                  </Badge>
-                )}
-              </Link>
+          <div className="flex-grow-1">
+            <LinkContainer to="/">
+              <Navbar.Brand>Ecommers</Navbar.Brand>
+            </LinkContainer>
+          </div>
+          <Nav>
+            <Link to="/cart" className="nav-link">
+              Cart
+              {cart.cartItems.length > 0 && (
+                <Badge pill bg="danger" className="ms-1">
+                  {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+                </Badge>
+              )}
+            </Link>
+          </Nav>
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" className="mx-3"/>
+          <Navbar.Collapse
+            id="responsive-navbar-nav"
+            className="flex-grow-0"
+          >
+            <Nav className=" justify-content-end">
               {userInfo ? (
-                <NavDropdown title={userInfo.name} id="basic-nav-dropdown" className="text-end"> 
+                <NavDropdown
+                  title={userInfo.name}
+                  id="basic-nav-dropdown"
+                  className="text-end"
+                  align="end"
+                >
                   <LinkContainer to="/profile">
                     <NavDropdown.Item>User Profile</NavDropdown.Item>
                   </LinkContainer>
@@ -58,6 +70,6 @@ export default function NavbarView() {
         </Container>
       </Navbar>
       <TopBar />
-    </>
+    </div>
   );
 }

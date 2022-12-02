@@ -38,8 +38,7 @@ export default function TopBar() {
     <LoadingBar
       color="#f11946"
       ref={ref}
-      className="progress-bar"
-      containerStyle={{ position: "relative" }}
+      containerStyle={{ position: "static"  }}
       shadow={false}
     />
   );

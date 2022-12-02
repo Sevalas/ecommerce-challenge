@@ -30,3 +30,4 @@
 24. Create order view
 25. Implement Pay Order by Paypal method
 26. Create user history view and history api
+27. Create profile view

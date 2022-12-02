@@ -1,6 +1,5 @@
-import { useReducer, useEffect } from "react";
+import { useReducer, useEffect, useContext } from "react";
 import { Helmet } from "react-helmet-async";
-import { useContext } from "react";
 import { Store } from "../context/Store";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
@@ -23,7 +22,7 @@ const reducer = (state, action) => {
 };
 
 export default function OrderHistoryView() {
-  const { state, dispatch: contextDispatch } = useContext(Store);
+  const { state } = useContext(Store);
   const { userInfo } = state;
   const navigateTo = useNavigate();
   const [{ loading, error, orders }, dispatch] = useReducer(reducer, {
@@ -74,10 +73,10 @@ export default function OrderHistoryView() {
                 <td>{order._id}</td>
                 <td>{order.createdAt.substring(0, 10)}</td>
                 <td>{order.totalPrice.toFixed(2)}</td>
-                <td>{order.isPaid ? order.paidAt.substring(0, 10) : "No"}</td>
+                <td>{order.status.isPaid ? order.status.paidAt.substring(0, 10) : "No"}</td>
                 <td>
-                  {order.isDelivered
-                    ? order.deliveredAt.substring(0, 10)
+                  {order.status.isDelivered
+                    ? order.status.deliveredAt.substring(0, 10)
                     : "No"}
                 </td>
                 <td>
