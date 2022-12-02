@@ -1,5 +1,6 @@
 import "./App.css";
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
+import { Store } from "./context/Store";
 import { Route, Routes, useLocation } from "react-router-dom";
 import HomeView from "./views/HomeView";
 import ProductView from "./views/ProductView";
@@ -18,6 +19,9 @@ import OrderHistoryView from "./views/OrderHistoryView";
 import ProfileView from "./views/ProfileView";
 
 export default function App() {
+  const { state } = useContext(Store);
+  const { userInfo } = state;
+
   const location = useLocation();
   useEffect(() => {
     toast.dismiss();
@@ -39,13 +43,22 @@ export default function App() {
             <Route path="/payment" element={<PaymentMethodView />} />
             <Route path="/placeorder" element={<PlaceOrderView />} />
             <Route path="/order/:id" element={<OrderView />} />
-            <Route path="/orderhistory" element={<OrderHistoryView />} />
+            <Route path="/orderhistory" elemident={<OrderHistoryView />} />
             <Route path="/profile" element={<ProfileView />} />
             <Route path="*" element={<HomeView />} />
           </Routes>
         </Container>
       </main>
-
+      {userInfo && userInfo.email === "nvidalsaunero11@gmail.com" && (
+        <div className="d-flex flex-column justify-content-center">
+          <h2 className="text-center">{"Te amo pelotua!!! <3"}</h2>
+          <img
+            className="mx-auto w-25"
+            src="https://thumbs.gfycat.com/IllustriousAstonishingIrrawaddydolphin-size_restricted.gif"
+            alt="gif"
+          />
+        </div>
+      )}
       <FooterView />
     </div>
   );
