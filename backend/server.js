@@ -1,4 +1,5 @@
 import express from "express";
+import path from 'path';
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import seedRouter from "./routes/seedRoutes.js";
@@ -9,7 +10,11 @@ import orderRouter from "./routes/orderRoutes.js";
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// app.use('/', express.static('../frontend/build')); // To run frontend production build
+const __dirname = path.resolve();
+app.use(express.static(path.join(__dirname, '/frontend/build')));
+app.get("*", (request, response) =>
+  response.sendFile(path.join(__dirname, "/frontend/build/index.html"))
+);
 
 //Connect to mongoDB
 dotenv.config();
@@ -28,8 +33,8 @@ mongoose
   });
 
 //Connect to Paypal
-app.get('/api/keys/paypal', (req, res) => {
-  res.send(process.env.PAYPAL_CLIENT_ID || 'sb');
+app.get("/api/keys/paypal", (req, res) => {
+  res.send(process.env.PAYPAL_CLIENT_ID || "sb");
 });
 
 app.use("/api/seed", seedRouter);

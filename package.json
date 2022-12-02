@@ -1,5 +1,21 @@
 {
-  "devDependencies": {
-    "@types/react": "^18.0.24"
-  }
+  "name": "ecommerce-challenge",
+  "version": "0.1.0",
+  "description": "ecommerce-challenge",
+  "main": "index.js",
+  "scripts": {
+    "build": "cd backend && npm install && cd../frontend && npm install && npm run build",
+    "start": "node backend/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sevalas/ecommerce-challenge.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sevalas/ecommerce-challenge/issues"
+  },
+  "homepage": "https://github.com/Sevalas/ecommerce-challenge#readme"
 }
