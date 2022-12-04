@@ -3,3 +3,6 @@ export const getError = (error) => {
     ? error.response.data.errorMessage
     : error.message
 }
+
+export const ConditionalWrapper = ({ condition, wrapper, children }) => 
+  condition ? wrapper(children) : children;

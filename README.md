@@ -32,3 +32,5 @@
 26. Create user history view and history api
 27. Create profile view
 28. Publish on Heroku
+29. Publish on Render
+30. Create sidebar and search box

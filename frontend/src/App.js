@@ -1,5 +1,5 @@
 import "./App.css";
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 import { Store } from "./context/Store";
 import { Route, Routes, useLocation } from "react-router-dom";
 import HomeView from "./views/HomeView";
@@ -22,16 +22,24 @@ export default function App() {
   const { state } = useContext(Store);
   const { userInfo } = state;
 
+  const [sideBarIsOpen, setSideBarIsOpen] = useState(false);
+
   const location = useLocation();
   useEffect(() => {
     toast.dismiss();
   }, [location]);
 
   return (
-    <div className="d-flex flex-column site-container">
+    <div
+      className={
+        sideBarIsOpen
+          ? "site-container active-cont d-flex flex-column"
+          : "site-container d-flex flex-column"
+      }
+    >
       <Toaster position="bottom-center" />
-      <NavbarView />
-      <main>
+      <NavbarView sideBarState={{ sideBarIsOpen, setSideBarIsOpen }} />
+      <main className="bg-light">
         <Container className="mt-3">
           <Routes>
             <Route path="/" element={<HomeView />} />

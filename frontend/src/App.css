@@ -1,9 +1,15 @@
 .site-container {
   min-height: 100vh;
+  transition: 0.4s;
 }
 
 main {
   flex: 1;
+}
+
+.navbar-brand {
+  font-weight: bold;
+  font-size: 1.1em;
 }
 
 .products {
@@ -100,4 +106,34 @@ main {
   height: 150px;
   border: 0.75rem solid #212529;
   border-right-color: transparent;
+}
+
+
+@media (max-width: 768px) { 
+  .custom-nav-dropdown > .dropdown-toggle {
+    display: none;
+  }
+  .custom-nav-dropdown > .dropdown-menu {
+    display: block;
+  }
+}
+
+/* sidebar */
+
+.side-navbar {
+  width: 40vw;
+  max-width: 240px;
+  height: 100%;
+  position: fixed;
+  left: -40vw;
+  transition: 0.4s;
+}
+.active-cont {
+  margin-left: min(40vw, 240px);
+}
+.active-nav {
+  left: 0;
+}
+.text-bold {
+  font-weight: bold;
 }
