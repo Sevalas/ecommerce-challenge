@@ -1,8 +1,14 @@
 export default function Rating(props) {
-  const { rating, numReviews } = props;
+  const { rating, numReviews, caption, classSpan } = props;
+  let descElement;
+  if (caption) {
+    descElement = <span>{caption}</span>;
+  } else if (numReviews) {
+    descElement = <span>{`${numReviews} reviews`}</span>;
+  }
   return (
     <div className="rating">
-      <span>
+      <span className={classSpan}>
         <i
           className={
             rating >= 1
@@ -49,7 +55,7 @@ export default function Rating(props) {
           }
         ></i>
       </span>
-      <span> {numReviews} reviews</span>
+      {descElement}
     </div>
   );
 }

@@ -73,7 +73,11 @@ export default function OrderHistoryView() {
                 <td>{order._id}</td>
                 <td>{order.createdAt.substring(0, 10)}</td>
                 <td>{order.totalPrice.toFixed(2)}</td>
-                <td>{order.status.isPaid ? order.status.paidAt.substring(0, 10) : "No"}</td>
+                <td>
+                  {order.status.isPaid
+                    ? order.status.paidAt.substring(0, 10)
+                    : "No"}
+                </td>
                 <td>
                   {order.status.isDelivered
                     ? order.status.deliveredAt.substring(0, 10)
@@ -95,7 +99,6 @@ export default function OrderHistoryView() {
           </tbody>
         </Table>
       )}
-      test
     </div>
   );
 }

@@ -82,7 +82,9 @@ export default function NavbarView(props) {
               <LinkContainer to="/">
                 <Navbar.Brand>Ecommers</Navbar.Brand>
               </LinkContainer>
-              <SearchBox />
+              <div className="search-box-navbar me-auto">
+                <SearchBox />
+              </div>
             </div>
             <Nav>
               <Link to="/cart" className="nav-link">
@@ -111,6 +113,9 @@ export default function NavbarView(props) {
                     align="end"
                     menuVariant="dark"
                   >
+                    <div className="search-box-dropdown px-2">
+                      <SearchBox />
+                    </div>
                     <LinkContainer to="/profile" className="text-end">
                       <NavDropdown.Item>User Profile</NavDropdown.Item>
                     </LinkContainer>

@@ -17,6 +17,7 @@ import PlaceOrderView from "./views/PlaceOrderView";
 import OrderView from "./views/OrderView";
 import OrderHistoryView from "./views/OrderHistoryView";
 import ProfileView from "./views/ProfileView";
+import SearchView from "./views/SearchView";
 
 export default function App() {
   const { state } = useContext(Store);
@@ -39,7 +40,7 @@ export default function App() {
     >
       <Toaster position="bottom-center" />
       <NavbarView sideBarState={{ sideBarIsOpen, setSideBarIsOpen }} />
-      <main className="bg-light">
+      <main className="bg-light pb-2">
         <Container className="mt-3">
           <Routes>
             <Route path="/" element={<HomeView />} />
@@ -51,9 +52,10 @@ export default function App() {
             <Route path="/payment" element={<PaymentMethodView />} />
             <Route path="/placeorder" element={<PlaceOrderView />} />
             <Route path="/order/:id" element={<OrderView />} />
-            <Route path="/orderhistory" elemident={<OrderHistoryView />} />
+            <Route path="/orderhistory" element={<OrderHistoryView />} />
             <Route path="/profile" element={<ProfileView />} />
-            <Route path="*" element={<HomeView />} />
+            <Route path="/search" element={<SearchView />} />
+            <Route path="*" element={<h1 className="text-center mt-5">404 PAGE NOT FOUND :C</h1>} />
           </Routes>
         </Container>
       </main>

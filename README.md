@@ -34,3 +34,4 @@
 28. Publish on Heroku
 29. Publish on Render
 30. Create sidebar and search box
+31. Create search view

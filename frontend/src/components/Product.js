@@ -4,7 +4,7 @@ import Rating from "./Rating";
 import { Store } from "../context/Store";
 import { useContext, useState } from "react";
 import apiClient from "../components/ApiClient";
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
 
 export default function Product(props) {
   const { product } = props;
@@ -34,11 +34,15 @@ export default function Product(props) {
 
   return (
     <Card>
-      <Link to={`product/${product.slug}`}>
-        <img className="card-img-top" src={product.image} alt={product.name} />
+      <Link to={{ pathname: `/product/${product.slug}` }}>
+        <img
+          className="product-component-card-img-top"
+          src={product.image}
+          alt={product.name}
+        />
       </Link>
       <Card.Body>
-        <Link to={`product/${product.slug}`}>
+        <Link to={{ pathname: `/product/${product.slug}` }}>
           <Card.Title>{product.name}</Card.Title>
         </Link>
         <Rating

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button, Form, InputGroup, FormControl } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
-export default function SearchBox() {
+export default function SearchBox(props) {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const submitHandler = (e) => {
@@ -15,14 +15,13 @@ export default function SearchBox() {
       <InputGroup>
         <FormControl
           type="text"
-          name="q"
-          id="q"
+          name="search-box"
           onChange={(e) => setQuery(e.target.value)}
           placeholder="search products..."
           aria-label="Search Products"
           aria-describedby="button-search"
         ></FormControl>
-        <Button variant="outline-primary" type="submit" id="button-search">
+        <Button variant="outline-primary" type="submit">
           <i className="fas fa-search"></i>
         </Button>
       </InputGroup>
