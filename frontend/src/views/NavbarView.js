@@ -104,38 +104,51 @@ export default function NavbarView(props) {
             </Navbar.Toggle>
             <Navbar.Collapse id="responsive-navbar-nav" className="flex-grow-0">
               <Nav className="justify-content-end">
-                {userInfo ? (
-                  <NavDropdown
-                    title={<i className="fa-solid fa-user"></i>}
-                    id="dropdown-menu-align-end"
-                    className="custom-nav-dropdown text-end"
-                    renderMenuOnMount="true"
-                    align="end"
-                    menuVariant="dark"
-                  >
-                    <div className="search-box-dropdown px-2">
-                      <SearchBox />
-                    </div>
-                    <LinkContainer to="/profile" className="text-end">
-                      <NavDropdown.Item>User Profile</NavDropdown.Item>
-                    </LinkContainer>
-                    <LinkContainer to="/orderhistory" className="text-end">
-                      <NavDropdown.Item>Order History</NavDropdown.Item>
-                    </LinkContainer>
-                    <NavDropdown.Divider />
-                    <Link
-                      className="dropdown-item text-end"
-                      to="/"
-                      onClick={signOutHandler}
-                    >
-                      Sign Out
-                    </Link>
-                  </NavDropdown>
-                ) : (
-                  <Link className="nav-link text-end" to="/signin">
-                    Sign In
-                  </Link>
-                )}
+                <NavDropdown
+                  title={<i className="fa-solid fa-user"></i>}
+                  id="dropdown-menu-align-end"
+                  className="custom-nav-dropdown text-center"
+                  renderMenuOnMount="true"
+                  align="end"
+                  menuVariant="dark"
+                >
+                  {userInfo ? (
+                    <>
+                      <div className="text-start text-capitalize px-3">
+                        <h5>{userInfo.name}</h5>
+                      </div>
+                      <NavDropdown.Divider />
+                      <div className="search-box-dropdown px-3 py-2">
+                        <SearchBox />
+                      </div>
+                      <NavDropdown.Divider className="search-box-dropdown" />
+                      <LinkContainer to="/profile" className="text-center">
+                        <NavDropdown.Item>User Profile</NavDropdown.Item>
+                      </LinkContainer>
+                      <LinkContainer to="/orderhistory" className="text-center">
+                        <NavDropdown.Item>Order History</NavDropdown.Item>
+                      </LinkContainer>
+                      <NavDropdown.Divider />
+                      <Link
+                        className="dropdown-item text-center"
+                        to="/"
+                        onClick={signOutHandler}
+                      >
+                        Sign Out
+                      </Link>
+                    </>
+                  ) : (
+                    <>
+                      <div className="search-box-dropdown px-3 py-2">
+                        <SearchBox />
+                      </div>
+                      <NavDropdown.Divider className="search-box-dropdown" />
+                      <Link className="nav-link text-center" to="/signin">
+                        Sign In
+                      </Link>
+                    </>
+                  )}
+                </NavDropdown>
               </Nav>
             </Navbar.Collapse>
           </Container>
