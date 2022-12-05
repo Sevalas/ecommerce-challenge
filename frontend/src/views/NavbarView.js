@@ -129,13 +129,9 @@ export default function NavbarView(props) {
                         <NavDropdown.Item>Order History</NavDropdown.Item>
                       </LinkContainer>
                       <NavDropdown.Divider />
-                      <Link
-                        className="dropdown-item text-center"
-                        to="/"
-                        onClick={signOutHandler}
-                      >
-                        Sign Out
-                      </Link>
+                      <LinkContainer to="/" onClick={signOutHandler} className="text-center">
+                        <NavDropdown.Item>Sign Out</NavDropdown.Item>
+                      </LinkContainer>
                     </>
                   ) : (
                     <>
@@ -143,9 +139,9 @@ export default function NavbarView(props) {
                         <SearchBox />
                       </div>
                       <NavDropdown.Divider className="search-box-dropdown" />
-                      <Link className="nav-link text-center" to="/signin">
-                        Sign In
-                      </Link>
+                      <LinkContainer to="/signin" className="text-center">
+                        <NavDropdown.Item>Sign In</NavDropdown.Item>
+                      </LinkContainer>
                     </>
                   )}
                 </NavDropdown>
