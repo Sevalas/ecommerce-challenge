@@ -36,3 +36,4 @@
 30. Create sidebar and search box
 31. Create search view
 32. Create Admin dropdown
+33. Create Dashboard View

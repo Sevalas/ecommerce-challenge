@@ -1,7 +1,9 @@
 import express from "express";
 import expressAsyncHandler from "express-async-handler";
 import OrderModel from "../models/OrderModel.js";
-import { isAuth } from "../utils/utils.js";
+import UserModel from "../models/UserModel.js";
+import ProductModel from "../models/ProductModel.js";
+import { isAuth, isAdmin } from "../utils/utils.js";
 
 const orderRouter = express.Router();
 
@@ -28,6 +30,50 @@ orderRouter.post(
     } catch (error) {
       throw error;
     }
+  })
+);
+
+orderRouter.get(
+  "/summary",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const users = await UserModel.aggregate([
+      {
+        $group: {
+          _id: null,
+          numUsers: { $sum: 1 },
+        },
+      },
+    ]);
+    const orders = await OrderModel.aggregate([
+      {
+        $group: {
+          _id: null,
+          numOrders: { $sum: 1 },
+          totalSales: { $sum: "$totalPrice" },
+        },
+      },
+    ]);
+    const dailyOrders = await OrderModel.aggregate([
+      {
+        $group: {
+          _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+          orders: { $sum: 1 },
+          sales: { $sum: "$totalPrice" },
+        },
+      },
+      { $sort: { _id: 1 } },
+    ]);
+    const productCategories = await ProductModel.aggregate([
+      {
+        $group: {
+          _id: "$category",
+          count: { $sum: 1 },
+        },
+      },
+    ]);
+    res.send({ users: users[0], orders: orders[0], dailyOrders, productCategories });
   })
 );
 
