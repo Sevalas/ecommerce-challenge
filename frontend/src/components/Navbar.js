@@ -10,13 +10,13 @@ import { LinkContainer } from "react-router-bootstrap";
 import { useContext, useState, useEffect } from "react";
 import { Store } from "../context/Store";
 import { Link } from "react-router-dom";
-import TopBar from "../components/TopBar";
+import TopBar from "./TopBar";
 import toast from "react-hot-toast";
 import { getError } from "../utils/utils";
-import SearchBox from "../components/SearchBox";
-import apiClient from "../components/ApiClient";
+import SearchBox from "./SearchBox";
+import apiClient from "./ApiClient";
 
-export default function NavbarView(props) {
+export default function TopNavbar(props) {
   const { state, dispatch: contextDispatch } = useContext(Store);
   const { cart, userInfo } = state;
   const [categories, setCategories] = useState([]);
@@ -129,7 +129,11 @@ export default function NavbarView(props) {
                         <NavDropdown.Item>Order History</NavDropdown.Item>
                       </LinkContainer>
                       <NavDropdown.Divider />
-                      <LinkContainer to="/" onClick={signOutHandler} className="text-center">
+                      <LinkContainer
+                        to="/"
+                        onClick={signOutHandler}
+                        className="text-center"
+                      >
                         <NavDropdown.Item>Sign Out</NavDropdown.Item>
                       </LinkContainer>
                     </>
@@ -145,6 +149,32 @@ export default function NavbarView(props) {
                     </>
                   )}
                 </NavDropdown>
+                {userInfo && userInfo.isAdmin && (
+                  <NavDropdown
+                    title={<i className="fa-solid fa-user-gear"></i>}
+                    id="admin-nav-dropdown"
+                    className="custom-nav-dropdown text-center"
+                    renderMenuOnMount="true"
+                    align="end"
+                    menuVariant="dark"
+                  >
+                    <div className="text-start text-capitalize px-3">
+                      <h5>Admin Area</h5>
+                    </div>
+                    <LinkContainer to="/admin/dashboard" className="text-center">
+                      <NavDropdown.Item>Dashboard</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/admin/productlist" className="text-center">
+                      <NavDropdown.Item>Products</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/admin/orderlist" className="text-center">
+                      <NavDropdown.Item>Orders</NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/admin/userlist" className="text-center">
+                      <NavDropdown.Item>User</NavDropdown.Item>
+                    </LinkContainer>
+                  </NavDropdown>
+                )}
               </Nav>
             </Navbar.Collapse>
           </Container>

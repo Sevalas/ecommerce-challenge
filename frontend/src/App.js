@@ -5,8 +5,8 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import HomeView from "./views/HomeView";
 import ProductView from "./views/ProductView";
 import { Container } from "react-bootstrap";
-import NavbarView from "./views/NavbarView";
-import FooterView from "./views/FooterView";
+import TopNavbar from "./components/Navbar";
+import Footer from "./components/Footer";
 import CartView from "./views/CartView";
 import SigninView from "./views/SigninView";
 import toast, { Toaster } from "react-hot-toast";
@@ -18,6 +18,9 @@ import OrderView from "./views/OrderView";
 import OrderHistoryView from "./views/OrderHistoryView";
 import ProfileView from "./views/ProfileView";
 import SearchView from "./views/SearchView";
+import ProtectedRoute from "./components/ProtectedRoute";
+import AdminRoute from "./components/AdminRoute";
+import DashboardView from "./views/DashboardView";
 
 export default function App() {
   const { state } = useContext(Store);
@@ -39,7 +42,7 @@ export default function App() {
       }
     >
       <Toaster position="bottom-center" />
-      <NavbarView sideBarState={{ sideBarIsOpen, setSideBarIsOpen }} />
+      <TopNavbar sideBarState={{ sideBarIsOpen, setSideBarIsOpen }} />
       <main className="bg-light pb-2">
         <Container className="mt-3">
           <Routes>
@@ -52,10 +55,38 @@ export default function App() {
             <Route path="/payment" element={<PaymentMethodView />} />
             <Route path="/placeorder" element={<PlaceOrderView />} />
             <Route path="/order/:id" element={<OrderView />} />
-            <Route path="/orderhistory" element={<OrderHistoryView />} />
-            <Route path="/profile" element={<ProfileView />} />
+            <Route
+              path="/orderhistory"
+              element={
+                <ProtectedRoute>
+                  <OrderHistoryView />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <ProfileView />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/search" element={<SearchView />} />
-            <Route path="*" element={<h1 className="text-center mt-5">404 PAGE NOT FOUND :C</h1>} />
+            <Route
+              path="*"
+              element={
+                <h1 className="text-center mt-5">404 PAGE NOT FOUND :C</h1>
+              }
+            />
+            {/* Admin Routers */}
+            <Route
+              path="/admin/dashboard"
+              element={
+                <AdminRoute>
+                  <DashboardView />
+                </AdminRoute>
+              }
+            />
           </Routes>
         </Container>
       </main>
@@ -69,7 +100,7 @@ export default function App() {
           />
         </div>
       )}
-      <FooterView />
+      <Footer />
     </div>
   );
 }

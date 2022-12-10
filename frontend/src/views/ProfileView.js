@@ -1,5 +1,4 @@
-import { useReducer, useEffect, useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useReducer, useContext, useState } from "react";
 import apiClient from "../components/ApiClient";
 import { Form, Button } from "react-bootstrap";
 import { Helmet } from "react-helmet-async";
@@ -23,14 +22,7 @@ const reducer = (state, action) => {
 
 export default function ProfileView() {
   const { state, dispatch: contextDispatch } = useContext(Store);
-  const navigateTo = useNavigate();
   const { userInfo } = state;
-
-  useEffect(() => {
-    if (!userInfo) {
-      navigateTo("/signin");
-    }
-  }, [navigateTo, userInfo]);
 
   const [form, setForm] = useState({
     name: userInfo.name,
