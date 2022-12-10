@@ -15,7 +15,7 @@ const reducer = (state, action) => {
     case "FETCH_SUCCESS":
       return { ...state, summary: action.payload, loading: false };
     case "FETCH_FAIL":
-      return { ...state, error: action.payload, loading: true };
+      return { ...state, error: action.payload, loading: false };
 
     default:
       return state;
@@ -23,12 +23,12 @@ const reducer = (state, action) => {
 };
 
 export default function DashboardView() {
+  const { state } = useContext(Store);
+  const { userInfo } = state;
   const [{ loading, summary, error }, dispatch] = useReducer(reducer, {
     loading: true,
     error: "",
   });
-  const { state } = useContext(Store);
-  const { userInfo } = state;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -105,6 +105,9 @@ export default function DashboardView() {
                 height="400px"
                 chartType="AreaChart"
                 loader={<div>Loading Chart...</div>}
+                errorElement={
+                  <MessageBox variant="danger">Error loading Chart</MessageBox>
+                }
                 data={[
                   ["Date", "Sales"],
                   ...summary.dailyOrders.map((order) => [
@@ -125,6 +128,9 @@ export default function DashboardView() {
                 height="400px"
                 chartType="PieChart"
                 loader={<div>Loading Chart...</div>}
+                errorElement={
+                  <MessageBox variant="danger">Error loading Chart</MessageBox>
+                }
                 data={[
                   ["Date", "Sales"],
                   ...summary.productCategories.map((order) => [

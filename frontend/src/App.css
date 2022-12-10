@@ -7,6 +7,10 @@ main {
   flex: 1;
 }
 
+.text-bold {
+  font-weight: bold;
+}
+
 .navbar-brand {
   font-weight: bold;
   font-size: 1.1em;

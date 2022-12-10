@@ -164,14 +164,14 @@ export default function TopNavbar(props) {
                     <LinkContainer to="/admin/dashboard" className="text-center">
                       <NavDropdown.Item>Dashboard</NavDropdown.Item>
                     </LinkContainer>
-                    <LinkContainer to="/admin/productlist" className="text-center">
+                    <LinkContainer to="/admin/products" className="text-center">
                       <NavDropdown.Item>Products</NavDropdown.Item>
                     </LinkContainer>
-                    <LinkContainer to="/admin/orderlist" className="text-center">
+                    <LinkContainer to="/admin/orders" className="text-center">
                       <NavDropdown.Item>Orders</NavDropdown.Item>
                     </LinkContainer>
-                    <LinkContainer to="/admin/userlist" className="text-center">
-                      <NavDropdown.Item>User</NavDropdown.Item>
+                    <LinkContainer to="/admin/users" className="text-center">
+                      <NavDropdown.Item>Users</NavDropdown.Item>
                     </LinkContainer>
                   </NavDropdown>
                 )}

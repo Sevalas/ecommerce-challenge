@@ -21,6 +21,7 @@ import SearchView from "./views/SearchView";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
 import DashboardView from "./views/DashboardView";
+import ProductManageView from "./views/ProductManageView";
 
 export default function App() {
   const { state } = useContext(Store);
@@ -85,6 +86,14 @@ export default function App() {
                 <AdminRoute>
                   <DashboardView />
                 </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/products"
+              element={
+                <ProductManageView>
+                  <DashboardView />
+                </ProductManageView>
               }
             />
           </Routes>

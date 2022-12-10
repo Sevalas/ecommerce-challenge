@@ -37,3 +37,4 @@
 31. Create search view
 32. Create Admin dropdown
 33. Create Dashboard View
+34. Create Manage Products View
