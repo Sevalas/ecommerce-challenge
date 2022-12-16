@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import * as Constants from "../constants/Constants";
-import { useEffect, useReducer, useContext } from "react";
+import { useEffect, useReducer, useContext, useState } from "react";
 import { Row, Col, ListGroup, Card, Badge, Button } from "react-bootstrap";
 import apiClient from "../components/ApiClient";
 import Rating from "../components/Rating";
@@ -9,12 +9,14 @@ import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 import { getError } from "../utils/utils";
 import { Store } from "../context/Store";
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
+import ImageModal from "./ImageModal";
 
 export default function ProductView() {
   const { slug } = useParams();
   const reducer = Constants.reducer;
   const navigateTo = useNavigate();
+  const [showImageModal, setShowImageModal] = useState(false);
 
   const [{ loading, error, object }, dispatch] = useReducer(reducer, {
     loading: true,
@@ -43,7 +45,7 @@ export default function ProductView() {
     const { cart } = state;
     const existItem = cart.cartItems.find((item) => item._id === product._id);
     const quantity = existItem ? existItem.quantity + 1 : 1;
-    const { data } = await apiClient.get(`/api/products/id/${product._id}`);
+    const { data } = await apiClient.get(`/api/products/${product._id}`);
 
     if (data.countInStock < quantity) {
       toast.error("sorry, this product is out of stock", {
@@ -71,6 +73,7 @@ export default function ProductView() {
             className="img-product-view"
             src={product.image}
             alt={product.name}
+            onClick={() => setShowImageModal(true)}
           />
         </Col>
         <Col md={3}>
@@ -130,6 +133,12 @@ export default function ProductView() {
           </Card>
         </Col>
       </Row>
+      {showImageModal && (
+        <ImageModal
+          imagesSrc={product.image}
+          setShowModal={setShowImageModal}
+        />
+      )}
     </div>
   );
 }

@@ -4,12 +4,78 @@ import expressAsyncHandler from "express-async-handler";
 import { isAuth, isAdmin } from "../utils/utils.js";
 
 const productRouter = express.Router();
-const PAGE_SIZE = 3;
+const PAGE_SIZE = 4;
 
-productRouter.get("/", async (request, response) => {
-  const products = await ProductModel.find();
-  response.send(products);
-});
+productRouter.get(
+  "/",
+  expressAsyncHandler(async (request, response) => {
+    const products = await ProductModel.find().sort({ createdAt: -1 });
+    response.send(products);
+  })
+);
+
+productRouter.post(
+  "/",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (request, response) => {
+    const requestProduct = request.body;
+    const newProduct = new ProductModel({
+      name: requestProduct.name,
+      slug: requestProduct.slug,
+      image: requestProduct.image,
+      brand: requestProduct.brand,
+      category: requestProduct.category,
+      description: requestProduct.description,
+      price: requestProduct.price,
+      countInStock: requestProduct.countInStock,
+    });
+    const product = await newProduct.save();
+    response.send(product);
+  })
+);
+
+productRouter.put(
+  "/:id",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (request, response) => {
+    const product = await ProductModel.findById(request.params.id);
+    if (product) {
+      (product.name = request.body.name),
+        (product.slug = request.body.slug),
+        (product.image = request.body.image),
+        (product.brand = request.body.brand),
+        (product.category = request.body.category),
+        (product.description = request.body.description),
+        (product.price = request.body.price),
+        (product.countInStock = request.body.countInStock);
+      await product.save();
+      response.send({ message: "Product Update" });
+    } else {
+      response.status(404).send({
+        errorMessage: "Product not found",
+      });
+    }
+  })
+);
+
+productRouter.delete(
+  "/:id",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (request, response) => {
+    const product = await ProductModel.findById(request.params.id);
+    if (product) {
+      await product.remove();
+      response.send({ message: "Product Deleted" });
+    } else {
+      response.status(404).send({
+        errorMessage: "Product not found",
+      });
+    }
+  })
+);
 
 productRouter.get(
   "/admin",
@@ -21,6 +87,7 @@ productRouter.get(
     const pageSize = query.pageSize || PAGE_SIZE;
 
     const products = await ProductModel.find()
+      .sort({ createdAt: -1 })
       .skip(pageSize * (page - 1))
       .limit(pageSize);
 
@@ -65,6 +132,7 @@ productRouter.get(
           }
         : {};
     const categoryFilter = category && category !== "all" ? { category } : {};
+    console.log(Number(rating))
     const ratingFilter =
       rating && rating !== "all"
         ? {
@@ -120,26 +188,32 @@ productRouter.get(
   })
 );
 
-productRouter.get("/slug/:slug", async (request, response) => {
-  const product = await ProductModel.findOne({ slug: request.params.slug });
-  if (product) {
-    response.send(product);
-  } else {
-    response.status(404).send({
-      errorMessage: `Product with the slug ${request.params.slug} not found`,
-    });
-  }
-});
+productRouter.get(
+  "/slug/:slug",
+  expressAsyncHandler(async (request, response) => {
+    const product = await ProductModel.findOne({ slug: request.params.slug });
+    if (product) {
+      response.send(product);
+    } else {
+      response.status(404).send({
+        errorMessage: `Product with the slug ${request.params.slug} not found`,
+      });
+    }
+  })
+);
 
-productRouter.get("/id/:id", async (request, response) => {
-  const product = await ProductModel.findById(request.params.id);
-  if (product) {
-    response.send(product);
-  } else {
-    response.status(404).send({
-      errorMessage: `Product with the id ${request.params.id} not found`,
-    });
-  }
-});
+productRouter.get(
+  "/:id",
+  expressAsyncHandler(async (request, response) => {
+    const product = await ProductModel.findById(request.params.id);
+    if (product) {
+      response.send(product);
+    } else {
+      response.status(404).send({
+        errorMessage: `Product with the id ${request.params.id} not found`,
+      });
+    }
+  })
+);
 
 export default productRouter;

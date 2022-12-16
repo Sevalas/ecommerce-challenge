@@ -22,6 +22,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import AdminRoute from "./components/AdminRoute";
 import DashboardView from "./views/DashboardView";
 import ProductManageView from "./views/ProductManageView";
+import ProductEditView from "./views/ProductEditView";
 
 export default function App() {
   const { state } = useContext(Store);
@@ -91,9 +92,17 @@ export default function App() {
             <Route
               path="/admin/products"
               element={
-                <ProductManageView>
-                  <DashboardView />
-                </ProductManageView>
+                <AdminRoute>
+                  <ProductManageView />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/product/:id"
+              element={
+                <AdminRoute>
+                  <ProductEditView />
+                </AdminRoute>
               }
             />
           </Routes>

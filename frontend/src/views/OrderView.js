@@ -9,7 +9,7 @@ import MessageBox from "../components/MessageBox";
 import { Store } from "../context/Store";
 import { getError } from "../utils/utils";
 import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -69,10 +69,7 @@ export default function OrderView() {
         dispatch({ type: "PAY_REQUEST" });
         const { data } = await apiClient.put(
           `/api/orders/${order._id}/pay`,
-          details,
-          {
-            headers: { authorization: `Bearer ${userInfo.token}` },
-          }
+          details
         );
         dispatch({ type: "PAY_SUCCESS", payload: data });
         toast.success("Order is paid");
@@ -92,9 +89,7 @@ export default function OrderView() {
     const fetchOrder = async () => {
       try {
         dispatch({ type: "FETCH_REQUEST" });
-        const { data } = await apiClient.get(`/api/orders/${orderId}`, {
-          headers: { authorization: `Bearer ${userInfo.token}` },
-        });
+        const { data } = await apiClient.get(`/api/orders/${orderId}`);
         dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (err) {
         dispatch({ type: "FETCH_FAIL", payload: getError(err) });
@@ -111,9 +106,7 @@ export default function OrderView() {
       }
     } else {
       const loadPaypalScript = async () => {
-        const { data: clientId } = await apiClient.get("/api/keys/paypal", {
-          headers: { authorization: `Bearer ${userInfo.token}` },
-        });
+        const { data: clientId } = await apiClient.get("/api/keys/paypal");
         paypalDispatch({
           type: "resetOptions",
           value: {

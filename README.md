@@ -38,3 +38,8 @@
 32. Create Admin dropdown
 33. Create Dashboard View
 34. Create Manage Products View
+35. Create Product functionality
+36. Create Product edit View
+37. Upload product image functionality
+38. Remove product functionality
+39. Create modal image view functionality

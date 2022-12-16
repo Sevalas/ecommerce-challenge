@@ -1,12 +1,11 @@
-import { useReducer, useEffect, useContext } from "react";
+import { useReducer, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
-import { Store } from "../context/Store";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 import { useNavigate } from "react-router-dom";
 import apiClient from "../components/ApiClient";
 import { getError } from "../utils/utils";
-import { Button, Table } from "react-bootstrap";
+import { Button, Container, Table } from "react-bootstrap";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -22,8 +21,6 @@ const reducer = (state, action) => {
 };
 
 export default function OrderHistoryView() {
-  const { state } = useContext(Store);
-  const { userInfo } = state;
   const navigateTo = useNavigate();
   const [{ loading, error, orders }, dispatch] = useReducer(reducer, {
     loading: true,
@@ -34,16 +31,14 @@ export default function OrderHistoryView() {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
-        const { data } = await apiClient.get(`/api/orders/mine`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        });
+        const { data } = await apiClient.get(`/api/orders/mine`);
         dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (error) {
         dispatch({ type: "FETCH_REQUEST", payload: getError(error) });
       }
     };
     fetchData();
-  }, [userInfo]);
+  }, []);
 
   return (
     <div>
@@ -56,48 +51,50 @@ export default function OrderHistoryView() {
       ) : error ? (
         <MessageBox variant="danger">{error}</MessageBox>
       ) : (
-        <Table responsive>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>DATE</th>
-              <th>TOTAL</th>
-              <th>PAID</th>
-              <th>DELIVERED</th>
-              <th>ACTIONS</th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders.map((order) => (
-              <tr key={order._id}>
-                <td>{order._id}</td>
-                <td>{order.createdAt.substring(0, 10)}</td>
-                <td>{order.totalPrice.toFixed(2)}</td>
-                <td>
-                  {order.status.isPaid
-                    ? order.status.paidAt.substring(0, 10)
-                    : "No"}
-                </td>
-                <td>
-                  {order.status.isDelivered
-                    ? order.status.deliveredAt.substring(0, 10)
-                    : "No"}
-                </td>
-                <td>
-                  <Button
-                    type="button"
-                    variant="light"
-                    onClick={() => {
-                      navigateTo(`/order/${order._id}`);
-                    }}
-                  >
-                    Details
-                  </Button>
-                </td>
+        <Container fluid>
+          <Table responsive>
+            <thead>
+              <tr>
+                <th>ACTIONS</th>
+                <th>ID</th>
+                <th>DATE</th>
+                <th>DELIVERED</th>
+                <th>PAID</th>
+                <th>TOTAL</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
+            </thead>
+            <tbody>
+              {orders.map((order) => (
+                <tr key={order._id}>
+                  <td>
+                    <Button
+                      type="button"
+                      variant="dark"
+                      onClick={() => {
+                        navigateTo(`/order/${order._id}`);
+                      }}
+                    >
+                      Details
+                    </Button>
+                  </td>
+                  <td>{order._id}</td>
+                  <td>{order.createdAt.substring(0, 10)}</td>
+                  <td>
+                    {order.status.isDelivered
+                      ? order.status.deliveredAt.substring(0, 10)
+                      : "No"}
+                  </td>
+                  <td>
+                    {order.status.isPaid
+                      ? order.status.paidAt.substring(0, 10)
+                      : "No"}
+                  </td>
+                  <td>{order.totalPrice.toFixed(2)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </Container>
       )}
     </div>
   );

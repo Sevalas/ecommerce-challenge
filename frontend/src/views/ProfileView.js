@@ -5,7 +5,7 @@ import { Helmet } from "react-helmet-async";
 import { Store } from "../context/Store";
 import { getError } from "../utils/utils";
 import LoadingBox from "../components/LoadingBox";
-import toast from 'react-hot-toast';
+import toast from "react-hot-toast";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -69,18 +69,12 @@ export default function ProfileView() {
       dispatch({
         type: "UPDATE_REQUEST",
       });
-      const { data } = await apiClient.put(
-        "/api/users/profile",
-        {
-          name: form.name,
-          email: form.email,
-          password: form.password,
-          newPassword: form.newPassword,
-        },
-        {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        }
-      );
+      const { data } = await apiClient.put("/api/users/profile", {
+        name: form.name,
+        email: form.email,
+        password: form.password,
+        newPassword: form.newPassword,
+      });
       setField("changePassword", false);
       dispatch({
         type: "UPDATE_SUCCESS",

@@ -1,5 +1,4 @@
-import { useContext, useEffect, useReducer } from "react";
-import { Store } from "../context/Store";
+import { useEffect, useReducer } from "react";
 import { getError } from "../utils/utils";
 import apiClient from "../components/ApiClient";
 import { Helmet } from "react-helmet-async";
@@ -23,8 +22,6 @@ const reducer = (state, action) => {
 };
 
 export default function DashboardView() {
-  const { state } = useContext(Store);
-  const { userInfo } = state;
   const [{ loading, summary, error }, dispatch] = useReducer(reducer, {
     loading: true,
     error: "",
@@ -34,9 +31,7 @@ export default function DashboardView() {
     const fetchData = async () => {
       try {
         dispatch({ type: "FETCH_REQUEST" });
-        const { data } = await apiClient.get("/api/orders/summary", {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        });
+        const { data } = await apiClient.get("/api/orders/summary");
         dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (error) {
         dispatch({
@@ -46,7 +41,7 @@ export default function DashboardView() {
       }
     };
     fetchData();
-  }, [userInfo]);
+  }, []);
 
   return (
     <div>

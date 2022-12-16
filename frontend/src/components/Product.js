@@ -16,7 +16,7 @@ export default function Product(props) {
     const { cart } = state;
     const existItem = cart.cartItems.find((item) => item._id === product._id);
     const quantity = existItem ? existItem.quantity + 1 : 1;
-    const { data } = await apiClient.get(`/api/products/id/${product._id}`);
+    const { data } = await apiClient.get(`/api/products/${product._id}`);
 
     if (data.countInStock < quantity) {
       setProductOutSotckWithCart(true);

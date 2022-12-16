@@ -15,7 +15,7 @@ export default function CartView() {
   const navigateTo = useNavigate();
 
   const updateCartHandler = async (item, quantity) => {
-    const { data } = await apiClient.get(`/api/products/id/${item._id}`);
+    const { data } = await apiClient.get(`/api/products/${item._id}`);
     if (data.countInStock >= quantity) {
       contextDispatch({
         type: "CART_ADD_ITEM",
@@ -59,7 +59,7 @@ export default function CartView() {
                     <Col md="4" className="text-center">
                       <img
                         src={item.image}
-                        alt="item.name"
+                        alt={item.name}
                         className="rounded img-thumbnail-cart-view"
                       />
                       {"  "}

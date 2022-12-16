@@ -1,3 +1,14 @@
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+input[type="file"] {
+  color: transparent;
+}
+textarea {
+  resize: none;
+}
+
 .site-container {
   min-height: 100vh;
   transition: 0.4s;
@@ -57,6 +68,36 @@ main {
   height: 80px;
   width: 100px;
   object-fit: contain;
+}
+
+.img-thumbnail-upload {
+  padding: 0.25rem;
+  background-color: #fff;
+  height: 100px;
+  width: 100%;
+  vertical-align: middle;
+  object-fit: contain;
+  transition: 0.4s;
+}
+
+.img-thumbnail-upload:hover {
+  box-shadow: 0px 0px 7px rgba(0, 0, 0, 0.2);
+}
+
+.image-uploader-visualizer {
+  border: 1px solid var(--bs-border-color);
+  border-radius: 0.375rem;
+  width: 200px;
+}
+
+@media (max-width: 768px) {
+  .image-uploader-visualizer {
+    width: 100%;
+  }
+}
+
+.image-uploader-visualizer button {
+  width: 100%;
 }
 
 .small-container {
@@ -154,4 +195,70 @@ main {
   display: none;
   border-color: yellowgreen;
   width: 300px;
+}
+
+/* modal */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(27, 27, 27, 0.541);
+  display: flex;
+  align-items: center;
+  transition: 0.4s;
+}
+.overlay img {
+  display: block;
+  max-width: 60%;
+  max-height: 80%;
+  margin: 60px auto;
+  box-shadow: 3px 5px 7px rgba(0, 0, 0, 0.5);
+}
+.overlay > .dismiss-button {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  margin: 5px;
+  font-size: 45px;
+  color: #ffffff;
+  z-index: 999;
+  cursor: pointer;
+  transition: 0.4s;
+  text-shadow: 0px 0px 7px rgba(0, 0, 0, 0.3);
+}
+
+.overlay > .dismiss-button:hover {
+  color: #e2dbdb;
+  text-shadow: 0px 0px 7px rgba(0, 0, 0, 0.6);
+}
+
+.overlay > .overlay-arrows_left,
+.overlay-arrows_right {
+  position: absolute;
+  font-size: 50px;
+  margin: 5px;
+  top: 50%;
+  width: 50px;
+  height: 50px;
+  color: #ffffff;
+  text-shadow: 0px 0px 7px rgba(0, 0, 0, 0.3);
+  transition: 0.4s;
+  z-index: 999;
+}
+
+.overlay > .overlay-arrows_left {
+  left: 0;
+}
+
+.overlay > .overlay-arrows_right {
+  right: 0;
+}
+
+.overlay > .overlay-arrows_right:hover,
+.overlay > .overlay-arrows_left:hover {
+  color: #e2dbdb;
+  text-shadow: 0px 0px 7px rgba(0, 0, 0, 0.6);
 }
