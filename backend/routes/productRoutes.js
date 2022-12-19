@@ -132,7 +132,6 @@ productRouter.get(
           }
         : {};
     const categoryFilter = category && category !== "all" ? { category } : {};
-    console.log(Number(rating))
     const ratingFilter =
       rating && rating !== "all"
         ? {

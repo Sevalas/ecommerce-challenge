@@ -6,6 +6,7 @@ import ProductModel from "../models/ProductModel.js";
 import { isAuth, isAdmin } from "../utils/utils.js";
 
 const orderRouter = express.Router();
+const PAGE_SIZE = 4;
 
 orderRouter.post(
   "/",
@@ -30,6 +31,49 @@ orderRouter.post(
     } catch (error) {
       throw error;
     }
+  })
+);
+
+orderRouter.delete(
+  "/:id",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (request, response) => {
+    const order = await OrderModel.findById(request.params.id);
+    if (order) {
+      await order.remove();
+      response.send({ message: "Order Deleted" });
+    } else {
+      response.status(404).send({
+        errorMessage: "Product not found",
+      });
+    }
+  })
+);
+
+orderRouter.get(
+  "/admin",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (request, response) => {
+    const { query } = request;
+    const page = query.page || 1;
+    const pageSize = query.pageSize || PAGE_SIZE;
+
+    const orders = await OrderModel.find()
+      .populate("user", "name")
+      .sort({ createdAt: -1 })
+      .skip(pageSize * (page - 1))
+      .limit(pageSize);
+
+    const countOrders = await OrderModel.countDocuments();
+
+    response.send({
+      orders,
+      countOrders,
+      page,
+      pages: Math.ceil(countOrders / pageSize),
+    });
   })
 );
 
@@ -73,7 +117,12 @@ orderRouter.get(
         },
       },
     ]);
-    res.send({ users: users[0], orders: orders[0], dailyOrders, productCategories });
+    res.send({
+      users: users[0],
+      orders: orders[0],
+      dailyOrders,
+      productCategories,
+    });
   })
 );
 

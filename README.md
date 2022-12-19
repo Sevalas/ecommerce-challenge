@@ -35,11 +35,12 @@
 29. Publish on Render
 30. Create sidebar and search box
 31. Create search view
-32. Create Admin dropdown
-33. Create Dashboard View
-34. Create Manage Products View
-35. Create Product functionality
-36. Create Product edit View
+32. Create admin dropdown
+33. Create dashboard view
+34. Create manage products view
+35. Create product functionality
+36. Create product edit view
 37. Upload product image functionality
 38. Remove product functionality
 39. Create modal image view functionality
+40. Create manage orders view
