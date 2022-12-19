@@ -46,3 +46,4 @@
 40. Create manage orders view
 41. Implement deliver button functionality
 42. Create manage users view
+43. Implement actions in manage users view

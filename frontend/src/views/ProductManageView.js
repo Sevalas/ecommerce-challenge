@@ -16,7 +16,7 @@ import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 import { getError } from "../utils/utils";
 import toast from "react-hot-toast";
-import ImageModal from "./ImageModal";
+import ImageModal from "../components/ImageModal";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -88,6 +88,12 @@ export default function ProductManageView() {
   };
   const handleCloseDeleteModal = () => setShowDeleteModal(false);
 
+  const handlOnExitedModal = () => {
+    setShowImageModal(false);
+    setForm({});
+    setNewImageFile(null);
+  };
+
   const setField = (field, value) => {
     setForm({ ...form, [field]: value });
     if (!!errorsForm[field]) {
@@ -138,11 +144,13 @@ export default function ProductManageView() {
     };
     await toast.promise(updateProduct(), {
       loading: "Creating product...",
-      success: <b>Product created successfully</b>,
-      error: (error) => `Error: ${error}`,
+      success: () => {
+        handleCloseProductModal();
+        setRefresh(true);
+        return <b>Product created successfully</b>;
+      },
+      error: (error) => `Error: ${getError(error)}`,
     });
-    handleCloseProductModal();
-    setRefresh(true);
   };
 
   const uploadFileHandler = async (event) => {
@@ -154,23 +162,19 @@ export default function ProductManageView() {
     setField("image", file.path);
   };
 
-  const handleExitModal = () => {
-    setShowImageModal(false);
-    setForm({});
-    setNewImageFile(null);
-  };
-
   const deleteHandler = async () => {
     const deleteProduct = async () => {
       await apiClient.delete(`/api/products/${productToDelete}`);
     };
     await toast.promise(deleteProduct(), {
       loading: "Deleting product...",
-      success: <b>Product deleted successfully</b>,
-      error: (error) => `Error: ${error}`,
+      success: () => {
+        handleCloseDeleteModal();
+        setRefresh(true);
+        return <b>Product deleted successfully</b>;
+      },
+      error: (error) => `Error: ${getError(error)}`,
     });
-    handleCloseDeleteModal();
-    setRefresh(true);
   };
   return (
     <div>
@@ -264,7 +268,7 @@ export default function ProductManageView() {
             show={showProductModal}
             onHide={handleCloseProductModal}
             size="xl"
-            onExit={handleExitModal}
+            onExited={handlOnExitedModal}
             keyboard={false}
             backdrop="static"
           >
@@ -455,7 +459,7 @@ export default function ProductManageView() {
                   Close
                 </Button>
                 <Button variant="primary" type="submit">
-                  Save Changes
+                  Create Product
                 </Button>
               </Modal.Footer>
             </Form>

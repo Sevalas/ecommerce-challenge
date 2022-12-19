@@ -45,7 +45,7 @@ orderRouter.delete(
       response.send({ message: "Order Deleted" });
     } else {
       response.status(404).send({
-        errorMessage: "Product not found",
+        errorMessage: "Order not found",
       });
     }
   })

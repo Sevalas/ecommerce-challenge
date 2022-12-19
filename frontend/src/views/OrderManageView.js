@@ -74,11 +74,13 @@ export default function OrderManageView() {
     };
     await toast.promise(deleteOrder(), {
       loading: "Deleting order...",
-      success: <b>Order deleted successfully</b>,
-      error: (error) => `Error: ${error}`,
+      success: () => {
+        handleCloseDeleteModal();
+        setRefresh(true);
+        return <b>Order deleted successfully</b>;
+      },
+      error: (error) => `Error: ${getError(error)}`,
     });
-    handleCloseDeleteModal();
-    setRefresh(true);
   };
 
   return (

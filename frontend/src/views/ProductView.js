@@ -10,7 +10,7 @@ import MessageBox from "../components/MessageBox";
 import { getError } from "../utils/utils";
 import { Store } from "../context/Store";
 import toast from "react-hot-toast";
-import ImageModal from "./ImageModal";
+import ImageModal from "../components/ImageModal";
 
 export default function ProductView() {
   const { slug } = useParams();

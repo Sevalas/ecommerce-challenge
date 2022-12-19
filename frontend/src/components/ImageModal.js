@@ -21,8 +21,6 @@ export default function ImageModal(props) {
       }
     };
     document.addEventListener("keydown", eventHandler);
-
-    document.addEventListener("keydown", eventHandler);
     return () => {
       document.removeEventListener("keydown", eventHandler);
     };

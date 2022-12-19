@@ -7,7 +7,7 @@ import { Helmet } from "react-helmet-async";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 import toast from "react-hot-toast";
-import ImageModal from "./ImageModal";
+import ImageModal from "../components/ImageModal";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -120,10 +120,12 @@ export default function ProductEditView() {
 
     await toast.promise(updateProduct(), {
       loading: "Updating product...",
-      success: <b>Product Updated</b>,
-      error: (error) => `Error: ${error}`,
+      success: () => {
+        dispatch({ type: "UPDATE_FINISH" });
+        return <b>Product Updated</b>;
+      },
+      error: (error) => `Error: ${getError(error)}`,
     });
-    dispatch({ type: "UPDATE_FINISH" });
   };
 
   const uploadFileHandler = async (event) => {
