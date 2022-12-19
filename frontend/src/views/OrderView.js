@@ -2,7 +2,7 @@ import apiClient from "../components/ApiClient";
 import { useContext, useEffect, useReducer } from "react";
 import { Helmet } from "react-helmet-async";
 import { useNavigate, useParams } from "react-router-dom";
-import { Row, Col, ListGroup, Card } from "react-bootstrap";
+import { Row, Col, ListGroup, Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
@@ -27,6 +27,14 @@ function reducer(state, action) {
       return { ...state, loadingPay: false };
     case "PAY_RESET":
       return { ...state, loadingPay: false, successPay: false };
+    case "DELIVER_REQUEST":
+      return { ...state, loadingDeliver: true };
+    case "DELIVER_SUCCESS":
+      return { ...state, loadingDeliver: false, successDeliver: true };
+    case "DELIVER_FAIL":
+      return { ...state, loadingDeliver: false, errorDeliver: action.payload };
+    case "DELIVER_RESET":
+      return { ...state, loadingDeliver: false, successDeliver: false };
     default:
       return state;
   }
@@ -39,14 +47,24 @@ export default function OrderView() {
   const { id: orderId } = params;
   const navigate = useNavigate();
 
-  const [{ loading, error, order, successPay, loadingPay }, dispatch] =
-    useReducer(reducer, {
-      loading: true,
-      order: {},
-      error: "",
-      successPay: false,
-      loadingPay: false,
-    });
+  const [
+    {
+      loading,
+      error,
+      order,
+      successPay,
+      loadingPay,
+      loadingDeliver,
+      successDeliver,
+    },
+    dispatch,
+  ] = useReducer(reducer, {
+    loading: true,
+    order: {},
+    error: "",
+    successPay: false,
+    loadingPay: false,
+  });
 
   const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
 
@@ -99,10 +117,18 @@ export default function OrderView() {
     if (!userInfo) {
       return navigate(`/signin?redirect=/order/${orderId}`);
     }
-    if (!order._id || successPay || (order._id && order._id !== orderId)) {
+    if (
+      !order._id ||
+      successPay ||
+      successDeliver ||
+      (order._id && order._id !== orderId)
+    ) {
       fetchOrder();
       if (successPay) {
         dispatch({ type: "PAY_RESET" });
+      }
+      if (successDeliver) {
+        dispatch({ type: "DELIVER_RESET" });
       }
     } else {
       const loadPaypalScript = async () => {
@@ -118,7 +144,28 @@ export default function OrderView() {
       };
       loadPaypalScript();
     }
-  }, [order, userInfo, orderId, navigate, paypalDispatch, successPay]);
+  }, [
+    order,
+    userInfo,
+    orderId,
+    navigate,
+    paypalDispatch,
+    successPay,
+    successDeliver,
+  ]);
+
+  const deliverOrderHandler = async () => {
+    try {
+      dispatch({ type: "DELIVER_REQUEST" });
+      await apiClient.put(`/api/orders/${orderId}/deliver`, {});
+      dispatch({ type: "DELIVER_SUCCESS" });
+      toast.success("Order is delivered");
+    } catch (error) {
+      toast.error(getError(error));
+      dispatch({ type: "DELIVER_FAIL" });
+    }
+  };
+
   return loading ? (
     <LoadingBox />
   ) : error ? (
@@ -143,8 +190,8 @@ export default function OrderView() {
                 {order.shippingAddress.country}
                 <br />
                 <strong>Status: </strong>
-                {order.status.isDelivered
-                  ? `Delivered at: ${order.status.deliveredAt}`
+                {order.status.isDelivered && order.status.deliveredAt
+                  ? `Delivered at: ${order.status.deliveredAt.substring(0, 10)}`
                   : "Not Delivered"}
               </Card.Text>
             </Card.Body>
@@ -157,8 +204,8 @@ export default function OrderView() {
                 <span className="text-capitalize">{order.paymentMethod}</span>
                 <br />
                 <strong>Status: </strong>
-                {order.status.isPaid
-                  ? `Paid at: ${order.status.paidAt}`
+                {order.status.isPaid && order.status.paidAt
+                  ? `Paid at: ${order.status.paidAt.substring(0, 10)}`
                   : "Not Paid"}
               </Card.Text>
             </Card.Body>
@@ -245,6 +292,18 @@ export default function OrderView() {
                     ))}
                   {loadingPay && <LoadingBox />}
                 </ListGroup.Item>
+                {userInfo.isAdmin &&
+                  order.status.isPaid &&
+                  !order.status.isDelivered && (
+                    <ListGroup.Item>
+                      {(loadingDeliver && <LoadingBox />)}
+                      <div className="d-grid">
+                        <Button type="button" onClick={deliverOrderHandler}>
+                          Deliver Order
+                        </Button>
+                      </div>
+                    </ListGroup.Item>
+                  )}
               </ListGroup>
             </Card.Body>
           </Card>

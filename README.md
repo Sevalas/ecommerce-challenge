@@ -44,3 +44,4 @@
 38. Remove product functionality
 39. Create modal image view functionality
 40. Create manage orders view
+41. Implement deliver button functionality

@@ -121,15 +121,6 @@ export default function OrderManageView() {
                       </Button>
                       <Button
                         type="button"
-                        className="mx-1"
-                        onClick={() => {
-                          navigateTo(`/order/${order._id}`);
-                        }}
-                      >
-                        Deliver
-                      </Button>
-                      <Button
-                        type="button"
                         variant="danger"
                         className="mx-1"
                         onClick={() => handleShowDeleteModal(order._id)}
@@ -142,12 +133,12 @@ export default function OrderManageView() {
                   <td>{order.user ? order.user.name : "DELETED USER"}</td>
                   <td>{order.createdAt.substring(0, 10)}</td>
                   <td>
-                    {order.status.isPaid
+                    {order.status.isPaid && order.status.paidAt
                       ? order.status.paidAt.substring(0, 10)
                       : "No"}
                   </td>
                   <td>
-                    {order.status.isDelivered
+                    {order.status.isDelivered && order.status.deliveredAt
                       ? order.status.deliveredAt.substring(0, 10)
                       : "No"}
                   </td>
