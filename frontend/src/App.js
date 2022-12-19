@@ -24,6 +24,7 @@ import DashboardView from "./views/DashboardView";
 import ProductManageView from "./views/ProductManageView";
 import ProductEditView from "./views/ProductEditView";
 import OrderManageView from "./views/OrderManageView";
+import UserManageView from "./views/UserManageView";
 
 export default function App() {
   const { state } = useContext(Store);
@@ -99,18 +100,26 @@ export default function App() {
               }
             />
             <Route
-              path="/admin/product/:id"
-              element={
-                <AdminRoute>
-                  <ProductEditView />
-                </AdminRoute>
-              }
-            />
-            <Route
               path="/admin/orders"
               element={
                 <AdminRoute>
                   <OrderManageView />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/users"
+              element={
+                <AdminRoute>
+                  <UserManageView />
+                </AdminRoute>
+              }
+            />
+            <Route
+              path="/admin/product/:id"
+              element={
+                <AdminRoute>
+                  <ProductEditView />
                 </AdminRoute>
               }
             />

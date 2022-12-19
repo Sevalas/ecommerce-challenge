@@ -2,9 +2,35 @@ import express from "express";
 import expressAsyncHandler from "express-async-handler";
 import bcrypt from "bcryptjs";
 import UserModel from "../models/UserModel.js";
-import { generateToken, isAuth } from "../utils/utils.js";
+import { generateToken, isAuth, isAdmin } from "../utils/utils.js";
 
 const userRouter = express.Router();
+const PAGE_SIZE = 4;
+
+userRouter.get(
+  "/admin",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (request, response) => {
+    const { query } = request;
+    const page = query.page || 1;
+    const pageSize = query.pageSize || PAGE_SIZE;
+
+    const users = await UserModel.find()
+      .sort({ createdAt: -1 })
+      .skip(pageSize * (page - 1))
+      .limit(pageSize);
+
+    const countUsers = await UserModel.countDocuments();
+
+    response.send({
+      users,
+      countUsers,
+      page,
+      pages: Math.ceil(countUsers / pageSize),
+    });
+  })
+);
 
 userRouter.post(
   "/signin",
@@ -66,7 +92,7 @@ userRouter.put(
         user.email = request.body.email || user.email;
         if (bcrypt.compareSync(request.body.password, user.passwordHash)) {
           if (request.body.newPassword && request.body.newPassword != "") {
-            console.log("cambio")
+            console.log("cambio");
             user.passwordHash = bcrypt.hashSync(request.body.newPassword);
           }
           const upadatedUser = await user.save();

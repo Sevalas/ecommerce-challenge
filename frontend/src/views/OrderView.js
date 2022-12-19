@@ -296,7 +296,7 @@ export default function OrderView() {
                   order.status.isPaid &&
                   !order.status.isDelivered && (
                     <ListGroup.Item>
-                      {(loadingDeliver && <LoadingBox />)}
+                      {loadingDeliver && <LoadingBox />}
                       <div className="d-grid">
                         <Button type="button" onClick={deliverOrderHandler}>
                           Deliver Order
