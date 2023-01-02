@@ -217,7 +217,7 @@ export default function ProductEditView() {
                   <Form.Control
                     value={form.price}
                     type="number"
-                    onKeyPress={(event) => {
+                    onKeyDown={(event) => {
                       if (!/[0-9]/.test(event.key)) {
                         event.preventDefault();
                       }
@@ -240,7 +240,7 @@ export default function ProductEditView() {
                   <Form.Control
                     value={form.countInStock}
                     type="number"
-                    onKeyPress={(event) => {
+                    onKeyDown={(event) => {
                       if (!/[0-9]/.test(event.key)) {
                         event.preventDefault();
                       }

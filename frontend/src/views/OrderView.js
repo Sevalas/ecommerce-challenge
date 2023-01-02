@@ -42,10 +42,9 @@ function reducer(state, action) {
 export default function OrderView() {
   const { state } = useContext(Store);
   const { userInfo } = state;
-
   const params = useParams();
   const { id: orderId } = params;
-  const navigate = useNavigate();
+  const navigateTo = useNavigate();
 
   const [
     {
@@ -115,7 +114,7 @@ export default function OrderView() {
     };
 
     if (!userInfo) {
-      return navigate(`/signin?redirect=/order/${orderId}`);
+      return navigateTo(`/signin?redirect=/order/${orderId}`);
     }
     if (
       !order._id ||
@@ -148,7 +147,7 @@ export default function OrderView() {
     order,
     userInfo,
     orderId,
-    navigate,
+    navigateTo,
     paypalDispatch,
     successPay,
     successDeliver,

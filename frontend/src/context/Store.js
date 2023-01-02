@@ -9,7 +9,7 @@ const initialState = {
       : [],
     shippingAddress: localStorage.getItem("shippingAddress")
       ? JSON.parse(localStorage.getItem("shippingAddress"))
-      : {},
+      : { location: {} },
     paymentMethod: localStorage.getItem("paymentMethod")
       ? JSON.parse(localStorage.getItem("paymentMethod"))
       : "",
@@ -71,6 +71,18 @@ export const reducerCart = (state, action) => {
       return {
         ...state,
         cart: { ...state.cart, shippingAddress: action.payload },
+      };
+    }
+
+    case "SAVE_SHIPPING_ADDRESS_MAP_LOCATION": {
+      const shippingAddress = {
+        ...state.cart.shippingAddress,
+        location: action.payload,
+      };
+      localStorage.setItem("shippingAddress", JSON.stringify(shippingAddress));
+      return {
+        ...state,
+        cart: { ...state.cart, shippingAddress: shippingAddress },
       };
     }
 

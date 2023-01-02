@@ -1,11 +1,11 @@
 import "./App.css";
 import { useEffect, useContext, useState } from "react";
 import { Store } from "./context/Store";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import HomeView from "./views/HomeView";
 import ProductView from "./views/ProductView";
 import { Container } from "react-bootstrap";
-import TopNavbar from "./components/Navbar";
+import TopBar from "./components/TopBar";
 import Footer from "./components/Footer";
 import CartView from "./views/CartView";
 import SigninView from "./views/SigninView";
@@ -32,10 +32,9 @@ export default function App() {
 
   const [sideBarIsOpen, setSideBarIsOpen] = useState(false);
 
-  const location = useLocation();
   useEffect(() => {
     toast.dismiss();
-  }, [location]);
+  }, []);
 
   return (
     <div
@@ -46,8 +45,8 @@ export default function App() {
       }
     >
       <Toaster position="bottom-center" />
-      <TopNavbar sideBarState={{ sideBarIsOpen, setSideBarIsOpen }} />
-      <main className="bg-light pb-2">
+      <TopBar sideBarState={{ sideBarIsOpen, setSideBarIsOpen }} />
+      <main className="bg-light">
         <Container className="mt-3">
           <Routes>
             <Route path="/" element={<HomeView />} />

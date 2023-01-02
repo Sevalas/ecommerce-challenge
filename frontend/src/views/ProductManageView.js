@@ -354,7 +354,7 @@ export default function ProductManageView() {
                         <Form.Control
                           value={form[(event) => event.target.id]}
                           type="number"
-                          onKeyPress={(event) => {
+                          onKeyDown={(event) => {
                             if (!/[0-9]/.test(event.key)) {
                               event.preventDefault();
                             }
@@ -379,7 +379,7 @@ export default function ProductManageView() {
                         <Form.Control
                           value={form[(event) => event.target.id]}
                           type="number"
-                          onKeyPress={(event) => {
+                          onKeyDown={(event) => {
                             if (!/[0-9]/.test(event.key)) {
                               event.preventDefault();
                             }
