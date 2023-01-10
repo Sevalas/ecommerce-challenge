@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useEffect, useContext, useReducer } from "react";
+import { useEffect, useContext, useReducer, useState } from "react";
 import { Button, Row, Col, Card, ListGroup } from "react-bootstrap";
 import { Helmet } from "react-helmet-async";
 import { Store } from "../context/Store";
@@ -9,6 +9,7 @@ import toast from "react-hot-toast";
 import { getError } from "../utils/utils";
 import apiClient from "../components/ApiClient";
 import LoadingBox from "../components/LoadingBox";
+import GoogleMapModal from "../components/GoogleMapModal";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -31,6 +32,9 @@ export default function PlaceOrderView() {
   });
   const { state, dispatch: contextDispatch } = useContext(Store);
   const { cart } = state;
+  const [showMapModal, setShowMapModal] = useState(false);
+  const handleShowMapModal = () => setShowMapModal(true);
+  const handleCloseMapModal = () => setShowMapModal(false);
 
   const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100; // 123.2345 => 123.23
   cart.itemsPrice = round2(
@@ -69,6 +73,27 @@ export default function PlaceOrderView() {
     }
   }, [cart, navigateTo]);
 
+  const addressFormater = () => {
+    const listOfAddressKeys = [
+      "address1",
+      "address2",
+      "province",
+      "city",
+      "country",
+      "postalCode",
+    ];
+    let address = "";
+    if (cart.shippingAddress) {
+      listOfAddressKeys.forEach((key) => {
+        let item = cart.shippingAddress[key];
+        if (item != null && item !== "") {
+          address = address.concat(item, ", ");
+        }
+      });
+    }
+    return address.substring(0, address.lastIndexOf(", "));
+  };
+
   return (
     <div>
       <Helmet>
@@ -85,9 +110,12 @@ export default function PlaceOrderView() {
               <Card.Text>
                 <strong>Name:</strong> {cart.shippingAddress.fullName} <br />
                 <strong>Address: </strong>
-                {cart.shippingAddress.address}, {cart.shippingAddress.city},{" "}
-                {cart.shippingAddress.postalCode},{" "}
-                {cart.shippingAddress.country}
+                {addressFormater()}
+                {cart.shippingAddress.location && (
+                  <>
+                    <Link onClick={handleShowMapModal}> Show on Map</Link>
+                  </>
+                )}
               </Card.Text>
               <Link to="/shipping">Edit</Link>
             </Card.Body>
@@ -184,6 +212,13 @@ export default function PlaceOrderView() {
           </Card>
         </Col>
       </Row>
+      {cart.shippingAddress.location && (
+        <GoogleMapModal
+          showMapModal={showMapModal}
+          location={cart.shippingAddress.location}
+          handleCloseMapModal={handleCloseMapModal}
+        />
+      )}
     </div>
   );
 }

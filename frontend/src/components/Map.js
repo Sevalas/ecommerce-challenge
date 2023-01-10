@@ -1,26 +1,22 @@
 import {
   GoogleMap,
-  StandaloneSearchBox,
   MarkerF,
   useJsApiLoader,
+  Autocomplete,
 } from "@react-google-maps/api";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 const libs = ["places"];
-const defaultLocation = { lat: -33.4513, lng: -70.6653 };
 
-export default function Map({
-  apiKey,
-  location,
-  setLocation,
-  searchBox,
-  setSearchBox,
-}) {
+export default function Map({ apiKey, location, setLocation }) {
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: apiKey,
     libraries: libs,
   });
-  const [center, setCenter] = useState(defaultLocation);
+  const defaultLocation = { lat: -33.4513, lng: -70.6653 };
+  const [center, setCenter] = useState(location || defaultLocation);
+  const [autoComplete, setAutoComplete] = useState();
+  const searchedLocation = useRef();
 
   useEffect(() => {
     if (!location) {
@@ -44,25 +40,36 @@ export default function Map({
           }
         });
       }
-    } else {
-      setCenter({ lat: location.lat, lng: location.lng });
     }
   }, [center, location, setLocation]);
 
   const onSerchBoxLoad = (ref) => {
-    setSearchBox(ref);
+    setAutoComplete(ref);
+    if (location) {
+      searchedLocation.current.value = location.searchedLocation || "";
+    }
   };
 
   const onPlacesChanged = () => {
-    if (searchBox) {
-      const place = searchBox.getPlaces()[0].geometry.location;
-      setCenter({ lat: place.lat(), lng: place.lng() });
-      setLocation({ lat: place.lat(), lng: place.lng() });
+    const place =
+      autoComplete && autoComplete.getPlace() ? autoComplete.getPlace() : null;
+    if (place && Object.keys(place).length > 1) {
+      const geometryLocation = {
+        lat: place.geometry.location.lat(),
+        lng: place.geometry.location.lng(),
+      };
+      setCenter(geometryLocation);
+      setLocation({
+        ...geometryLocation,
+        searchedLocation: searchedLocation.current.value,
+        place: place,
+      });
     }
   };
 
   const onDragEnd = (markerEvent) => {
     setLocation({
+      ...location,
       lat: markerEvent.latLng.lat(),
       lng: markerEvent.latLng.lng(),
     });
@@ -77,9 +84,9 @@ export default function Map({
           center={center}
           zoom={15}
         >
-          <StandaloneSearchBox
+          <Autocomplete
             onLoad={onSerchBoxLoad}
-            onPlacesChanged={onPlacesChanged}
+            onPlaceChanged={onPlacesChanged}
           >
             <div className="map-input-box-wrapper">
               <input
@@ -88,11 +95,13 @@ export default function Map({
                   e.key === "Enter" && e.preventDefault();
                 }}
                 placeholder="Search your address"
+                ref={searchedLocation}
+                className={`${!setLocation && "pe-none"}`}
               />
             </div>
-          </StandaloneSearchBox>
+          </Autocomplete>
           <MarkerF
-            draggable={true}
+            draggable={!!setLocation}
             onDragEnd={(e) => onDragEnd(e)}
             position={location}
           />

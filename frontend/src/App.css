@@ -18,6 +18,10 @@ main {
   flex: 1;
 }
 
+.btn-light {
+  background-color: #d8dde3;
+}
+
 .text-bold {
   font-weight: bold;
 }
@@ -300,4 +304,9 @@ main {
 
 .pac-container{
   z-index: 9999 !important;
+}
+
+.form-floating label {
+  color: #6c757d;
+  font-size: 0.9em;
 }
