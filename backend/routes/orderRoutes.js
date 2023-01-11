@@ -179,7 +179,7 @@ orderRouter.put(
       "email name"
     );
     if (order) {
-      if (order.status.isPaid != false) {
+      if (order.status.isPaid != true) {
         order.status.isPaid = true;
         order.status.paidAt = Date.now();
         order.paymentResult = {
@@ -190,9 +190,8 @@ orderRouter.put(
         };
 
         await sendGridMail({
-          to: "se.valas@outlook.com",
-          from: "se.valas@outlook.com",
-          subject: `wrap`,
+          to: order.user.email,
+          subject: `Ecom-svl New order ${order._id}`,
           html: payOrderEmailTemplate(order),
         });
 
