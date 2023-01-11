@@ -2,6 +2,7 @@ import express from "express";
 import ProductModel from "../models/ProductModel.js";
 import expressAsyncHandler from "express-async-handler";
 import { isAuth, isAdmin } from "../utils/utils.js";
+import ReviewModel from "../models/ReviewModel.js";
 
 const productRouter = express.Router();
 const PAGE_SIZE = 4;
@@ -77,6 +78,31 @@ productRouter.delete(
   })
 );
 
+productRouter.get(
+  "/:id/reviews",
+  isAuth,
+  expressAsyncHandler(async (request, response) => {
+    const { query } = request;
+    const page = Number(query.page) || 1;
+    const pageSize = query.pageSize || PAGE_SIZE;
+    const reviews = await ReviewModel.find({ productId: request.params.id })
+      .sort({ createdAt: -1 })
+      .skip(pageSize * (page - 1))
+      .limit(pageSize);
+
+    const countReviews = await ReviewModel.find({
+      productId: request.params.id,
+    }).countDocuments();
+
+    response.send({
+      reviews,
+      countReviews,
+      page,
+      pages: Math.ceil(countReviews / pageSize),
+    });
+  })
+);
+
 productRouter.post(
   "/:id/reviews",
   isAuth,
@@ -84,26 +110,33 @@ productRouter.post(
     const productId = request.params.id;
     const product = await ProductModel.findById(productId);
     if (product) {
-      if (product.reviews.find((x) => x.userId === request.user._id)) {
+      const reviews = await ReviewModel.find({ productId: productId });
+      if (reviews.find((x) => x.userId === request.user._id)) {
         return response
           .status(400)
           .send({ errorMessage: "You already submitted a review" });
       }
-      const review = {
+
+      const review = new ReviewModel({
+        productId: productId,
         userId: request.user._id,
-        name: request.user.name,
+        userName: request.user.name,
         rating: Number(request.body.rating),
         comment: request.body.comment,
-      };
-      product.reviews.push(review);
-      product.numReviews = product.reviews.length;
+      });
+
+      const newReview = await review.save();
+
+      reviews.push(newReview);
+      product.numReviews = reviews.length;
       product.rating =
-        product.reviews.reduce((a, c) => c.rating + a, 0) /
-        product.reviews.length;
-      const updatedProduct = await product.save();
+        reviews.reduce((a, c) => c.rating + a, 0) / reviews.length;
+
+      await product.save();
+
       response.status(201).send({
         message: "Review Created",
-        review: updatedProduct.reviews[updatedProduct.reviews.length - 1],
+        review: newReview,
         numReviews: product.numReviews,
         rating: product.rating,
       });
@@ -151,7 +184,7 @@ productRouter.get(
   expressAsyncHandler(async (request, response) => {
     const { query } = request;
     const pageSize = query.pageSize || PAGE_SIZE;
-    const page = query.page || 1;
+    const page = Number(query.page) || 1;
     const category = query.category || "";
     const price = query.price || "";
     const rating = query.rating || "";

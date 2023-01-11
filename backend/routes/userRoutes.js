@@ -131,7 +131,6 @@ userRouter.put(
         user.email = request.body.email || user.email;
         if (bcrypt.compareSync(request.body.password, user.passwordHash)) {
           if (request.body.newPassword && request.body.newPassword != "") {
-            console.log("cambio");
             user.passwordHash = bcrypt.hashSync(request.body.newPassword);
           }
           const upadatedUser = await user.save();

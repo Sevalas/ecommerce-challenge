@@ -1,5 +1,4 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
-import * as Constants from "../constants/Constants";
 import { useEffect, useReducer, useContext, useState, useRef } from "react";
 import {
   Form,
@@ -9,7 +8,6 @@ import {
   Card,
   Badge,
   Button,
-  FloatingLabel,
 } from "react-bootstrap";
 import apiClient from "../components/ApiClient";
 import Rating from "../components/Rating";
@@ -20,6 +18,26 @@ import { getError } from "../utils/utils";
 import { Store } from "../context/Store";
 import toast from "react-hot-toast";
 import ImageModal from "../components/ImageModal";
+import { PaginationControl } from "react-bootstrap-pagination-control";
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case "FETCH_PRODUCT_REQUEST":
+      return { ...state, loading: true };
+    case "FETCH_PRODUCT_SUCCESS":
+      return { ...state, loading: false, product: action.payload };
+    case "FETCH_PRODUCT_FAIL":
+      return { ...state, error: action.payload, loading: false };
+    case "FETCH_REVIEWS_REQUEST":
+      return { ...state, reviewsLoading: true };
+    case "FETCH_REVIEWS_SUCCESS":
+      return { ...state, reviewsLoading: false, reviews: action.payload };
+    case "FETCH_REVIEWS_FAIL":
+      return { ...state, reviewsError: action.payload, reviewsLoading: false };
+    default:
+      return state;
+  }
+};
 
 export default function ProductView() {
   let reviewsRef = useRef();
@@ -27,29 +45,59 @@ export default function ProductView() {
   const { state, dispatch: contextDispatch } = useContext(Store);
   const { cart, userInfo } = state;
   const { slug } = useParams();
-  const reducer = Constants.reducer;
   const navigateTo = useNavigate();
   const [showImageModal, setShowImageModal] = useState(false);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
+  const pageSize = 4;
 
-  const [{ loading, error, object, loadingCreateReview }, dispatch] =
-    useReducer(reducer, {
-      loading: true,
-      error: "",
-      object: [],
-    });
-  const product = object;
-
+  const [
+    {
+      loading,
+      error,
+      product,
+      reviews,
+      reviewsLoading,
+      reviewsError,
+      loadingCreateReview,
+    },
+    dispatch,
+  ] = useReducer(reducer, {
+    loading: true,
+    error: "",
+    product: {},
+    reviewsLoading: true,
+    reviews: {},
+  });
   useEffect(() => {
     const fetchData = async () => {
-      dispatch({ type: "FETCH_REQUEST" });
+      dispatch({ type: "FETCH_PRODUCT_REQUEST" });
       try {
-        const result = await apiClient.get(`/api/products/slug/${slug}`);
-        dispatch({ type: "FETCH_SUCCESS", payload: result.data });
+        const productResult = await apiClient.get(`/api/products/slug/${slug}`);
+        dispatch({
+          type: "FETCH_PRODUCT_SUCCESS",
+          payload: productResult.data,
+        });
+        try {
+          if (productResult.data && productResult.data._id) {
+            dispatch({ type: "FETCH_REVIEWS_REQUEST" });
+            const resultReviews = await apiClient.get(
+              `/api/products/${productResult.data._id}/reviews`
+            );
+            dispatch({
+              type: "FETCH_REVIEWS_SUCCESS",
+              payload: resultReviews.data,
+            });
+          }
+        } catch (error) {
+          dispatch({
+            type: "FETCH_REVIEWS_FAIL",
+            payload: getError(error),
+          });
+        }
         setRefresh(false);
       } catch (error) {
-        dispatch({ type: "FETCH_FAIL", error: getError(error) });
+        dispatch({ type: "FETCH_PRODUCT_FAIL", payload: getError(error) });
         setRefresh(false);
       }
     };
@@ -78,7 +126,7 @@ export default function ProductView() {
   const submitHandler = async (e) => {
     e.preventDefault();
     if (!comment || !rating) {
-      toast.error("please enter comment and rating");
+      toast.error("Please enter comment and rating");
       return;
     }
     const postReview = async () => {
@@ -97,6 +145,21 @@ export default function ProductView() {
       },
       error: (error) => `Error: ${getError(error)}`,
     });
+  };
+
+  const reviewPaginator = async (page) => {
+    try {
+      dispatch({ type: "FETCH_REVIEWS_REQUEST" });
+      const resultReviews = await apiClient.get(
+        `/api/products/${product._id}/reviews?page=${page}`
+      );
+      dispatch({
+        type: "FETCH_REVIEWS_SUCCESS",
+        payload: resultReviews.data,
+      });
+    } catch (error) {
+      dispatch({ type: "FETCH_REVIEWS_FAIL", error: getError(error) });
+    }
   };
 
   return loading ? (
@@ -173,27 +236,59 @@ export default function ProductView() {
       </Row>
       <div className="my-3">
         <h2 ref={reviewsRef}>Reviews</h2>
-        {product.reviews.length === 0 ? (
-          <div className="my-3">
-            <MessageBox>There is no review yet</MessageBox>
-          </div>
-        ) : (
-          <ListGroup>
-            {product.reviews.map((review) => (
-              <ListGroup.Item key={review._id}>
-                <strong>{review.name}</strong>
-                <Rating rating={review.rating} caption=" "></Rating>
-                <p>{review.createdAt.substring(0, 10)}</p>
-                <p>{review.comment}</p>
-              </ListGroup.Item>
-            ))}
-          </ListGroup>
-        )}
+        <div>
+          {reviewsLoading ? (
+            <div className="my-3">
+              <MessageBox>Loading comments...</MessageBox>
+            </div>
+          ) : reviewsError ? (
+            <div className="my-3">
+              <MessageBox variant="danger">{reviewsError}</MessageBox>
+            </div>
+          ) : (
+            <div>
+              {!reviews || !reviews.reviews || reviews.reviews.length === 0 ? (
+                <div className="my-3">
+                  <MessageBox>There is no review yet</MessageBox>
+                </div>
+              ) : (
+                <div>
+                  <ListGroup>
+                    {reviews.reviews.map((review) => (
+                      <ListGroup.Item
+                        key={review._id}
+                        className="product-comment"
+                      >
+                        <strong>{review.name}</strong>
+                        <Rating rating={review.rating} caption=" "></Rating>
+                        <p>{review.createdAt.substring(0, 10)}</p>
+                        <p className="comment-box">{review.comment}</p>
+                      </ListGroup.Item>
+                    ))}
+                  </ListGroup>
+                  {reviews.pages > 1 && (
+                    <div className="d-flex justify-content-center overflow-auto">
+                      <PaginationControl
+                        page={reviews.page}
+                        total={reviews.countReviews}
+                        limit={pageSize}
+                        ellipsis={1}
+                        changePage={(page) => {
+                          reviewPaginator(page);
+                        }}
+                      />
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
         <div className="my-3">
           {userInfo ? (
             <form onSubmit={submitHandler}>
               <h2>Write a customer review</h2>
-              <Form.Group className="mb-3" controlId="rating">
+              <Form.Group className="mb-1" controlId="rating">
                 <Form.Label>Rating</Form.Label>
                 <Form.Select
                   aria-label="Rating"
@@ -208,19 +303,15 @@ export default function ProductView() {
                   <option value="5">5- Excelent</option>
                 </Form.Select>
               </Form.Group>
-              <FloatingLabel
-                controlId="floatingTextarea"
-                label="Comments"
-                className="mb-3"
-              >
+              <Form.Group className="mb-1" controlId="comment">
+                <Form.Label>Comment</Form.Label>
                 <Form.Control
                   as="textarea"
                   placeholder="Leave a comment here"
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
                 />
-              </FloatingLabel>
-
+              </Form.Group>
               <div className="mb-3">
                 <Button disabled={loadingCreateReview} type="submit">
                   Submit

@@ -310,3 +310,27 @@ main {
   color: #6c757d;
   font-size: 0.9em;
 }
+
+/* comments */
+
+.product-comment .comment-box{
+  max-height: 5rem;
+  overflow: auto;
+}
+
+/* pagination */
+
+.pagination {
+  margin-bottom: 0;
+  margin-top: 0.2rem;
+}
+
+.pagination .page-link{
+  padding: 0.75rem;
+}
+
+@media (max-width: 768px) {
+  .pagination .page-link{
+    padding: 0.4rem;
+  }
+}
