@@ -3,7 +3,12 @@ import expressAsyncHandler from "express-async-handler";
 import OrderModel from "../models/OrderModel.js";
 import UserModel from "../models/UserModel.js";
 import ProductModel from "../models/ProductModel.js";
-import { isAuth, isAdmin } from "../utils/utils.js";
+import {
+  isAuth,
+  isAdmin,
+  sendGridMail,
+  payOrderEmailTemplate,
+} from "../utils/utils.js";
 
 const orderRouter = express.Router();
 const PAGE_SIZE = 4;
@@ -169,19 +174,33 @@ orderRouter.put(
   "/:id/pay",
   isAuth,
   expressAsyncHandler(async (req, res) => {
-    const order = await OrderModel.findById(req.params.id);
+    const order = await OrderModel.findById(req.params.id).populate(
+      "user",
+      "email name"
+    );
     if (order) {
-      order.status.isPaid = true;
-      order.status.paidAt = Date.now();
-      order.paymentResult = {
-        id: req.body.id,
-        status: req.body.status,
-        update_time: req.body.update_time,
-        email_address: req.body.email_address,
-      };
+      if (order.status.isPaid != false) {
+        order.status.isPaid = true;
+        order.status.paidAt = Date.now();
+        order.paymentResult = {
+          id: req.body.id,
+          status: req.body.status,
+          update_time: req.body.update_time,
+          email_address: req.body.email_address,
+        };
 
-      const updatedOrder = await order.save();
-      res.send({ message: "Order Paid", order: updatedOrder });
+        await sendGridMail({
+          to: "se.valas@outlook.com",
+          from: "se.valas@outlook.com",
+          subject: `wrap`,
+          html: payOrderEmailTemplate(order),
+        });
+
+        const updatedOrder = await order.save();
+        res.send({ message: "Order Paid", order: updatedOrder });
+      } else {
+        res.status(404).send({ message: "Order Already Paid" });
+      }
     } else {
       res.status(404).send({ message: "Order Not Found" });
     }

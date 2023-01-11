@@ -35,6 +35,7 @@ export default function ShippingAddressView() {
       navigateTo("/signin?redirect=/shipping");
     }
     if (shippingAddress && shippingAddress.location) {
+      debugger
       setLocation(shippingAddress.location);
     }
   }, [userInfo, navigateTo, contextDispatch, shippingAddress]);
@@ -43,33 +44,32 @@ export default function ShippingAddressView() {
   const handleCloseMapModal = () => setShowMapModal(false);
 
   const getAddressComponentByType = (addresComponents, type) => {
-    if (!addresComponents) {
-      return "";
+    let mappedAddresComponents = {};
+    if (addresComponents) {
+      addresComponents.forEach((component) => {
+        if (component.types && component.types.length > 0)
+          mappedAddresComponents[component.types[0]] = component.long_name;
+      });
     }
-    const component = addresComponents.find((component) => {
-      return component.types.find((componentType) => componentType === type);
-    });
-    return component ? component.long_name : "";
+    return mappedAddresComponents;
   };
 
   const confirmMap = () => {
     const place = location.place;
-    setCountry(getAddressComponentByType(place.address_components, "country"));
-    setCity(
-      getAddressComponentByType(
-        place.address_components,
-        "administrative_area_level_2"
-      )
-    );
-    setProvince(
-      getAddressComponentByType(
-        place.address_components,
-        "administrative_area_level_1"
-      )
-    );
-    setAddress1(
-      place.formatted_address.substring(0, place.formatted_address.indexOf(","))
-    );
+    if (place) {
+      const mappedAddresComponents = getAddressComponentByType(
+        location.place.address_components
+      );
+      setCountry(mappedAddresComponents.country || "");
+      setCity(mappedAddresComponents.administrative_area_level_2 || "");
+      setProvince(mappedAddresComponents.administrative_area_level_1 || "");
+      setAddress1(
+        place.formatted_address.substring(
+          0,
+          place.formatted_address.indexOf(",")
+        )
+      );
+    }
     handleCloseMapModal();
     toast.success("location selected successfully.");
   };
@@ -90,8 +90,10 @@ export default function ShippingAddressView() {
       province,
       postalCode,
     };
+    debugger
     if (location) {
       let payloadLocation = {
+        ...location,
         lat: location.lat,
         lng: location.lng,
         searchedLocation: location.searchedLocation,
@@ -99,13 +101,10 @@ export default function ShippingAddressView() {
       if (location.place) {
         payloadLocation = {
           ...payloadLocation,
-          place: {
-            formatted_address: location.place.formatted_address,
-            name: location.place.name,
-            vicinity: location.place.vicinity,
-            place_id: location.place.place_id,
-            address_components: location.place.address_components,
-          },
+          formatted_address: location.place.formatted_address,
+          name: location.place.name,
+          vicinity: location.place.vicinity,
+          place_id: location.place.place_id,
         };
       }
       payload = {

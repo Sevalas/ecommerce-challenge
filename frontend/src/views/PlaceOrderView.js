@@ -113,7 +113,8 @@ export default function PlaceOrderView() {
                 {addressFormater()}
                 {cart.shippingAddress.location && (
                   <>
-                    <Link onClick={handleShowMapModal}> Show on Map</Link>
+                    {" "}
+                    <Link onClick={handleShowMapModal}>Show on Map</Link>
                   </>
                 )}
               </Card.Text>

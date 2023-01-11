@@ -35,6 +35,7 @@ export default function GoogleMapModal({
     loading: false,
   });
   const [googleApiKey, setGoogleApiKey] = useState(null);
+  const [disableConfirmButton, setDisableConfirmButton] = useState(true);
 
   useEffect(() => {
     const fecthApiKey = async () => {
@@ -70,7 +71,7 @@ export default function GoogleMapModal({
               variant="primary"
               type="button"
               onClick={confirmMap}
-              disabled={location != null && location.place == null}
+              disabled={disableConfirmButton}
             >
               Confirm
             </Button>
@@ -94,6 +95,7 @@ export default function GoogleMapModal({
             apiKey={googleApiKey}
             location={location}
             setLocation={setLocation}
+            setDisableConfirmButton={setDisableConfirmButton}
           />
         )}
       </Modal.Body>

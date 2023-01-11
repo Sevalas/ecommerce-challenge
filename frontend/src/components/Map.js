@@ -8,7 +8,12 @@ import { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 const libs = ["places"];
 
-export default function Map({ apiKey, location, setLocation }) {
+export default function Map({
+  apiKey,
+  location,
+  setLocation,
+  setDisableConfirmButton,
+}) {
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: apiKey,
     libraries: libs,
@@ -20,6 +25,7 @@ export default function Map({ apiKey, location, setLocation }) {
 
   useEffect(() => {
     if (!location) {
+      setDisableConfirmButton(true);
       setLocation(center);
       if (!navigator.geolocation) {
         toast("Geolocation not supported by this browser");
@@ -27,7 +33,6 @@ export default function Map({ apiKey, location, setLocation }) {
         navigator.permissions.query({ name: "geolocation" }).then((result) => {
           if (result.state !== "denied") {
             navigator.geolocation.getCurrentPosition((position) => {
-              console.log(position);
               setCenter({
                 lat: position.coords.latitude,
                 lng: position.coords.longitude,
@@ -41,12 +46,13 @@ export default function Map({ apiKey, location, setLocation }) {
         });
       }
     }
-  }, [center, location, setLocation]);
+  }, [center, location, setDisableConfirmButton, setLocation]);
 
   const onSerchBoxLoad = (ref) => {
     setAutoComplete(ref);
-    if (location) {
-      searchedLocation.current.value = location.searchedLocation || "";
+    if (location && location.searchedLocation) {
+      setDisableConfirmButton(false);
+      searchedLocation.current.value = location.searchedLocation;
     }
   };
 
@@ -64,6 +70,7 @@ export default function Map({ apiKey, location, setLocation }) {
         searchedLocation: searchedLocation.current.value,
         place: place,
       });
+      setDisableConfirmButton(false);
     }
   };
 
@@ -73,6 +80,10 @@ export default function Map({ apiKey, location, setLocation }) {
       lat: markerEvent.latLng.lat(),
       lng: markerEvent.latLng.lng(),
     });
+  };
+
+  const autoCompleteOnChangehandler = () => {
+    setDisableConfirmButton(true);
   };
 
   return (
@@ -97,6 +108,7 @@ export default function Map({ apiKey, location, setLocation }) {
                 placeholder="Search your address"
                 ref={searchedLocation}
                 className={`${!setLocation && "pe-none"}`}
+                onChange={autoCompleteOnChangehandler}
               />
             </div>
           </Autocomplete>
