@@ -81,7 +81,6 @@ export default function UserManageView() {
         isAdmin: user.isAdmin,
       });
     }
-    console.log("test");
     setShowUpdateModal(true);
   };
   const handleCloseUpdateModal = () => setShowUpdateModal(false);

@@ -35,7 +35,6 @@ export default function ShippingAddressView() {
       navigateTo("/signin?redirect=/shipping");
     }
     if (shippingAddress && shippingAddress.location) {
-      debugger
       setLocation(shippingAddress.location);
     }
   }, [userInfo, navigateTo, contextDispatch, shippingAddress]);
@@ -90,7 +89,6 @@ export default function ShippingAddressView() {
       province,
       postalCode,
     };
-    debugger
     if (location) {
       let payloadLocation = {
         ...location,
