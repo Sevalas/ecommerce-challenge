@@ -37,7 +37,7 @@ export default function Product(props) {
       <Link to={{ pathname: `/product/${product.slug}` }}>
         <img
           className="product-component-card-img-top"
-          src={product.image}
+          src={product.coverImage}
           alt={product.name}
         />
       </Link>

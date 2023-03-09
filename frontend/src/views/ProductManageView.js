@@ -418,7 +418,7 @@ export default function ProductManageView() {
                   </Col>
                   <Col className="d-flex justify-content-center" md="auto">
                     <Form.Group controlId="image" className="text-center">
-                      <div className="image-uploader-visualizer mt-2">
+                      <div className="img-upld-vslzer mt-2">
                         <Form.Control
                           type="file"
                           style={{ display: "none" }}

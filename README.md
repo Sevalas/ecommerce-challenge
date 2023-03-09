@@ -50,3 +50,4 @@
 44. Implement google maps select address
 45. Email order receipt by sendGrid
 46. Rate and Review products functionality
+47. Upload multiple Images

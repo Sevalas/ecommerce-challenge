@@ -2,7 +2,15 @@ import { useEffect, useReducer, useRef, useState } from "react";
 import apiClient from "../components/ApiClient";
 import { useNavigate, useParams } from "react-router-dom";
 import { getError } from "../utils/utils";
-import { Button, Col, Container, Form, InputGroup, Row } from "react-bootstrap";
+import {
+  Button,
+  Col,
+  Container,
+  Form,
+  InputGroup,
+  Modal,
+  Row,
+} from "react-bootstrap";
 import { Helmet } from "react-helmet-async";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
@@ -36,10 +44,17 @@ export default function ProductEditView() {
 
   const [form, setForm] = useState({});
   const [errorsForm, setErrorsForm] = useState({});
-  const [newImageFile, setNewImageFile] = useState(null);
-  const [showImageModal, setShowImageModal] = useState(false);
+  const [coverImageFile, setCoverImageFile] = useState(null);
+  const [modalImagesFiles, setModalImagesFiles] = useState([]);
+  const [showImageModalCover, setShowImageModalCover] = useState(false);
+  const [showImageModalList, setShowImageModalList] = useState(false);
+  const [imageModalListIndex, setImageModalListIndex] = useState(0);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [imageIndexToDelete, setImageIndexToDelete] = useState(null);
   const [functionalSlug, setFunctionalSlug] = useState(false);
-  const inputFile = useRef(null);
+  const inputCoverImage = useRef(null);
+  const btnImages = useRef(null);
+  const updateBtnImages = useRef(null);
 
   const setField = (field, value) => {
     setForm({ ...form, [field]: value });
@@ -47,6 +62,17 @@ export default function ProductEditView() {
       setErrorsForm({ ...errorsForm, [field]: null });
     }
   };
+
+  const openImageModal = (index) => {
+    setShowImageModalList(true);
+    setImageModalListIndex(index);
+  };
+
+  const handleShowDeleteModal = (index) => {
+    setShowDeleteModal(true);
+    setImageIndexToDelete(index);
+  };
+  const handleCloseDeleteModal = () => setShowDeleteModal(false);
 
   const validateForm = () => {
     const newErrors = {};
@@ -62,12 +88,14 @@ export default function ProductEditView() {
           name: data.name,
           slug: data.slug,
           price: data.price,
-          image: data.image,
+          coverImage: data.coverImage,
           category: data.category,
           countInStock: data.countInStock,
           brand: data.brand,
           description: data.description,
+          images: data.images,
         });
+        setModalImagesFiles(data.images);
         setFunctionalSlug(data.slug);
         dispatch({ type: "FETCH_SUCCESS" });
       } catch (error) {
@@ -90,8 +118,7 @@ export default function ProductEditView() {
 
     const updateProduct = async () => {
       dispatch({ type: "UPDATE_REQUEST" });
-      if (newImageFile) {
-        const file = newImageFile.file;
+      const uploadImage = async (file) => {
         const bodyFormData = new FormData();
         bodyFormData.append("file", file);
         const { data: uploadData } = await apiClient.post(
@@ -101,7 +128,24 @@ export default function ProductEditView() {
             "Content-Type": "multipart/form-data",
           }
         );
-        form.image = uploadData.secure_url;
+        return uploadData;
+      };
+      if (coverImageFile) {
+        const uploadData = await uploadImage(coverImageFile.file);
+        form.coverImage = uploadData.secure_url;
+      }
+
+      if (modalImagesFiles) {
+        const listOfUploadedData = [];
+        for (const index in modalImagesFiles) {
+          if (modalImagesFiles[index].file) {
+            const uploadData = await uploadImage(modalImagesFiles[index].file);
+            listOfUploadedData.push(uploadData.secure_url);
+          } else {
+            listOfUploadedData.push(modalImagesFiles[index]);
+          }
+        }
+        form.images = listOfUploadedData;
       }
 
       await apiClient.put(`/api/products/${productId}`, {
@@ -109,7 +153,8 @@ export default function ProductEditView() {
         name: form.name,
         slug: form.slug,
         price: form.price,
-        image: form.image,
+        coverImage: form.coverImage,
+        images: form.images,
         category: form.category,
         countInStock: form.countInStock,
         brand: form.brand,
@@ -128,16 +173,46 @@ export default function ProductEditView() {
     });
   };
 
-  const uploadFileHandler = async (event) => {
+  const setCoverFileHandler = async (event) => {
     const file = {
       file: event.target.files[0],
       path: URL.createObjectURL(event.target.files[0]),
     };
-    setNewImageFile(file);
+    setCoverImageFile(file);
+  };
+
+  const setImagesFilesHandler = async (event) => {
+    if (modalImagesFiles && modalImagesFiles.length >= 4) {
+      toast.error("Photo limit reached (4 per product)");
+    } else {
+      const file = {
+        file: event.target.files[0],
+        path: URL.createObjectURL(event.target.files[0]),
+      };
+      setModalImagesFiles([...modalImagesFiles, file]);
+    }
+  };
+
+  const updateImageFileHandler = async (event, index) => {
+    const file = {
+      file: event.target.files[0],
+      path: URL.createObjectURL(event.target.files[0]),
+    };
+    let updatedImageFiles = modalImagesFiles;
+    updatedImageFiles[index] = file;
+    setModalImagesFiles([...updatedImageFiles]);
+  };
+
+  const deleteHandler = () => {
+    let updatedImageFiles = modalImagesFiles;
+    updatedImageFiles.splice(imageIndexToDelete, 1);
+    setModalImagesFiles([...updatedImageFiles]);
+    setImageIndexToDelete(null);
+    handleCloseDeleteModal();
   };
 
   return (
-    <Container>
+    <Container className="mb-2">
       <Helmet>
         <title>Edit Product</title>
       </Helmet>
@@ -278,54 +353,153 @@ export default function ProductEditView() {
               </Form.Group>
             </Col>
             <Col className="mb-3 d-flex justify-content-center" md="auto">
-              <div className="image-uploader-visualizer mt-2">
-                <Form.Group controlId="image" className="text-center">
+              <div className="img-upld-vslzer mt-2">
+                <Form.Group controlId="coverImage" className="text-center">
                   <Form.Control
                     type="file"
                     style={{ display: "none" }}
                     accept="image/*"
-                    onChange={uploadFileHandler}
-                    isInvalid={!!errorsForm.image}
-                    ref={inputFile}
+                    onChange={setCoverFileHandler}
+                    isInvalid={!!errorsForm.coverImage}
+                    ref={inputCoverImage}
                   />
-                  <Button onClick={() => inputFile.current.click()}>
-                    Change Image
+                  <Button onClick={() => inputCoverImage.current.click()}>
+                    Change Cover Image
                   </Button>
                 </Form.Group>
                 <div className="text-center">
-                  {newImageFile ? (
+                  {coverImageFile ? (
                     <div>
                       <img
-                        src={newImageFile.path}
-                        onClick={() => setShowImageModal(true)}
+                        src={coverImageFile.path}
+                        onClick={() => setShowImageModalCover(true)}
                         alt={form.name}
                         className="rounded img-thumbnail-upload"
                       />
-                      {showImageModal && (
+                      {showImageModalCover && (
                         <ImageModal
-                          imagesSrc={newImageFile.path}
-                          setShowModal={setShowImageModal}
+                          imagesSrc={coverImageFile.path}
+                          setShowModal={setShowImageModalCover}
                         />
                       )}
                     </div>
                   ) : (
                     <div>
                       <img
-                        src={form.image}
-                        onClick={() => setShowImageModal(true)}
+                        src={form.coverImage}
+                        onClick={() => setShowImageModalCover(true)}
                         alt={form.name}
                         className="rounded img-thumbnail-upload"
                       />
-                      {showImageModal && (
+                      {showImageModalCover && (
                         <ImageModal
-                          imagesSrc={form.image}
-                          setShowModal={setShowImageModal}
+                          imagesSrc={form.coverImage}
+                          setShowModal={setShowImageModalCover}
                         />
                       )}
                     </div>
                   )}
                 </div>
               </div>
+            </Col>
+          </Row>
+          <h5>Add additional images</h5>
+          <Row className="mltpl-img-upld-vslzer mb-3">
+            <Col>
+              <Row className="h-100">
+                <Col className="col-3 ps-3">
+                  <Form.Group
+                    controlId="imagesButton"
+                    className="vslzer-btn-wrap text-center"
+                  >
+                    <Form.Control
+                      type="file"
+                      style={{ display: "none" }}
+                      accept="image/*"
+                      onChange={setImagesFilesHandler}
+                      ref={btnImages}
+                    />
+                    <Button
+                      className="vslzer-btn"
+                      onClick={() => btnImages.current.click()}
+                      disabled={
+                        modalImagesFiles && modalImagesFiles.length >= 4
+                      }
+                    >
+                      <i className="fa-solid fa-plus" />
+                    </Button>
+                  </Form.Group>
+                </Col>
+                <Col className="col-9 pe-3 pb-2 d-flex overflow-auto">
+                  {modalImagesFiles.length > 0 && (
+                    <div className="vslzer-img-wrap mx-2">
+                      {modalImagesFiles.map((imageFile, index) => (
+                        <div key={index} className="vslzer-img mx-1">
+                          <div>
+                            <Row className="px-1">
+                              <Col>
+                                <Button
+                                  onClick={() =>
+                                    document
+                                      .getElementById("imagesVslzer_" + index)
+                                      .click()
+                                  }
+                                >
+                                  Change
+                                </Button>
+                              </Col>
+                              <Col md="3" className="p-0">
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    handleShowDeleteModal(index);
+                                  }}
+                                  className="deleteModalImage"
+                                >
+                                  <i className="fa-solid fa-trash" />
+                                </button>
+                              </Col>
+                            </Row>
+                          </div>
+                          <Form.Group
+                            controlId={"imagesVslzer_" + index}
+                            className="text-center"
+                          >
+                            <Form.Control
+                              type="file"
+                              style={{ display: "none" }}
+                              accept="image/*"
+                              onChange={(event) =>
+                                updateImageFileHandler(event, index)
+                              }
+                              ref={updateBtnImages}
+                            />
+                          </Form.Group>
+                          <div className="text-center">
+                            {imageFile.path ? (
+                              <img
+                                src={imageFile.path}
+                                id={index}
+                                onClick={() => openImageModal(index)}
+                                alt={imageFile.path}
+                                className="rounded img-thumbnail-upload"
+                              />
+                            ) : (
+                              <img
+                                src={imageFile}
+                                id={index}
+                                onClick={() => openImageModal(index)}
+                                alt={imageFile}
+                                className="rounded img-thumbnail-upload"
+                              />
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </Col>
+              </Row>
             </Col>
           </Row>
           <div className="mt-2 d-flex justify-content-end">
@@ -348,6 +522,34 @@ export default function ProductEditView() {
           </div>
         </Form>
       )}
+      {showImageModalList && (
+        <ImageModal
+          imagesSrc={modalImagesFiles.map((file) => {
+            const src = file.path ? file.path : file;
+            return src;
+          })}
+          index={imageModalListIndex}
+          setShowModal={setShowImageModalList}
+        />
+      )}
+      <Modal
+        show={showDeleteModal}
+        onHide={handleCloseDeleteModal}
+        size="sm"
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Are you sure to Delete?</Modal.Title>
+        </Modal.Header>
+        <Modal.Footer>
+          <Button variant="danger" onClick={deleteHandler}>
+            Delete
+          </Button>
+          <Button variant="secondary" onClick={handleCloseDeleteModal}>
+            Cancel
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Container>
   );
 }

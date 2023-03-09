@@ -24,7 +24,8 @@ productRouter.post(
     const newProduct = new ProductModel({
       name: requestProduct.name,
       slug: requestProduct.slug,
-      image: requestProduct.image,
+      coverImage: requestProduct.coverImage,
+      images: requestProduct.images,
       brand: requestProduct.brand,
       category: requestProduct.category,
       description: requestProduct.description,
@@ -45,7 +46,8 @@ productRouter.put(
     if (product) {
       (product.name = request.body.name),
         (product.slug = request.body.slug),
-        (product.image = request.body.image),
+        (product.coverImage = request.body.coverImage),
+        (product.images = request.body.images),
         (product.brand = request.body.brand),
         (product.category = request.body.category),
         (product.description = request.body.description),

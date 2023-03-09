@@ -47,20 +47,21 @@ export default function ProductView() {
   const { slug } = useParams();
   const navigateTo = useNavigate();
   const [showImageModal, setShowImageModal] = useState(false);
+  const [additionalshowImageModal, setAdditionalShowImageModal] =
+    useState(false);
+  const [modalImgIndex, setModalImgIndex] = useState();
+  const [loadingCreateReview, setLoadingCreateReview] = useState(false);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const pageSize = 4;
 
+  const openImageModal = (index) => {
+    setAdditionalShowImageModal(true);
+    setModalImgIndex(index);
+  };
+
   const [
-    {
-      loading,
-      error,
-      product,
-      reviews,
-      reviewsLoading,
-      reviewsError,
-      loadingCreateReview,
-    },
+    { loading, error, product, reviews, reviewsLoading, reviewsError },
     dispatch,
   ] = useReducer(reducer, {
     loading: true,
@@ -130,6 +131,7 @@ export default function ProductView() {
       return;
     }
     const postReview = async () => {
+      setLoadingCreateReview(true);
       await apiClient.post(`/api/products/${product._id}/reviews`, {
         rating,
         comment,
@@ -138,12 +140,16 @@ export default function ProductView() {
     await toast.promise(postReview(), {
       loading: "Creating review...",
       success: () => {
+        setLoadingCreateReview(false);
         setRating(0);
         setComment("");
         setRefresh(true);
         return <b>Review created successfully</b>;
       },
-      error: (error) => `Error: ${getError(error)}`,
+      error: (error) => {
+        setLoadingCreateReview(false);
+        return `Error: ${getError(error)}`;
+      },
     });
   };
 
@@ -172,7 +178,7 @@ export default function ProductView() {
         <Col md={6} className="text-center">
           <img
             className="img-product-view"
-            src={product.image}
+            src={product.coverImage}
             alt={product.name}
             onClick={() => setShowImageModal(true)}
           />
@@ -190,6 +196,23 @@ export default function ProductView() {
                 rating={product.rating}
                 numReviews={product.numReviews}
               ></Rating>
+            </ListGroup.Item>
+            <ListGroup.Item>
+              <Row md={2} className="g-2">
+                {[product.coverImage, ...product.images].map((image, index) => (
+                  <Col key={index}>
+                    <Card>
+                      <Card.Img
+                        variant="top"
+                        src={image}
+                        alt="product"
+                        className="rounded img-thumbnail"
+                        onClick={() => openImageModal(index)}
+                      />
+                    </Card>
+                  </Col>
+                ))}
+              </Row>
             </ListGroup.Item>
             <ListGroup.Item>Price: ${product.price}</ListGroup.Item>
             <ListGroup.Item>
@@ -239,7 +262,7 @@ export default function ProductView() {
         <div>
           {reviewsLoading ? (
             <div className="my-3">
-              <MessageBox>Loading comments...</MessageBox>
+              <MessageBox>Loading Reviews...</MessageBox>
             </div>
           ) : reviewsError ? (
             <div className="my-3">
@@ -284,57 +307,64 @@ export default function ProductView() {
             </div>
           )}
         </div>
-        <div className="my-3">
-          {userInfo ? (
-            <form onSubmit={submitHandler}>
-              <h2>Write a customer review</h2>
-              <Form.Group className="mb-1" controlId="rating">
-                <Form.Label>Rating</Form.Label>
-                <Form.Select
-                  aria-label="Rating"
-                  value={rating}
-                  onChange={(e) => setRating(e.target.value)}
-                >
-                  <option value="">Select...</option>
-                  <option value="1">1- Poor</option>
-                  <option value="2">2- Fair</option>
-                  <option value="3">3- Good</option>
-                  <option value="4">4- Very good</option>
-                  <option value="5">5- Excelent</option>
-                </Form.Select>
-              </Form.Group>
-              <Form.Group className="mb-1" controlId="comment">
-                <Form.Label>Comment</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  placeholder="Leave a comment here"
-                  value={comment}
-                  onChange={(e) => setComment(e.target.value)}
-                />
-              </Form.Group>
-              <div className="mb-3">
-                <Button disabled={loadingCreateReview} type="submit">
-                  Submit
-                </Button>
-                {loadingCreateReview && <LoadingBox></LoadingBox>}
-              </div>
-            </form>
-          ) : (
-            <MessageBox>
-              Please{" "}
-              <Link to={`/signin?redirect=/product/${product.slug}`}>
-                Sign In
-              </Link>{" "}
-              to write a review
-            </MessageBox>
-          )}
-        </div>
+        {!reviewsLoading && !reviewsError && (
+          <div className="my-3">
+            {userInfo ? (
+              <form onSubmit={submitHandler}>
+                <h2>Write a customer review</h2>
+                <Form.Group className="mb-1" controlId="rating">
+                  <Form.Label>Rating</Form.Label>
+                  <Form.Select
+                    aria-label="Rating"
+                    value={rating}
+                    onChange={(e) => setRating(e.target.value)}
+                  >
+                    <option value="">Select...</option>
+                    <option value="1">1- Poor</option>
+                    <option value="2">2- Fair</option>
+                    <option value="3">3- Good</option>
+                    <option value="4">4- Very good</option>
+                    <option value="5">5- Excelent</option>
+                  </Form.Select>
+                </Form.Group>
+                <Form.Group className="mb-1" controlId="comment">
+                  <Form.Label>Comment</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    placeholder="Leave a comment here"
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                  />
+                </Form.Group>
+                <div className="mb-3">
+                  <Button disabled={loadingCreateReview} type="submit">
+                    Submit
+                  </Button>
+                </div>
+              </form>
+            ) : (
+              <MessageBox>
+                Please{" "}
+                <Link to={`/signin?redirect=/product/${product.slug}`}>
+                  Sign In
+                </Link>{" "}
+                to write a review
+              </MessageBox>
+            )}
+          </div>
+        )}
       </div>
-
       {showImageModal && (
         <ImageModal
-          imagesSrc={product.image}
+          imagesSrc={product.coverImage}
           setShowModal={setShowImageModal}
+        />
+      )}
+      {additionalshowImageModal && (
+        <ImageModal
+          imagesSrc={[product.coverImage, ...product.images]}
+          index={modalImgIndex}
+          setShowModal={setAdditionalShowImageModal}
         />
       )}
     </div>
