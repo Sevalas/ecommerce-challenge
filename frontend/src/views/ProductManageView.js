@@ -139,7 +139,7 @@ export default function ProductManageView() {
         description: form.description,
         price: form.price,
         countInStock: form.countInStock,
-        image: form.image,
+        coverImage: form.image,
       });
     };
     await toast.promise(updateProduct(), {

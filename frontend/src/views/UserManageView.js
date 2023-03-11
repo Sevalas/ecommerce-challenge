@@ -173,7 +173,7 @@ export default function UserManageView() {
                         variant="dark"
                         onClick={() => handleShowUpdateModal(user._id)}
                       >
-                        Details
+                        Edit
                       </Button>
                       <Button
                         type="button"
