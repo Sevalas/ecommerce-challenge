@@ -25,6 +25,7 @@ import ProductManageView from "./views/ProductManageView";
 import ProductEditView from "./views/ProductEditView";
 import OrderManageView from "./views/OrderManageView";
 import UserManageView from "./views/UserManageView";
+import SupportView from "./views/SupportView";
 
 export default function App() {
   const { state } = useContext(Store);
@@ -122,6 +123,14 @@ export default function App() {
                 </AdminRoute>
               }
             />
+            <Route
+              path="/admin/support"
+              element={
+                <AdminRoute>
+                  <SupportView />
+                </AdminRoute>
+              }
+            />
           </Routes>
         </Container>
       </main>
@@ -135,7 +144,7 @@ export default function App() {
           />
         </div>
       )}
-      <Footer />
+      <Footer userInfo={userInfo} />
     </div>
   );
 }

@@ -52,3 +52,4 @@
 46. Rate and Review products functionality
 47. Upload multiple Images
 48. Upgrade to React 18
+49. Implement support, chat with SocketIO
