@@ -89,7 +89,7 @@ Views and Features
 
 ### 🔸Cart:
 
-<img src="./frontend/public/readme/cart.png"  alt="drawing" width="600"/>
+<img src="./frontend/public/readme/cart-view.png"  alt="drawing" width="600"/>
 
 ### 🔸Shipping and Google maps integration:
 
