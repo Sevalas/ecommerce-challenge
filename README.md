@@ -1,56 +1,134 @@
-# BUILDING A ECOMMERCE WEBSITE
+# Hi!
 
-### STEPS:
+I am Sebastian Valencia Lasprilla and this is an application that I developed personally to learn, explore and see the possibilities of MERN Full Stack development.
 
-1. Install Tools
-2. Create React app
-3. Create git repository
-4. Add routing
-   1. Route for home view
-   2. Route for each product
-5. Create Node.js Server
-6. Fetch products from backend
-7. Manage State from useReducer
-8. Add Bootstrap
-9. Create product and rating component
-10. Create product detail view
-11. Create loader and error message
-12. Implement add to cart and cart view
-13. Create signin view
-14. Connect to mongoDB
-15. Generate product model
-16. Generate user Model
-17. Implement Signin API
-18. Complete signin view
-19. Create a shipping view
-20. Create signup view
-21. Create select payment method view
-22. Create place order view
-23. Implement place order action
-24. Create order view
-25. Implement Pay Order by Paypal method
-26. Create user history view and history api
-27. Create profile view
-28. Publish on Heroku
-29. Publish on Render
-30. Create sidebar and search box
-31. Create search view
-32. Create admin dropdown
-33. Create dashboard view
-34. Create manage products view
-35. Create product functionality
-36. Create product edit view
-37. Upload product image functionality
-38. Remove product functionality
-39. Create modal image view functionality
-40. Create manage orders view
-41. Implement deliver button functionality
-42. Create manage users view
-43. Implement actions in manage users view
-44. Implement google maps select address
-45. Email order receipt by sendGrid
-46. Rate and Review products functionality
-47. Upload multiple Images
-48. Upgrade to React 18
-49. Implement support, chat with SocketIO
-50. Forget & Reset Password
+## 📑 Indice
+
+- 1. [What is Ecom-svl?](#What)
+- 2. [Views and Features](#Views)
+- 3. [For contact](#For)
+
+## What is Ecom-svl?
+
+Ecom-svl is a full-stack Mern e-commerce web app:
+
+**Website:** [ecom-svl.onrender.com](https://ecom-svl.onrender.com/)
+(App loading time may take a few seconds due to limitations of the free host)
+
+**You can create your own account or use one of the accounts below:**
+| user | pass |
+| ------------------------- | :----------: |
+| example-user@example.com | exampleuser |
+| For test admin features: | |
+| example-admin@example.com | exampleadmin |
+
+**For test Payments:**
+
+Paypal sandbox acount:
+| user | pass |
+| ------------------------- | :----------: |
+| sb-wmc1m22597783@personal.example.com | 12345678 |
+
+This application was developed with:
+
+- React js
+- Node and ExpressJs
+- MongoDB
+- React Bootstrap
+- Using cloud services like Sendgrid, Google Map, PayPal, MongoDB Atlas, Render and more.
+- Context API to manage state of React Application like cart items, user authentication with Jwt Token, and more.
+
+The initial idea is to create a sales platform, a store with an **E-commennrce** feature that allows shopping, cataloging, rating, reviewing, shipping system, etc.
+
+Enabled with **administration tools** such as a dashboard and management of products, users, orders and support.
+
+This application is **responsive**, enabled as a **PWA** application and has the idea to be a native application with conversion methods with the help of pwa integration in the future.
+
+## Views and Features:
+
+<img src="./frontend/public/readme/home.png" alt="drawing" width="600"/>
+
+### 🔸Responsive and Pwa:
+
+<img src="./frontend/public/readme/mobile.png"  alt="drawing" width="600"/>
+
+### 🔸User registrations, login and password recovery:
+
+<img src="./frontend/public/readme/user-register.png"  alt="drawing" width="600"/>
+
+### 🔸Product and Gallery overlay:
+
+<img src="./frontend/public/readme/product-view.png"  alt="drawing" width="600"/>
+<img src="./frontend/public/readme/overlay-gallery.png"  alt="drawing" width="600"/>
+
+### 🔸Rating and Review:
+
+<img src="./frontend/public/readme/rating-review.png"  alt="drawing" width="600"/>
+
+### 🔸Product search:
+
+<img src="./frontend/public/readme/search.png"  alt="drawing" width="600"/>
+
+### 🔸Profile modification:
+
+<img src="./frontend/public/readme/profile-modification.png"  alt="drawing" width="600"/>
+
+### 🔸Order History:
+
+<img src="./frontend/public/readme/orders-history.png"  alt="drawing" width="600"/>
+<img src="./frontend/public/readme/order-view.png"  alt="drawing" width="600"/>
+
+### 🔸Cart:
+
+<img src="./frontend/public/readme/cart.png"  alt="drawing" width="600"/>
+
+### 🔸Shipping and Google maps integration:
+
+<img src="./frontend/public/readme/shipping.png"  alt="drawing" width="600"/>
+<img src="./frontend/public/readme/maps.png"  alt="drawing" width="600"/>
+
+### 🔸Payment:
+
+<img src="./frontend/public/readme/payment.png"  alt="drawing" width="600"/>
+
+### 🔸Chat Support:
+
+<img src="./frontend/public/readme/support-chat.png"  alt="drawing" width="600"/>
+
+### 🔸Mailing:
+
+<img src="./frontend/public/readme/mail-order.png"  alt="drawing" width="600"/>
+<img src="./frontend/public/readme/mail-reset.png"  alt="drawing" width="600"/>
+
+### --Admin Features---
+
+<img src="./frontend/public/readme/admin.png"  alt="drawing" width="600"/>
+
+### 🔸🔸Dashboard:
+
+<img src="./frontend/public/readme/dashboard.png"  alt="drawing" width="600"/>
+
+### 🔸🔸Products management:
+
+<img src="./frontend/public/readme/product-management.png"  alt="drawing" width="600"/>
+<img src="./frontend/public/readme/product-create.png"  alt="drawing" width="600"/>
+<img src="./frontend/public/readme/product-edit.png"  alt="drawing" width="600"/>
+
+### 🔸🔸Orders management:
+
+<img src="./frontend/public/readme/orders-management.png"  alt="drawing" width="600"/>
+<img src="./frontend/public/readme/order-view-admin.png"  alt="drawing" width="600"/>
+
+### 🔸🔸Users management:
+
+<img src="./frontend/public/readme/users-management.png"  alt="drawing" width="600"/>
+<img src="./frontend/public/readme/user-update.png"  alt="drawing" width="600"/>
+
+### 🔸🔸Users management:
+
+<img src="./frontend/public/readme/admin-support-chat.png"  alt="drawing" width="600"/>
+
+## For contact:
+
+Feel free to contact me for any help or interest via github or send me an email at **se.valas@outlook.com**.
+# 😃 Thank you very much for taking a look at my project.
