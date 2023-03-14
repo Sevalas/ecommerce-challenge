@@ -133,39 +133,44 @@ export default function SupportView() {
         <h1 className="mb-4">Support</h1>
         <Row className="support-users">
           <Col md={4} className="user-select">
-            {users.filter((user) => user._id !== userInfo._id).length === 0 && (
+            {users.filter((user) => user._id !== userInfo._id).length === 0 ? (
               <MessageBox>No online users found</MessageBox>
-            )}
-            <strong>Select a user to chat</strong>
-            <ul>
-              {users
-                .filter((filterUser) => filterUser._id !== userInfo._id)
-                .map((user) => (
-                  <li
-                    key={user._id}
-                    className={user._id === selectedUser._id ? "selected" : ""}
-                  >
-                    <div className="d-flex my-1">
-                      <div
+            ) : (
+              <div>
+                <strong>Select a user to chat</strong>
+                <ul>
+                  {users
+                    .filter((filterUser) => filterUser._id !== userInfo._id)
+                    .map((user) => (
+                      <li
+                        key={user._id}
                         className={
-                          user.unread
-                            ? "status unread"
-                            : user.online
-                            ? "status online"
-                            : "status offline"
+                          user._id === selectedUser._id ? "selected" : ""
                         }
-                      />
-                      <Button
-                        className="ms-2"
-                        type="button"
-                        onClick={(e) => selectUser(e, user)}
                       >
-                        {user.name}
-                      </Button>
-                    </div>
-                  </li>
-                ))}
-            </ul>
+                        <div className="d-flex my-1">
+                          <div
+                            className={
+                              user.unread
+                                ? "status unread"
+                                : user.online
+                                ? "status online"
+                                : "status offline"
+                            }
+                          />
+                          <Button
+                            className="ms-2"
+                            type="button"
+                            onClick={(e) => selectUser(e, user)}
+                          >
+                            {user.name}
+                          </Button>
+                        </div>
+                      </li>
+                    ))}
+                </ul>
+              </div>
+            )}
           </Col>
           <Col md={8} className="support-messages">
             {!selectedUser._id ? (
@@ -196,13 +201,14 @@ export default function SupportView() {
                           setField("messageBody", event.target.value)
                         }
                         isInvalid={!!errorsForm.messageBody}
+                        autoFocus={true}
                         required
                       />
                       <Form.Control.Feedback type="invalid">
                         {errorsForm.messageBody}
                       </Form.Control.Feedback>
                     </Form.Group>
-                    <div className="mb-3">
+                    <div className="mt-2 d-flex justify-content-end">
                       <Button type="submit">Send</Button>
                     </div>
                   </Form>

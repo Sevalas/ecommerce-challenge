@@ -9,7 +9,8 @@ const OrderModel = new mongoose.model(
           slug: { type: String, required: true },
           name: { type: String, required: true },
           quantity: { type: Number, required: true },
-          image: { type: String, required: true },
+          coverImage: { type: String, required: true },
+          images: [String],
           price: { type: Number, required: true },
           product: {
             type: mongoose.Schema.Types.ObjectId,

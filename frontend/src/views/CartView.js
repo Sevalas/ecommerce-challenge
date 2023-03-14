@@ -58,7 +58,7 @@ export default function CartView() {
                   <Row className="align-items-center">
                     <Col md="4" className="text-center">
                       <img
-                        src={item.image}
+                        src={item.coverImage}
                         alt={item.name}
                         className="rounded img-thumbnail-cart-view"
                       />

@@ -26,6 +26,7 @@ import ProductEditView from "./views/ProductEditView";
 import OrderManageView from "./views/OrderManageView";
 import UserManageView from "./views/UserManageView";
 import SupportView from "./views/SupportView";
+import ResetPasswordView from "./views/ResetPasswordView";
 
 export default function App() {
   const { state } = useContext(Store);
@@ -131,6 +132,7 @@ export default function App() {
                 </AdminRoute>
               }
             />
+            <Route path="/reset-password/:token" element={<ResetPasswordView />} />
           </Routes>
         </Container>
       </main>

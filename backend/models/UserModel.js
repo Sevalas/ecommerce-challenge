@@ -8,6 +8,7 @@ const UserModel = new mongoose.model(
       email: { type: String, required: true, unique: true },
       passwordHash: { type: String, required: true },
       isAdmin: { type: Boolean, default: false, required: true },
+      resetToken: { type: String },
     },
     {
       timestamps: true,

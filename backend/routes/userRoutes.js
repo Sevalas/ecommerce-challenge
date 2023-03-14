@@ -2,7 +2,14 @@ import express from "express";
 import expressAsyncHandler from "express-async-handler";
 import bcrypt from "bcryptjs";
 import UserModel from "../models/UserModel.js";
-import { generateToken, isAuth, isAdmin } from "../utils/utils.js";
+import {
+  generateToken,
+  isAuth,
+  isAdmin,
+  sendGridMail,
+  baseUrl,
+} from "../utils/utils.js";
+import jwt from "jsonwebtoken";
 
 const userRouter = express.Router();
 const PAGE_SIZE = 4;
@@ -152,6 +159,62 @@ userRouter.put(
     } catch (error) {
       throw error;
     }
+  })
+);
+
+userRouter.post(
+  "/forget-password",
+  expressAsyncHandler(async (request, response) => {
+    const user = await UserModel.findOne({ email: request.body.email });
+
+    if (user) {
+      const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: "3h",
+      });
+      user.resetToken = token;
+      await user.save();
+
+      await sendGridMail({
+        to: user.email,
+        subject: `Reset Password`,
+        html: ` 
+        <p>Please Click the following link to reset your password:</p> 
+        <a href="${baseUrl()}/reset-password/${token}"}>Reset Password</a>
+        `,
+      });
+
+      response.send({ message: "We sent reset password link to your email." });
+    } else {
+      response.status(404).send({ errorMessage: "User not found" });
+    }
+  })
+);
+
+userRouter.post(
+  "/reset-password",
+  expressAsyncHandler(async (request, response) => {
+    jwt.verify(
+      request.body.token,
+      process.env.JWT_SECRET,
+      async (err) => {
+        if (err) {
+          response.status(401).send({ message: "Invalid Token" });
+        } else {
+          const user = await UserModel.findOne({ resetToken: request.body.token });
+          if (user) {
+            if (request.body.password) {
+              user.passwordHash = bcrypt.hashSync(request.body.password);
+              await user.save();
+              response.send({
+                message: "Password reseted successfully",
+              });
+            }
+          } else {
+            response.status(404).send({ errorMessage: "User not found" });
+          }
+        }
+      }
+    );
   })
 );
 

@@ -53,3 +53,4 @@
 47. Upload multiple Images
 48. Upgrade to React 18
 49. Implement support, chat with SocketIO
+50. Forget & Reset Password
