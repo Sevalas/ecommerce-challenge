@@ -115,7 +115,7 @@ Views and Features
 
 ### 🔸🔸Dashboard:
 
-<img src="./frontend/public/readme/dashboard.png"  alt="drawing" width="600"/>
+<img src="./frontend/public/readme/dashboard-view.png"  alt="drawing" width="600"/>
 
 ### 🔸🔸Products management:
 
