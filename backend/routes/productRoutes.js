@@ -88,7 +88,7 @@ productRouter.get(
     const page = Number(query.page) || 1;
     const pageSize = query.pageSize || PAGE_SIZE;
     const reviews = await ReviewModel.find({ productId: request.params.id })
-      .sort({ createdAt: -1 })
+      .sort({ createdAt: -1, _id: -1 })
       .skip(pageSize * (page - 1))
       .limit(pageSize);
 
@@ -158,12 +158,12 @@ productRouter.get(
     const pageSize = query.pageSize || PAGE_SIZE;
 
     const products = await ProductModel.find()
-      .sort({ createdAt: -1 })
-      .skip(pageSize * (page - 1))
-      .limit(pageSize);
+      .sort({ createdAt: -1, _id: -1 })
+      .limit(pageSize)
+      .skip(pageSize * (page - 1));
 
+    console.log(products);
     const countProducts = await ProductModel.countDocuments();
-
     response.send({
       products,
       countProducts,

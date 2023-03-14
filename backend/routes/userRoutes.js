@@ -24,7 +24,7 @@ userRouter.get(
     const pageSize = query.pageSize || PAGE_SIZE;
 
     const users = await UserModel.find()
-      .sort({ createdAt: -1 })
+      .sort({ createdAt: -1, _id: -1 })
       .skip(pageSize * (page - 1))
       .limit(pageSize);
 
@@ -193,28 +193,26 @@ userRouter.post(
 userRouter.post(
   "/reset-password",
   expressAsyncHandler(async (request, response) => {
-    jwt.verify(
-      request.body.token,
-      process.env.JWT_SECRET,
-      async (err) => {
-        if (err) {
-          response.status(401).send({ message: "Invalid Token" });
-        } else {
-          const user = await UserModel.findOne({ resetToken: request.body.token });
-          if (user) {
-            if (request.body.password) {
-              user.passwordHash = bcrypt.hashSync(request.body.password);
-              await user.save();
-              response.send({
-                message: "Password reseted successfully",
-              });
-            }
-          } else {
-            response.status(404).send({ errorMessage: "User not found" });
+    jwt.verify(request.body.token, process.env.JWT_SECRET, async (err) => {
+      if (err) {
+        response.status(401).send({ message: "Invalid Token" });
+      } else {
+        const user = await UserModel.findOne({
+          resetToken: request.body.token,
+        });
+        if (user) {
+          if (request.body.password) {
+            user.passwordHash = bcrypt.hashSync(request.body.password);
+            await user.save();
+            response.send({
+              message: "Password reseted successfully",
+            });
           }
+        } else {
+          response.status(404).send({ errorMessage: "User not found" });
         }
       }
-    );
+    });
   })
 );
 

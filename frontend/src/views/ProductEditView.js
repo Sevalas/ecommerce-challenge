@@ -169,7 +169,10 @@ export default function ProductEditView() {
         dispatch({ type: "UPDATE_FINISH" });
         return <b>Product Updated</b>;
       },
-      error: (error) => `Error: ${getError(error)}`,
+      error: (error) => {
+        dispatch({ type: "UPDATE_FINISH" });
+        return `Error: ${getError(error)}`;
+      },
     });
   };
 
@@ -292,9 +295,10 @@ export default function ProductEditView() {
                   <Form.Control
                     value={form.price}
                     type="number"
-                    onKeyDown={(event) => {
-                      if (!/[0-9]/.test(event.key)) {
-                        event.preventDefault();
+                    pattern="[0-9]*"
+                    onKeyDown={(e) => {
+                      if (["e", "E", ".", "+", "& ", "-"].includes(e.key)) {
+                        e.preventDefault();
                       }
                     }}
                     onChange={(event) => setField("price", event.target.value)}
@@ -315,9 +319,9 @@ export default function ProductEditView() {
                   <Form.Control
                     value={form.countInStock}
                     type="number"
-                    onKeyDown={(event) => {
-                      if (!/[0-9]/.test(event.key)) {
-                        event.preventDefault();
+                    onKeyDown={(e) => {
+                      if (["e", "E", ".", "+", "& ", "-"].includes(e.key)) {
+                        e.preventDefault();
                       }
                     }}
                     onChange={(event) =>

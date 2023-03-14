@@ -1,8 +1,7 @@
-import { Container, Form, Button, Modal } from "react-bootstrap";
+import { Container, Form, Button } from "react-bootstrap";
 import apiClient from "../components/ApiClient";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-import { useLocation } from "react-router-dom";
 import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Store } from "../context/Store";

@@ -67,7 +67,7 @@ orderRouter.get(
 
     const orders = await OrderModel.find()
       .populate("user", "name")
-      .sort({ createdAt: -1 })
+      .sort({ createdAt: -1, _id: -1 })
       .skip(pageSize * (page - 1))
       .limit(pageSize);
 

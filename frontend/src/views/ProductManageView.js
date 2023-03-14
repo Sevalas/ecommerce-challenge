@@ -354,9 +354,11 @@ export default function ProductManageView() {
                         <Form.Control
                           value={form[(event) => event.target.id]}
                           type="number"
-                          onKeyDown={(event) => {
-                            if (!/[0-9]/.test(event.key)) {
-                              event.preventDefault();
+                          onKeyDown={(e) => {
+                            if (
+                              ["e", "E", ".", "+", "& ", "-"].includes(e.key)
+                            ) {
+                              e.preventDefault();
                             }
                           }}
                           onChange={(event) =>
@@ -379,9 +381,11 @@ export default function ProductManageView() {
                         <Form.Control
                           value={form[(event) => event.target.id]}
                           type="number"
-                          onKeyDown={(event) => {
-                            if (!/[0-9]/.test(event.key)) {
-                              event.preventDefault();
+                          onKeyDown={(e) => {
+                            if (
+                              ["e", "E", ".", "+", "& ", "-"].includes(e.key)
+                            ) {
+                              e.preventDefault();
                             }
                           }}
                           onChange={(event) =>

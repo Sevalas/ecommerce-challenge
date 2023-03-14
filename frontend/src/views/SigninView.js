@@ -114,9 +114,11 @@ export default function SigninView() {
         </Modal.Header>
         <Form onSubmit={submitForgetPasswordHandler}>
           <Modal.Body>
-            <Form.Group className="mb-3" controlId="forgetPasswordEmail">
-              <Form.Label>Email</Form.Label>
+            Enter your recovery email
+            <Form.Group className="my-3" controlId="forgetPasswordEmail">
               <Form.Control
+                placeholder="Type your email"
+                id="forgetPasswordEmail"
                 type="email"
                 onChange={(event) => setForgetPasswordEmail(event.target.value)}
                 required

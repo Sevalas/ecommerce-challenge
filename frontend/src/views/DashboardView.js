@@ -62,7 +62,7 @@ export default function DashboardView() {
                   <Card.Title>
                     {summary.users ? summary.users.numUsers : 0}
                   </Card.Title>
-                  <Card.Text> Users</Card.Text>
+                  <Card.Text>Registered users</Card.Text>
                 </Card.Body>
               </Card>
             </Col>
@@ -72,7 +72,7 @@ export default function DashboardView() {
                   <Card.Title>
                     {summary.orders ? summary.orders.numOrders : 0}
                   </Card.Title>
-                  <Card.Text> Orders</Card.Text>
+                  <Card.Text>Orders</Card.Text>
                 </Card.Body>
               </Card>
             </Col>
@@ -85,7 +85,7 @@ export default function DashboardView() {
                       ? summary.orders.totalSales.toFixed(2)
                       : 0}
                   </Card.Title>
-                  <Card.Text> Total Sales</Card.Text>
+                  <Card.Text>Total Sales</Card.Text>
                 </Card.Body>
               </Card>
             </Col>
