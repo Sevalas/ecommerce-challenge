@@ -1,33 +1,20 @@
-# Hi!
+# 😁 H!
 
 I am Sebastian Valencia Lasprilla and this is an application that I developed personally to learn, explore and see the possibilities of MERN Full Stack development.
 
-## 📑 Indice
+📑 Table of contents
+====================
+<!--ts-->
+* [What is Ecom-svl?](#what-is-Ecom-svl?)
+* [Demo](#demo)
+* [Views and Features](#views-and-features)
+* [Contact](#contact)
+<!--te-->
 
-- 1. [What is Ecom-svl?](#What)
-- 2. [Views and Features](#Views)
-- 3. [For contact](#For)
-
-## What is Ecom-svl?
+What is Ecom-svl?
+=================
 
 Ecom-svl is a full-stack Mern e-commerce web app:
-
-**Website:** [ecom-svl.onrender.com](https://ecom-svl.onrender.com/)
-(App loading time may take a few seconds due to limitations of the free host)
-
-**You can create your own account or use one of the accounts below:**
-| user | pass |
-| ------------------------- | :----------: |
-| example-user@example.com | exampleuser |
-| For test admin features: | |
-| example-admin@example.com | exampleadmin |
-
-**For test Payments:**
-
-Paypal sandbox acount:
-| user | pass |
-| ------------------------- | :----------: |
-| sb-wmc1m22597783@personal.example.com | 12345678 |
 
 This application was developed with:
 
@@ -44,7 +31,29 @@ Enabled with **administration tools** such as a dashboard and management of prod
 
 This application is **responsive**, enabled as a **PWA** application and has the idea to be a native application with conversion methods with the help of pwa integration in the future.
 
-## Views and Features:
+Demo
+=================
+**Website:** [ecom-svl.onrender.com](https://ecom-svl.onrender.com/)
+(App loading time may take a few seconds due to limitations of the free host)
+
+**You can create your own account or use one of the accounts below:**
+
+| user                      |     pass     |
+| ------------------------- | :----------: |
+| example-user@example.com  | exampleuser |
+| For test admin features:  |              |
+| example-admin@example.com | exampleadmin |
+
+**For test Payments:**
+
+Paypal sandbox acount:
+
+| user                                  |   pass   |
+| ------------------------------------- | :------: |
+| sb-wmc1m22597783@personal.example.com | 12345678 |
+
+Views and Features
+=================
 
 <img src="./frontend/public/readme/home.png" alt="drawing" width="600"/>
 
@@ -128,7 +137,9 @@ This application is **responsive**, enabled as a **PWA** application and has the
 
 <img src="./frontend/public/readme/admin-support-chat.png"  alt="drawing" width="600"/>
 
-## For contact:
+Contact
+=================
 
 Feel free to contact me for any help or interest via github or send me an email at **se.valas@outlook.com**.
+
 # 😃 Thank you very much for taking a look at my project.
