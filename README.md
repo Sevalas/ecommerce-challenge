@@ -133,7 +133,7 @@ Views and Features
 <img src="./frontend/public/readme/users-management.png"  alt="drawing" width="600"/>
 <img src="./frontend/public/readme/user-update.png"  alt="drawing" width="600"/>
 
-### 🔸🔸Users management:
+### 🔸🔸Admin chat support:
 
 <img src="./frontend/public/readme/admin-support-chat.png"  alt="drawing" width="600"/>
 
