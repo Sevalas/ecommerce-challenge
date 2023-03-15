@@ -1,4 +1,4 @@
-# 😁 H!
+# 😁 Hi!
 
 I am Sebastian Valencia Lasprilla and this is an application that I developed personally to learn, explore and see the possibilities of MERN Full Stack development.
 
