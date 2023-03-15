@@ -33,8 +33,10 @@ This application is **responsive**, enabled as a **PWA** application and has the
 
 Demo
 =================
-**Website:** [ecom-svl.onrender.com](https://ecom-svl.onrender.com/)
-(App loading time may take a few seconds due to limitations of the free host)
+**Website:** [ecom-svl.onrender.com](https://ecom-svl.onrender.com/) (App loading time may take a few seconds due to limitations of the free host)
+
+([dev-ecom-svl.onrender.com](https://dev-ecom-svl.onrender.com/) development environment for in-progress and test features)
+
 
 **You can create your own account or use one of the accounts below:**
 
