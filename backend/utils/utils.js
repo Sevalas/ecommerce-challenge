@@ -26,7 +26,7 @@ export const generateToken = (user) => {
 export const isAuth = (request, response, next) => {
   const authorization = request.headers.authorization;
   if (authorization) {
-    const token = authorization.slice(7, authorization.lenght); // Removing 'Bearer '
+    const token = authorization.slice(7, authorization.length); // Removing 'Bearer '
     jwt.verify(token, process.env.JWT_SECRET, (error, decodeString) => {
       if (error) {
         response.status(401).send({ message: "Invalid Token" });
