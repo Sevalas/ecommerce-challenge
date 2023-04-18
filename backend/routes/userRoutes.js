@@ -39,45 +39,6 @@ userRouter.get(
   })
 );
 
-userRouter.put(
-  "/:id",
-  isAuth,
-  isAdmin,
-  expressAsyncHandler(async (request, response) => {
-    const user = await UserModel.findById(request.params.id);
-    if (user) {
-      user.name = request.body.name || user.name;
-      user.email = request.body.email || user.email;
-      user.isAdmin = request.body.isAdmin
-        ? Boolean(request.body.isAdmin)
-        : user.isAdmin;
-      await user.save();
-      response.send({ message: "User Updated" });
-    } else {
-      response.status(404).send({
-        errorMessage: "User not found",
-      });
-    }
-  })
-);
-
-userRouter.delete(
-  "/:id",
-  isAuth,
-  isAdmin,
-  expressAsyncHandler(async (request, response) => {
-    const user = await UserModel.findById(request.params.id);
-    if (user) {
-      await user.remove();
-      response.send({ message: "User Deleted" });
-    } else {
-      response.status(404).send({
-        errorMessage: "User not found",
-      });
-    }
-  })
-);
-
 userRouter.post(
   "/signin",
   expressAsyncHandler(async (request, response) => {
@@ -132,6 +93,7 @@ userRouter.put(
   isAuth,
   expressAsyncHandler(async (request, response) => {
     try {
+      console.log(request.user._id);
       const user = await UserModel.findById(request.user._id);
       if (user) {
         user.name = request.body.name || user.name;
@@ -213,6 +175,45 @@ userRouter.post(
         }
       }
     });
+  })
+);
+
+userRouter.put(
+  "/:id",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (request, response) => {
+    const user = await UserModel.findById(request.params.id);
+    if (user) {
+      user.name = request.body.name || user.name;
+      user.email = request.body.email || user.email;
+      user.isAdmin = request.body.isAdmin
+        ? Boolean(request.body.isAdmin)
+        : user.isAdmin;
+      await user.save();
+      response.send({ message: "User Updated" });
+    } else {
+      response.status(404).send({
+        errorMessage: "User not found",
+      });
+    }
+  })
+);
+
+userRouter.delete(
+  "/:id",
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (request, response) => {
+    const user = await UserModel.findById(request.params.id);
+    if (user) {
+      await user.remove();
+      response.send({ message: "User Deleted" });
+    } else {
+      response.status(404).send({
+        errorMessage: "User not found",
+      });
+    }
   })
 );
 

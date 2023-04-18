@@ -146,6 +146,9 @@ export default function TopBar(props) {
                       <LinkContainer to="/signin" className="text-center">
                         <NavDropdown.Item>Sign In</NavDropdown.Item>
                       </LinkContainer>
+                      <LinkContainer to="/signup" className="text-center">
+                        <NavDropdown.Item>Sign Up</NavDropdown.Item>
+                      </LinkContainer>
                     </>
                   )}
                 </NavDropdown>

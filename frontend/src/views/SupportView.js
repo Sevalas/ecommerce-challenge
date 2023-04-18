@@ -1,7 +1,6 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { Helmet } from "react-helmet-async";
-import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 import { Store } from "../context/Store";
 import socketIOClient from "socket.io-client";

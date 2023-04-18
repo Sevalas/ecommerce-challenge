@@ -7,7 +7,9 @@ import { useState, useContext, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Store } from "../context/Store";
 import toast from "react-hot-toast";
-import { getError } from "../utils/utils";
+import { getError, validMailPassRegex } from "../utils/utils";
+import EmailField from "../components/EmailField";
+import PasswordField from "../components/PasswordField";
 
 export default function SigninView() {
   const navigateTo = useNavigate();
@@ -17,14 +19,36 @@ export default function SigninView() {
   const { state, dispatch: contextDispatch } = useContext(Store);
   const { userInfo } = state;
   const [showForgetPasswordModal, setShowForgetPasswordModal] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [form, setForm] = useState({
+    password: "",
+    email: "",
+  });
+  const [errorsForm, setErrorsForm] = useState({});
   const [forgetPasswordEmail, setForgetPasswordEmail] = useState("");
 
   const handleCloseForgetPasswordModal = () =>
     setShowForgetPasswordModal(false);
 
   const handleShowForgetPasswordModal = () => setShowForgetPasswordModal(true);
+
+  const setField = (field, value) => {
+    setForm({ ...form, [field]: value });
+    if (!!errorsForm[field]) {
+      setErrorsForm({ ...errorsForm, [field]: null });
+    }
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    validMailPassRegex(
+      newErrors,
+      form.email,
+      "email",
+      form.password,
+      "password"
+    );
+    return newErrors;
+  };
 
   useEffect(() => {
     if (userInfo) {
@@ -35,9 +59,14 @@ export default function SigninView() {
   const submitHandler = async (event) => {
     event.preventDefault();
     try {
+      const formErrors = validateForm();
+      if (Object.keys(formErrors).length > 0) {
+        setErrorsForm(formErrors);
+        return;
+      }
       const { data } = await apiClient.post("/api/users/signin", {
-        email: email,
-        password: password,
+        email: form.email,
+        password: form.password,
       });
       contextDispatch({ type: "USER_SIGNIN", payload: data });
       navigateTo(redirect || "/");
@@ -73,22 +102,20 @@ export default function SigninView() {
       </Helmet>
       <h1 className="my-3">Sign In</h1>
       <Form onSubmit={submitHandler}>
-        <Form.Group className="mb-3" controlId="email">
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            type="email"
-            onChange={(event) => setEmail(event.target.value)}
-            required
-          />
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="password">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            onChange={(event) => setPassword(event.target.value)}
-            required
-          />
-        </Form.Group>
+        <EmailField
+          value={form[(event) => event.target.id]}
+          onChange={(event) => setField(event.target.id, event.target.value)}
+          error={errorsForm.email}
+          spacing="mb-3"
+          required
+        />
+        <PasswordField
+          value={form.password}
+          onChange={(event) => setField(event.target.id, event.target.value)}
+          error={errorsForm.password}
+          spacing="mb-3"
+          required
+        />
         <div className="mb-3">
           <Button type="submit">Sign in</Button>
         </div>

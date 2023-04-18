@@ -10,3 +10,9 @@ export const reducer = (state, action) => {
       return state;
   }
 };
+
+//eslint-disable-next-line
+export const EMAIL_REGEX = /\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/;
+
+export const PASSWORD_REGEX =
+  /((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,64})/;

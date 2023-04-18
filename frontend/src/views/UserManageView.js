@@ -1,12 +1,13 @@
 import { useEffect, useReducer, useState } from "react";
 import apiClient from "../components/ApiClient";
-import { getError } from "../utils/utils";
+import { getError, validMailPassRegex } from "../utils/utils";
 import { Button, Container, Form, Modal, Table } from "react-bootstrap";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
 import toast from "react-hot-toast";
+import EmailField from "../components/EmailField";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -98,6 +99,7 @@ export default function UserManageView() {
 
   const validateForm = () => {
     const newErrors = {};
+    validMailPassRegex(newErrors, form.email, "email", null, null);
     return newErrors;
   };
 
@@ -234,21 +236,15 @@ export default function UserManageView() {
                     {errorsForm.name}
                   </Form.Control.Feedback>
                 </Form.Group>
-                <Form.Group className="mb-3" controlId="email">
-                  <Form.Label>Email</Form.Label>
-                  <Form.Control
-                    value={form.email}
-                    type="email"
-                    onChange={(event) =>
-                      setField(event.target.id, event.target.value)
-                    }
-                    isInvalid={!!errorsForm.email}
-                    required
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {errorsForm.email}
-                  </Form.Control.Feedback>
-                </Form.Group>
+                <EmailField
+                  value={form.email}
+                  onChange={(event) =>
+                    setField(event.target.id, event.target.value)
+                  }
+                  error={errorsForm.email}
+                  spacing="mb-3"
+                  required
+                />
                 <Form.Group className="mb-3" controlId="isAdmin">
                   <Form.Check
                     type="switch"

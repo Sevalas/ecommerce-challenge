@@ -4,8 +4,10 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useState, useContext, useEffect } from "react";
 import { Store } from "../context/Store";
-import toast from 'react-hot-toast';
-import { getError } from "../utils/utils";
+import toast from "react-hot-toast";
+import { getError, validMailPassRegex } from "../utils/utils";
+import PasswordField from "../components/PasswordField";
+import EmailField from "../components/EmailField";
 
 export default function SignupView() {
   const navigateTo = useNavigate();
@@ -21,7 +23,11 @@ export default function SignupView() {
     }
   }, [navigateTo, redirect, userInfo]);
 
-  const [form, setForm] = useState({});
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
   const [errorsForm, setErrorsForm] = useState({});
 
   const setField = (field, value) => {
@@ -33,6 +39,13 @@ export default function SignupView() {
 
   const validateForm = () => {
     const newErrors = {};
+    validMailPassRegex(
+      newErrors,
+      form.email,
+      "email",
+      form.password,
+      "password"
+    );
     if (form.password !== form.confirmPassword) {
       newErrors.confirmPassword = "Passwords does not match";
     }
@@ -82,45 +95,29 @@ export default function SignupView() {
             {errorsForm.name}
           </Form.Control.Feedback>
         </Form.Group>
-        <Form.Group className="mb-3" controlId="email">
-          <Form.Label>Email</Form.Label>
-          <Form.Control
-            type="email"
-            value={form[(event) => event.target.id]}
-            onChange={(event) => setField(event.target.id, event.target.value)}
-            isInvalid={!!errorsForm.email}
-            required
-          />
-          <Form.Control.Feedback type="invalid">
-            {errorsForm.email}
-          </Form.Control.Feedback>
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="password">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            value={form[(event) => event.target.id]}
-            onChange={(event) => setField(event.target.id, event.target.value)}
-            isInvalid={!!errorsForm.password}
-            required
-          />
-          <Form.Control.Feedback type="invalid">
-            {errorsForm.password}
-          </Form.Control.Feedback>
-        </Form.Group>
-        <Form.Group className="mb-3" controlId="confirmPassword">
-          <Form.Label>Confirm Password</Form.Label>
-          <Form.Control
-            type="password"
-            value={form[(event) => event.target.id]}
-            onChange={(event) => setField(event.target.id, event.target.value)}
-            isInvalid={!!errorsForm.confirmPassword}
-            required
-          />
-          <Form.Control.Feedback type="invalid">
-            {errorsForm.confirmPassword}
-          </Form.Control.Feedback>
-        </Form.Group>
+        <EmailField
+          value={form.email}
+          onChange={(event) => setField(event.target.id, event.target.value)}
+          error={errorsForm.email}
+          spacing="mb-3"
+          required
+        />
+        <PasswordField
+          value={form.password}
+          onChange={(event) => setField(event.target.id, event.target.value)}
+          error={errorsForm.password}
+          strengthBar
+          required
+        />
+        <PasswordField
+          value={form.confirmPassword}
+          onChange={(event) => setField(event.target.id, event.target.value)}
+          controlId="confirmPassword"
+          label="Confirm Password"
+          error={errorsForm.confirmPassword}
+          spacing="mb-3"
+          required
+        />
         <div className="mb-3">
           <Button type="submit">Sign Up</Button>
         </div>

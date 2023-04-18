@@ -82,7 +82,6 @@ productRouter.delete(
 
 productRouter.get(
   "/:id/reviews",
-  isAuth,
   expressAsyncHandler(async (request, response) => {
     const { query } = request;
     const page = Number(query.page) || 1;

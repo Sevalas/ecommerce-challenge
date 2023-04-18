@@ -3,9 +3,11 @@ import apiClient from "../components/ApiClient";
 import { Form, Button } from "react-bootstrap";
 import { Helmet } from "react-helmet-async";
 import { Store } from "../context/Store";
-import { getError } from "../utils/utils";
+import { getError, validMailPassRegex } from "../utils/utils";
 import LoadingBox from "../components/LoadingBox";
 import toast from "react-hot-toast";
+import EmailField from "../components/EmailField";
+import PasswordField from "../components/PasswordField";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -26,8 +28,11 @@ export default function ProfileView() {
 
   const [form, setForm] = useState({
     name: userInfo.name,
-    email: userInfo.email,
+    email: userInfo.email || "",
     changePassword: false,
+    password: "",
+    newPassword: "",
+    confirmNewPassword: "",
   });
   const [errorsForm, setErrorsForm] = useState({});
   const [{ loading }, dispatch] = useReducer(reducer, {
@@ -51,6 +56,13 @@ export default function ProfileView() {
 
   const validateForm = () => {
     const newErrors = {};
+    validMailPassRegex(
+      newErrors,
+      form.email,
+      "email",
+      form.newPassword,
+      "newPassword"
+    );
     if (form.changePassword && form.newPassword !== form.confirmNewPassword) {
       newErrors.confirmNewPassword = "Passwords does not match";
     }
@@ -115,36 +127,26 @@ export default function ProfileView() {
                 {errorsForm.name}
               </Form.Control.Feedback>
             </Form.Group>
-            <Form.Group className="mb-3" controlId="email">
-              <Form.Label>Email</Form.Label>
-              <Form.Control
-                type="email"
-                value={form.email}
-                onChange={(event) =>
-                  setField(event.target.id, event.target.value)
-                }
-                isInvalid={!!errorsForm.email}
-                required
-              />
-              <Form.Control.Feedback type="invalid">
-                {errorsForm.email}
-              </Form.Control.Feedback>
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="password">
-              <Form.Label>Current password</Form.Label>
-              <Form.Control
-                type="password"
-                value={form[(event) => event.target.id]}
-                onChange={(event) =>
-                  setField(event.target.id, event.target.value)
-                }
-                isInvalid={!!errorsForm.password}
-                required
-              />
-              <Form.Control.Feedback type="invalid">
-                {errorsForm.password}
-              </Form.Control.Feedback>
-            </Form.Group>
+            <EmailField
+              value={form.email}
+              onChange={(event) =>
+                setField(event.target.id, event.target.value)
+              }
+              error={errorsForm.email}
+              spacing="mb-3"
+              required
+            />
+            <PasswordField
+              value={form.password}
+              onChange={(event) =>
+                setField(event.target.id, event.target.value)
+              }
+              controlId="password"
+              label="Current Password"
+              error={errorsForm.password}
+              spacing="mb-3"
+              required
+            />
             <Form.Group className="mb-3" controlId="changePassword">
               <Form.Check
                 type="switch"
@@ -155,36 +157,28 @@ export default function ProfileView() {
             </Form.Group>
             {form.changePassword && (
               <div>
-                <Form.Group className="mb-3" controlId="newPassword">
-                  <Form.Label>New Password</Form.Label>
-                  <Form.Control
-                    type="password"
-                    value={form.newPassword}
-                    onChange={(event) =>
-                      setField("newPassword", event.target.value)
-                    }
-                    isInvalid={!!errorsForm.newPassword}
-                    required
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {errorsForm.newPassword}
-                  </Form.Control.Feedback>
-                </Form.Group>
-                <Form.Group className="mb-3" controlId="confirmNewPassword">
-                  <Form.Label>Confirm New Password</Form.Label>
-                  <Form.Control
-                    type="password"
-                    value={form.confirmNewPassword}
-                    onChange={(event) =>
-                      setField("confirmNewPassword", event.target.value)
-                    }
-                    isInvalid={!!errorsForm.confirmNewPassword}
-                    required
-                  />
-                  <Form.Control.Feedback type="invalid">
-                    {errorsForm.confirmNewPassword}
-                  </Form.Control.Feedback>
-                </Form.Group>
+                <PasswordField
+                  value={form.newPassword}
+                  onChange={(event) =>
+                    setField(event.target.id, event.target.value)
+                  }
+                  controlId="newPassword"
+                  label="New Password"
+                  error={errorsForm.newPassword}
+                  strengthBar
+                  required
+                />
+                <PasswordField
+                  value={form.confirmNewPassword}
+                  onChange={(event) =>
+                    setField(event.target.id, event.target.value)
+                  }
+                  controlId="confirmNewPassword"
+                  label="Confirm New Password"
+                  error={errorsForm.confirmNewPassword}
+                  spacing="mb-3"
+                  required
+                />
               </div>
             )}
             <div className="mb-3">
